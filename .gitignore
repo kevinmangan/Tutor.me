@@ -13,3 +13,21 @@ dist
 /.project
 /RUNNING_PID
 /.settings
+
+# Ignore all dotfiles...
+.*
+# except for .gitignore
+!.gitignore
+
+# Ignore Play! working directory #
+db
+eclipse
+lib
+log
+logs
+modules
+precompiled
+test-result
+server.pid
+*.iml
+*.eml
