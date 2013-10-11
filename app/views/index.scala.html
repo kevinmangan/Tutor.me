@@ -2,6 +2,150 @@
 
 @signedOutMain("Welcome to Tutor.me") {
 
-    @play20.welcome(message, style = "Java")
+    <!-- Navbar -->
+	<div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+    		<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+	            <span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+          	</a>
+          	<a class="brand scroller" data-section="html" href="index.html">FRONT ROW</a>
+		  	<div class="nav-collapse collapse">
+                <ul class="nav pull-right">
+                    <li><a href="#" class="scroller" data-section="#about">About</a></li>
+                    <li><a href="#" class="scroller" data-section="#students">Students</a></li>
+                    <li><a href="#" class="scroller" data-section="#tutors">Tutors</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Dropdown
+                            <b class="caret"></b>
+                        </a>
+                    </li>
+                </ul>
+	        </div>
+        </div>
+      </div>
+    </div>
+    <!-- end Navbar -->
+
+
+    <!-- #intro -->
+	<div class="main-container">
+		<div class="container-fluid" id="intro">
+		<div class="container">
+			<div class="row span6 offset3 center">
+				<h1>A simple &amp; efficient way for student and tutors to connect</h1>
+				<p>Nulla facilisi. Duis aliquet egestas purus in blandit. Curabitur vulputate, ligula lacinia scelerisque tempor, lacus lacus ornare ante, ac egestas est urna sit.
+	</p>
+				<a href="#" class="btn btn-xlarge">Sign Up</a>
+			</div>
+		</div>
+	</div>
+    <!-- ends Intro -->
+
+
+     <!-- #about -->
+<div class="container-fluid" id="about">
+		<div class="container light">
+			<h1>What can we offer</h1>
+		<ul class="thumbnails">
+		  <li class="span4">
+		    <div class="thumbnail">
+		      <img alt="" src="@routes.Assets.at("images/icon1.png")">
+		      <h3>Connect</h3>
+		      <p>We help students and tutors connect with each other. Students connect with tutors for specific subjects.</p>
+		    </div>
+		  </li>
+
+		  <li class="span4">
+		    <div class="thumbnail">
+		      <img alt="" src="@routes.Assets.at("images/icon2.png")">
+		      <h3>Rate</h3>
+		      <p>Students can rate tutors based on their performance, as well as choose tutors according to ranking.</p>
+		    </div>
+		  </li>
+
+		  <li class="span4">
+		    <div class="thumbnail">
+		       <img alt="" src="@routes.Assets.at("images/icon3.png")">
+		      <h3>Learn</h3>
+		      <p>Students and tutors can interact via our interactive whiteboard and video conferencing.</p>
+		    </div>
+		  </li>
+		</ul>
+            <br><br><br>
+	</div>
+</div>
+     <!-- ends About -->
+
+
+<!-- # sign up as a student -->
+<div class="container-fluid" id="students">
+	<div class="container dark">
+		<h1>Sign up as a student!</h1>
+
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+	</div>
+</div>
+<!-- End student -->
+
+
+
+
+<!-- # sign up as a tutor -->
+<div class="container-fluid" id="tutors">
+	<div class="container dark">
+		<h1>Sign up as a tutor!</h1>
+
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+    </div>
+</div>
+<!-- End tutor -->
+
+
+<!-- #footer -->
+<div class="container-fluid" id="contact">
+	<div class="container dark">
+		<h1>Footer</h1>
+
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+
+	</div>
+</div>   <!-- End Footer -->
+	</div>
+
+
+
+<script>
+$(function () {
+    $(window).scroll(function(){
+    // global scroll to top button
+        if ($(this).scrollTop() > 300) {
+            $('.scrolltop').fadeIn();
+        } else {
+            $('.scrolltop').fadeOut();
+        }
+    });
+
+    // scroll nav
+    $('.scroller').click(function(){
+    	var section = $($(this).data("section"));
+    	var top = section.offset().top-82;
+        $("html, body").animate({ scrollTop: top }, 700);
+        return false;
+    });
+
+
+
+
+
+});
+</script>
+
 
 }

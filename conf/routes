@@ -5,12 +5,6 @@
 # Index page
 GET     /                           controllers.Application.index()
 
-# Student index page
-GET     /studentIndex                controllers.Application.studentIndex()
-
-# Tutor index page
-GET     /tutorIndex                  controllers.Application.tutorIndex()
-
 # Student Register
 POST    /studentRegister            controllers.Application.studentRegister()
 
