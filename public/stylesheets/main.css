@@ -3,7 +3,7 @@
 
 body {
 	/* Change the background image here  */
-	background: url('../images/bg2.jpg') #000 top center fixed no-repeat;
+	background: url('../images/bg2.jpg') #000  center fixed no-repeat;
 	background-size:150%;
 	font-family:'Open Sans',sans-serif;
 }
