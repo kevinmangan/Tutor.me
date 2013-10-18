@@ -31,3 +31,7 @@ test-result
 server.pid
 *.iml
 *.eml
+
+# Ignore vagrant files
+Vagrantfile
+provisioning
