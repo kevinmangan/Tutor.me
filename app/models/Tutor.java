@@ -1,8 +1,12 @@
 package models;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Tutor {
+/**
+ * Represents a Tutor.me tutor
+ */
+public class Tutor extends User {
 
   public Long id;
   public String label;
@@ -17,4 +21,98 @@ public class Tutor {
   public static void delete(Long id) {
   }
 
+  // The rating of this tutor
+  private double rating;
+
+  // A description of the tutor
+  private String description;
+
+  // The tutor's tagline
+  private String tagline;
+
+  // A list of the subjects the tutor teaches
+  private List<String> subjects;
+
+  //The cost in U.S. dollars of a single session with this tutor
+  private double costUSD;
+
+  /**
+   * @return the rating
+   */
+  public double getRating() {
+    return rating;
+  }
+
+  /**
+   * @param rating the rating to set
+   */
+  public void setRating(double rating) {
+    this.rating = rating;
+  }
+
+  /**
+   * @return the description
+   */
+  public String getDescription() {
+    return description;
+  }
+
+  /**
+   * @param description the description to set
+   */
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  /**
+   * @return the tagline
+   */
+  public String getTagline() {
+    return tagline;
+  }
+
+  /**
+   * @param tagline the tagline to set
+   */
+  public void setTagline(String tagline) {
+    this.tagline = tagline;
+  }
+
+  /**
+   * @return the subjects
+   */
+  public List<String> getSubjects() {
+    return subjects;
+  }
+
+  /**
+   * @param subjects the subjects to set
+   */
+  public void setSubjects(List<String> subjects) {
+    this.subjects = subjects;
+  }
+
+  /**
+   * @return the costUSD
+   */
+  public double getCostUSD() {
+    return costUSD;
+  }
+
+  /**
+   * @param costUSD the costUSD to set
+   */
+  public void setCostUSD(double costUSD) {
+    this.costUSD = costUSD;
+  }
+
+  /**
+   * Responds to a request for a tutoring session
+   * 
+   * @param request: The request to respond to
+   * @param response: True if the tutor approves of the request, false otherwise
+   */
+  public void respondToRequest(Request request, boolean response) {
+    //TODO
+  }
 }
