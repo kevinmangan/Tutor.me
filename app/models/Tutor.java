@@ -1,6 +1,5 @@
 package models;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,17 +7,21 @@ import java.util.List;
  */
 public class Tutor extends User {
 
-  public Long id;
-  public String label;
+  private static final long serialVersionUID = 7353992572780743627L;
+
+  public static Finder<Long, Tutor> find = new Finder<Long, Tutor>(Long.class,
+      Tutor.class);
 
   public static List<Tutor> all() {
-    return new ArrayList<Tutor>();
+    return find.all();
   }
 
   public static void create(Tutor tutor) {
+    tutor.save();
   }
 
   public static void delete(Long id) {
+    find.ref(id).delete();
   }
 
   // The rating of this tutor
@@ -113,6 +116,10 @@ public class Tutor extends User {
    * @param response: True if the tutor approves of the request, false otherwise
    */
   public void respondToRequest(Request request, boolean response) {
-    //TODO
+    if (response) {
+      request.generateSession();
+    }
+    request.notifyStudent(response);
+    request.delete();
   }
 }

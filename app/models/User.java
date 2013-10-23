@@ -1,24 +1,24 @@
 package models;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+import play.db.ebean.Model;
+
+import com.avaje.ebean.ExpressionList;
 
 /**
  * Represents a user of Tutor.me
  */
-public class User {
+public class User extends Model {
+
+  private static final long serialVersionUID = -2547732540294543775L;
+
+  @Id
+  @GeneratedValue
   public Long id;
-  public String label;
-
-  public static List<? extends User> all() {
-    return new ArrayList<User>();
-  }
-
-  public static void create(Student student) {
-  }
-
-  public static void delete(Long id) {
-  }
 
   // The username of this user on Tutor.me
   private String username;
@@ -28,6 +28,21 @@ public class User {
 
   // The full name of this user
   private String name;
+
+  public static Finder<Long, User> find = new Finder<Long, User>(Long.class,
+      User.class);
+
+  public static List<? extends User> all() {
+    return find.all();
+  }
+
+  public static void create(User user) {
+    user.save();
+  }
+
+  public static void delete(Long id) {
+    find.ref(id).delete();
+  }
 
   /**
    * @return the username
@@ -76,12 +91,14 @@ public class User {
    * @return: The list of Requests associated with this user
    */
   public List<Request> getRequests() {
-    //TODO
-    return null;
+    ExpressionList<Request> requestResults = Request.find.where().eq(
+        "requestingStudent", this);
+    return requestResults.findList();
   }
 
   /**
    * Gets the upcoming tutoring sessions for this user
+   * 
    * @return: The list of upcoming Sessions associated with this user
    */
   public List<Session> getUpcomingSessions() {
@@ -91,6 +108,7 @@ public class User {
 
   /**
    * Gets the completed tutoring sessions for this user
+   * 
    * @return: The list of completed Sessions associated with this user
    */
   public List<Session> getCompletedSessions() {
