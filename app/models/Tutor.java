@@ -27,6 +27,9 @@ public class Tutor extends User {
   // The rating of this tutor
   private double rating;
 
+  // The number of students that have rated this tutor
+  private int numRaters;
+
   // A description of the tutor
   private String description;
 
@@ -51,6 +54,20 @@ public class Tutor extends User {
    */
   public void setRating(double rating) {
     this.rating = rating;
+  }
+
+  /**
+   * @return the numRaters
+   */
+  public int getNumRaters() {
+    return numRaters;
+  }
+
+  /**
+   * @param numRaters the numRaters to set
+   */
+  public void setNumRaters(int numRaters) {
+    this.numRaters = numRaters;
   }
 
   /**
@@ -107,6 +124,22 @@ public class Tutor extends User {
    */
   public void setCostUSD(double costUSD) {
     this.costUSD = costUSD;
+  }
+
+  public List<Request> getRequests() {
+    return super.getRequests("requestedTutor");
+  }
+
+  public List<Session> getUpcomingSessions() {
+    return super.getUpcomingSessions("tutor");
+  }
+
+  public List<Session> getCurrentSessions() {
+    return super.getCurrentSessions("tutor");
+  }
+
+  public List<Session> getCompletedSessions() {
+    return super.getCompletedSessions("tutor");
   }
 
   /**

@@ -24,6 +24,23 @@ public class Student extends User {
     find.ref(id).delete();
   }
 
+  public List<Request> getRequests() {
+    return super.getRequests("requestingStudent");
+  }
+
+  public List<Session> getUpcomingSessions() {
+    return super.getUpcomingSessions("student");
+  }
+
+  public List<Session> getCurrentSessions() {
+    return super.getCurrentSessions("student");
+  }
+
+
+  public List<Session> getCompletedSessions() {
+    return super.getCompletedSessions("student");
+  }
+
   /**
    * Creates a new tutoring session request
    * 
@@ -55,6 +72,10 @@ public class Student extends User {
    * @param rating: The rating to give the tutor
    */
   public static void rateTutor(Tutor tutor, int rating) {
-    //TODO
+    int numRaters = tutor.getNumRaters();
+    int updateNumRaters = numRaters + 1;
+    double ratingAggregate = tutor.getRating() * numRaters;
+    tutor.setRating((ratingAggregate + rating) / updateNumRaters);
+    tutor.setNumRaters(updateNumRaters);
   }
 }
