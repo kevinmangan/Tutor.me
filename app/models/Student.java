@@ -59,23 +59,38 @@ public class Student extends User {
    * @return: The tutors who teach the given subject
    */
   public List<Tutor> searchForTutors(String subject) {
-    return searchForTutors(subject, 0, 10);
+    return searchForTutors(subject, 0, Double.MaxValue);
+  }
+  
+   /** 
+   * Finds all tutors that teach the specified subject
+   * 
+   * @param subject: The subject the student is searching for a tutor for
+   * @param minCost: The minimum cost a tutor can have
+   * @param maxCost: The maximum cose a tutor can have
+   * 
+   * @return: The tutors who teach the given subject, ordered by their cost
+   */
+  public List<Tutor> searchForTutors(String subject, double minCost, double maxCost) {
+    searchForTutors(subject, minCost, maxCost, Double.MaxValue);
   }
   
   /** 
    * Finds all tutors that teach the specified subject
    * 
    * @param subject: The subject the student is searching for a tutor for
+   * @param minCost: The minimum cost a tutor can have
+   * @param maxCost: The maximum cose a tutor can have
    * @param minRating: The minimum rating a tutor can have
-   * @param maxRating: The maximum rating a tutor can have
    * 
    * @return: The tutors who teach the given subject, ordered by their ratings
    */
-  public List<Tutor> searchForTutors(String subject, double minRating, double maxRating) {
+  public List<Tutor> searchForTutors(String subject, double minCost, double maxCost, double minRating) {
     return Tutor.find.where()
       .contains("subjects", subject)
+      .gte("costUSD", minCost)
+      .lte("costUSD", maxCost)
       .gte("rating", minRating)
-      .lte("rating", maxnRating)
       .orderBy("rating");
   }
 
