@@ -8,7 +8,7 @@ import java.util.List;
 public class Student extends User {
 
   private static final String requestSelfFieldName = "requestingStudent";
-  private static final String sessionSelfFieldName = "requestedTutor";
+  private static final String sessionSelfFieldName = "student";
 
   private static final long serialVersionUID = -6347603101193360297L;
 
