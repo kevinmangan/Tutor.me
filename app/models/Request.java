@@ -142,9 +142,10 @@ public class Request extends Model {
    * Notifies a tutor that a request has been created or canceled
    * 
    * @param tutor: The tutor to notify
-   * @param created: True if the request is being created, false otherwise
+   * @param session: The session that is being created or null if
+   * a new request is being made
    */
-  public void notifyTutor(boolean created) {
+  public void notifyTutor(Session session) {
     // TODO
   }
 
@@ -152,9 +153,10 @@ public class Request extends Model {
    * Notifies a student that a tutor has responded to their request
    * 
    * @param student: The student to notify
-   * @param response: True if the tutor approved the request and false otherwise
+   * @param session: The session that has been created for the student,
+   * or null if the tutor did not approve the request 
    */
-  public void notifyStudent(boolean response) {
+  public void notifyStudent(Session session) {
     // TODO
   }
 
