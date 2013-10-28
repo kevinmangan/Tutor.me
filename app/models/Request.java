@@ -142,21 +142,40 @@ public class Request extends Model {
    * Notifies a tutor that a request has been created or canceled
    * 
    * @param tutor: The tutor to notify
-   * @param session: The session that is being created or null if
-   * a new request is being made
+   * @param request: The created or cancelled request
+   * @param created: True if this is a new request, false otherwise
    */
-  public void notifyTutor(Tutor tutor, Session session) {
+  public void notifyTutorOfRequest(Tutor tutor, Request request, boolean created) {
+    // TODO
+  }
+  
+  /**
+   * Notifies a tutor of an upcoming session
+   * 
+   * @param tutor: The tutor to notify
+   * @param created: The upcoming session
+   */
+  public void notifyTutorOfSession(Tutor tutor, Session session) {
     // TODO
   }
 
   /**
-   * Notifies a student that a tutor has responded to their request
+   * Notifies a student of a cancelled request
    * 
    * @param student: The student to notify
-   * @param session: The session that has been created for the student,
-   * or null if the tutor did not approve the request 
+   * @param request: The cancelled request
    */
-  public void notifyStudent(Student student, Session session) {
+  public void notifyStudentOfCancellation(Student student, Request request) {
+    // TODO
+  }
+
+  /**
+   * Notifies a student of an upcoming sesssion
+   * 
+   * @param student: The student to notify
+   * @param session: The upcooming session
+   */
+  public void notifyStudentOfSession(Student student, Session session) {
     // TODO
   }
 
