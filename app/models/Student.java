@@ -7,6 +7,9 @@ import java.util.List;
  */
 public class Student extends User {
 
+  private static final String requestSelfFieldName = "requestingStudent";
+  private static final String sessionSelfFieldName = "student";
+
   private static final long serialVersionUID = -6347603101193360297L;
 
   public static Finder<Long, Student> find = new Finder<Long, Student>(
@@ -24,23 +27,6 @@ public class Student extends User {
     find.ref(id).delete();
   }
 
-  public List<Request> getRequests() {
-    return super.getRequests("requestingStudent");
-  }
-
-  public List<Session> getUpcomingSessions() {
-    return super.getUpcomingSessions("student");
-  }
-
-  public List<Session> getCurrentSessions() {
-    return super.getCurrentSessions("student");
-  }
-
-
-  public List<Session> getCompletedSessions() {
-    return super.getCompletedSessions("student");
-  }
-
   /**
    * Creates a new tutoring session request
    * 
@@ -51,7 +37,7 @@ public class Student extends User {
    */
   public Request createRequest(Tutor tutor, long startTime, long endTime) {
     Request request = new Request(this, tutor, startTime, endTime);
-    request.notifyTutor(true);
+    request.notifyTutorOfRequet(tutor, request, true);
     return request;
   }
 
@@ -61,12 +47,55 @@ public class Student extends User {
    * @param request: The request to be canceled
    */
   public void cancelRequest(Request request) {
-    request.notifyTutor(false);
+    request.notifyTutorOfRequest(request.getRequestedTutor(), request, false);
     request.delete();
+  }
+  
+   /** 
+   * Finds all tutors that teach the specified subject
+   * 
+   * @param subject: The subject the student is searching for a tutor for
+   * 
+   * @return: The tutors who teach the given subject
+   */
+  public List<Tutor> searchForTutors(String subject) {
+    return searchForTutors(subject, 0, Double.MaxValue);
+  }
+  
+   /** 
+   * Finds all tutors that teach the specified subject
+   * 
+   * @param subject: The subject the student is searching for a tutor for
+   * @param minCost: The minimum cost a tutor can have
+   * @param maxCost: The maximum cose a tutor can have
+   * 
+   * @return: The tutors who teach the given subject, ordered by their cost
+   */
+  public List<Tutor> searchForTutors(String subject, double minCost, double maxCost) {
+    searchForTutors(subject, minCost, maxCost, Double.MaxValue);
+  }
+  
+  /** 
+   * Finds all tutors that teach the specified subject
+   * 
+   * @param subject: The subject the student is searching for a tutor for
+   * @param minCost: The minimum cost a tutor can have
+   * @param maxCost: The maximum cose a tutor can have
+   * @param minRating: The minimum rating a tutor can have
+   * 
+   * @return: The tutors who teach the given subject, ordered by their ratings
+   */
+  public List<Tutor> searchForTutors(String subject, double minCost, double maxCost, double minRating) {
+    return Tutor.find.where()
+      .contains("subjects", subject)
+      .gte("costUSD", minCost)
+      .lte("costUSD", maxCost)
+      .gte("rating", minRating)
+      .orderBy("rating");
   }
 
   /**
-   * Rates a tutor on their performance s
+   * Rates a tutor on their performance
    * 
    * @param tutor: The tutor to rate
    * @param rating: The rating to give the tutor

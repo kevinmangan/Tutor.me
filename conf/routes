@@ -11,7 +11,8 @@ GET     /                           controllers.Application.index()
 # POST    /login                              controllers.Application.authenticate()
 # GET     /logout                             controllers.Application.logout()
 
-GET     /classroom/:chatRoomId           controllers.Sessions.launchSession(chatRoomId: String)
+GET     /classroom/:chatRoomId/:userScribblarId    controllers.Sessions.launchSession(chatRoomId: String, userScribblarId)
+GET     /xmltest                              controllers.Sessions.xmlTest()
 
 # Student Register
 POST    /student_register            controllers.Application.studentRegister()

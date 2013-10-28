@@ -1,4 +1,4 @@
-@(title:String, userId:String, chatRoomId:String)
+@(title:String, chatRoomId:String, userScribblarId:String)
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -13,7 +13,7 @@
         var targetID = "scribblar";
         var flashvars = {};
         /* pass necessary variables to the SWF */
-        flashvars.userid = "@chatRoomId";    			/* to log on as an anonymous guest pass 0 (works as long as guests are allowed for this room) */
+        flashvars.userid = "@userScribblarId";    			/* to log on as an anonymous guest pass 0 (works as long as guests are allowed for this room) */
         flashvars.roomid = "@chatRoomId";				/* the roomid for the room you'd like to access - substitute this for a valid roomid */
         flashvars.preferredLocales = "en_US";		/* sets the language - if in doubt leave as en_US */
         

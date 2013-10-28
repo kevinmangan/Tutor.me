@@ -4,6 +4,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.index;
 import views.html.chatroom;
+import models.PrivateVars;
 /*
 import play.*;
 import play.mvc.*;
@@ -16,12 +17,16 @@ import views.html.*;
 
 
 public class Sessions extends Controller {
-String ApiKey = "99A2F615-092C-19D5-6621C3B336B411A5";
+String ApiKey = PrivateVars.SCRIBBLAR_API_KEY;
 
-    public static Result launchSession(String chatRoomId) {
-    	return ok(chatroom.render("This is the page title for the chatroom.", "0", "tswv2s0"));
+    public static Result launchSession(String chatRoomId, String userScribblarId) {
+    	return ok(chatroom.render("This is the page title for the chatroom.", charRoomId, userScribblarId));
     	//return ok(""+chatRoomId);
         //return ok(index.render("Your new application is ready."));
+    }
+
+    public static Result xmlTest() {
+        return ok(Session.addRoom());
     }
 
     public static Result studentRegister() {
