@@ -137,9 +137,10 @@ public class Tutor extends User {
    */
   public void respondToRequest(Request request, boolean response) {
     if (response) {
-      request.generateSession();
+      Session session = request.generateSession();
+      request.notifyTutor(session);
     }
-    request.notifyStudent(response);
+    request.notifyStudent(session, response);
     request.delete();
   }
 }
