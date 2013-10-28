@@ -1,6 +1,5 @@
 package models;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,44 +7,75 @@ import java.util.List;
  */
 public class Student extends User {
 
-  public Long id;
-  public String label;
+  private static final long serialVersionUID = -6347603101193360297L;
+
+  public static Finder<Long, Student> find = new Finder<Long, Student>(
+      Long.class, Student.class);
 
   public static List<Student> all() {
-    return new ArrayList<Student>();
+    return find.all();
   }
 
   public static void create(Student student) {
+    student.save();
   }
 
   public static void delete(Long id) {
+    find.ref(id).delete();
+  }
+
+  public List<Request> getRequests() {
+    return super.getRequests("requestingStudent");
+  }
+
+  public List<Session> getUpcomingSessions() {
+    return super.getUpcomingSessions("student");
+  }
+
+  public List<Session> getCurrentSessions() {
+    return super.getCurrentSessions("student");
+  }
+
+
+  public List<Session> getCompletedSessions() {
+    return super.getCompletedSessions("student");
   }
 
   /**
    * Creates a new tutoring session request
+   * 
    * @param tutor: The tutor that is being request to hold the session
    * @param startTime: The start time of the tutoring session
    * @param endTime: The end time of the tutoring session
    * @return: The request that was created
    */
-  public static Request createRequest(Tutor tutor, long startTime, long endTime) {
-    //TODO
-    return null;
+  public Request createRequest(Tutor tutor, long startTime, long endTime) {
+    Request request = new Request(this, tutor, startTime, endTime);
+    request.notifyTutor(true);
+    return request;
   }
 
   /**
-   * @param request: The request to be cancelled
+   * Cancels a tutoring session request
+   * 
+   * @param request: The request to be canceled
    */
-  public static void cancelRequest(Request request) {
-    //TODO
+  public void cancelRequest(Request request) {
+    request.notifyTutor(false);
+    request.delete();
   }
 
   /**
-   * Rates a tutor on their performance
+   * Rates a tutor on their performance s
+   * 
    * @param tutor: The tutor to rate
    * @param rating: The rating to give the tutor
    */
   public static void rateTutor(Tutor tutor, int rating) {
-    //TODO
+    int numRaters = tutor.getNumRaters();
+    int updateNumRaters = numRaters + 1;
+    double ratingAggregate = tutor.getRating() * numRaters;
+    tutor.setRating((ratingAggregate + rating) / updateNumRaters);
+    tutor.setNumRaters(updateNumRaters);
   }
 }

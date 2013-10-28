@@ -1,6 +1,5 @@
 package models;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,21 +7,28 @@ import java.util.List;
  */
 public class Tutor extends User {
 
-  public Long id;
-  public String label;
+  private static final long serialVersionUID = 7353992572780743627L;
+
+  public static Finder<Long, Tutor> find = new Finder<Long, Tutor>(Long.class,
+      Tutor.class);
 
   public static List<Tutor> all() {
-    return new ArrayList<Tutor>();
+    return find.all();
   }
 
   public static void create(Tutor tutor) {
+    tutor.save();
   }
 
   public static void delete(Long id) {
+    find.ref(id).delete();
   }
 
   // The rating of this tutor
   private double rating;
+
+  // The number of students that have rated this tutor
+  private int numRaters;
 
   // A description of the tutor
   private String description;
@@ -48,6 +54,20 @@ public class Tutor extends User {
    */
   public void setRating(double rating) {
     this.rating = rating;
+  }
+
+  /**
+   * @return the numRaters
+   */
+  public int getNumRaters() {
+    return numRaters;
+  }
+
+  /**
+   * @param numRaters the numRaters to set
+   */
+  public void setNumRaters(int numRaters) {
+    this.numRaters = numRaters;
   }
 
   /**
@@ -106,6 +126,22 @@ public class Tutor extends User {
     this.costUSD = costUSD;
   }
 
+  public List<Request> getRequests() {
+    return super.getRequests("requestedTutor");
+  }
+
+  public List<Session> getUpcomingSessions() {
+    return super.getUpcomingSessions("tutor");
+  }
+
+  public List<Session> getCurrentSessions() {
+    return super.getCurrentSessions("tutor");
+  }
+
+  public List<Session> getCompletedSessions() {
+    return super.getCompletedSessions("tutor");
+  }
+
   /**
    * Responds to a request for a tutoring session
    * 
@@ -113,6 +149,10 @@ public class Tutor extends User {
    * @param response: True if the tutor approves of the request, false otherwise
    */
   public void respondToRequest(Request request, boolean response) {
-    //TODO
+    if (response) {
+      request.generateSession();
+    }
+    request.notifyStudent(response);
+    request.delete();
   }
 }

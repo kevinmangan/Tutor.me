@@ -1,24 +1,26 @@
 package models;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+import org.joda.time.DateTime;
+
+import play.db.ebean.Model;
+
+import com.avaje.ebean.ExpressionList;
 
 /**
  * Represents a user of Tutor.me
  */
-public class User {
+public abstract class User extends Model {
+
+  private static final long serialVersionUID = -2547732540294543775L;
+
+  @Id
+  @GeneratedValue
   public Long id;
-  public String label;
-
-  public static List<? extends User> all() {
-    return new ArrayList<User>();
-  }
-
-  public static void create(Student student) {
-  }
-
-  public static void delete(Long id) {
-  }
 
   // The username of this user on Tutor.me
   private String username;
@@ -28,6 +30,21 @@ public class User {
 
   // The full name of this user
   private String name;
+
+  public static Finder<Long, User> find = new Finder<Long, User>(Long.class,
+      User.class);
+
+  public static List<? extends User> all() {
+    return find.all();
+  }
+
+  public static void create(User user) {
+    user.save();
+  }
+
+  public static void delete(Long id) {
+    find.ref(id).delete();
+  }
 
   /**
    * @return the username
@@ -73,29 +90,55 @@ public class User {
 
   /**
    * Gets the requests associated with this user
+   * 
+   * @param selfFieldName: The name of the field that could contain a reference
+   * to this user in the database ORM
    * @return: The list of Requests associated with this user
    */
-  public List<Request> getRequests() {
-    //TODO
-    return null;
+  public List<Request> getRequests(String selfFieldName) {
+    ExpressionList<Request> requestResults = Request.find.where().eq(
+        selfFieldName, this);
+    return requestResults.findList();
   }
 
   /**
    * Gets the upcoming tutoring sessions for this user
+   * 
+   * @param selfFieldName: The name of the field that could contain a reference
+   * to this user in the database ORM
    * @return: The list of upcoming Sessions associated with this user
    */
-  public List<Session> getUpcomingSessions() {
-    //TODO
-    return null;
+  public List<Session> getUpcomingSessions(String selfFieldName) {
+    ExpressionList<Session> upcomingSessionResults = Session.find.where()
+    .eq(selfFieldName, this).gt("startTime", DateTime.now());
+    return upcomingSessionResults.findList();
   }
 
   /**
    * Gets the completed tutoring sessions for this user
+   * 
+   * @param selfFieldName: The name of the field that could contain a reference
+   * to this user in the database ORM
    * @return: The list of completed Sessions associated with this user
    */
-  public List<Session> getCompletedSessions() {
-    //TODO
-    return null;
+  public List<Session> getCurrentSessions(String selfFieldName) {
+    ExpressionList<Session> completedSessionResults = Session.find.where()
+    .eq(selfFieldName, this).le("startTime", DateTime.now())
+        .ge("endTime", DateTime.now());
+    return completedSessionResults.findList();
+  }
+
+  /**
+   * Gets the completed tutoring sessions for this user
+   * 
+   * @param selfFieldName: The name of the field that could contain a reference
+   * to this user in the database ORM
+   * @return: The list of completed Sessions associated with this user
+   */
+  public List<Session> getCompletedSessions(String selfFieldName) {
+    ExpressionList<Session> completedSessionResults = Session.find.where()
+    .eq(selfFieldName, this).lt("endTime", DateTime.now());
+    return completedSessionResults.findList();
   }
 
   /**

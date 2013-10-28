@@ -1,34 +1,100 @@
 package models;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+import play.data.validation.Constraints.Required;
+import play.db.ebean.Model;
 
 /**
  * Represents a request for a tutoring session
  */
-public class Request {
+public class Request extends Model {
 
+  private static final long serialVersionUID = -8504063147212754838L;
+
+  @Id
+  @GeneratedValue
   public Long id;
-  public String label;
 
-  public static List<Request> all() {
-    return new ArrayList<Request>();
-  }
+  // The student requesting this session
+  private Student requestingStudent;
 
-  public static void create(Student student) {
-  }
-
-  public static void delete(Long id) {
-  }
+  // The tutor this request is being made of
+  private Tutor requestedTutor;
 
   // The requested start time
+  @Required
   private long requestedStartTime;
 
   // The requested end time
+  @Required
   private long requestedEndTime;
 
   // True if this request has already been approved, false otherwise
   private boolean approved;
+
+  public Request(Student requestingStudent, Tutor requestedTutor,
+      long requestedStartTime, long requestedEndTime) {
+    this(requestingStudent, requestedTutor, requestedStartTime,
+        requestedEndTime, false);
+  }
+
+  public Request(Student requestingStudent, Tutor requestedTutor,
+      long requestedStartTime, long requestedEndTime,
+      boolean approved) {
+    this.requestingStudent = requestingStudent;
+    this.requestedTutor = requestedTutor;
+    this.requestedStartTime = requestedStartTime;
+    this.requestedEndTime = requestedEndTime;
+    this.approved = approved;
+    Request.create(this);
+  }
+
+  public static Finder<Long, Request> find = new Finder<Long, Request>(
+      Long.class, Request.class);
+
+  public static List<Request> all() {
+    return find.all();
+  }
+
+  public static void create(Request request) {
+    request.save();
+  }
+
+  public static void delete(Long id) {
+    find.ref(id).delete();
+  }
+
+  /**
+   * @return the requestinStudent
+   */
+  public Student getRequestingStudent() {
+    return requestingStudent;
+  }
+
+  /**
+   * @param requestinStudent the requestinStudent to set
+   */
+  public void setRequestingStudent(Student requestingStudent) {
+    this.requestingStudent = requestingStudent;
+  }
+
+  /**
+   * @return the requestedTutor
+   */
+  public Tutor getRequestedTutor() {
+    return requestedTutor;
+  }
+
+  /**
+   * @param requestedTutor the requestedTutor to set
+   */
+  public void setRequestedTutor(Tutor requestedTutor) {
+    this.requestedTutor = requestedTutor;
+  }
 
   /**
    * @return the startTime
@@ -73,11 +139,12 @@ public class Request {
   }
 
   /**
-   * Notifies a tutor that a request has been created for them
+   * Notifies a tutor that a request has been created or canceled
    * 
    * @param tutor: The tutor to notify
+   * @param created: True if the request is being created, false otherwise
    */
-  public void notifyTutor(Tutor tutor) {
+  public void notifyTutor(boolean created) {
     // TODO
   }
 
@@ -87,7 +154,13 @@ public class Request {
    * @param student: The student to notify
    * @param response: True if the tutor approved the request and false otherwise
    */
-  public void notifyStudent(Student student, boolean response) {
+  public void notifyStudent(boolean response) {
     // TODO
+  }
+
+  public Session generateSession() {
+    Session session = new Session(requestingStudent, requestedTutor,
+        requestedStartTime, requestedEndTime);
+    return session;
   }
 }
