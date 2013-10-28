@@ -7,6 +7,9 @@ import java.util.List;
  */
 public class Student extends User {
 
+  private static abstract final requestSelfFieldName = "requestingStudent";
+  private static abstract final sessionSelfFieldName = "requestedTutor";
+
   private static final long serialVersionUID = -6347603101193360297L;
 
   public static Finder<Long, Student> find = new Finder<Long, Student>(
@@ -22,23 +25,6 @@ public class Student extends User {
 
   public static void delete(Long id) {
     find.ref(id).delete();
-  }
-
-  public List<Request> getRequests() {
-    return super.getRequests("requestingStudent");
-  }
-
-  public List<Session> getUpcomingSessions() {
-    return super.getUpcomingSessions("student");
-  }
-
-  public List<Session> getCurrentSessions() {
-    return super.getCurrentSessions("student");
-  }
-
-
-  public List<Session> getCompletedSessions() {
-    return super.getCompletedSessions("student");
   }
 
   /**
