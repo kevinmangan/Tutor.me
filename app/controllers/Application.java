@@ -1,8 +1,10 @@
 package controllers;
 
+import static play.data.Form.*;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.index;
+import views.html.search;
 
 public class Application extends Controller {
 
@@ -18,8 +20,6 @@ public class Application extends Controller {
         return TODO;
     }
 
-     public static Result search() {
-        return ok(search.render("Your new application is ready."));
-    }
+     
 
 }

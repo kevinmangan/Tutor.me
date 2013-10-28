@@ -20,7 +20,8 @@ POST    /student_register            controllers.Application.studentRegister()
 POST    /tutor_register              controllers.Application.tutorRegister()
 
 # Just temporary while I work on layout
-GET     /search						controllers.Application.search()
+GET     /search						controllers.Search.search()
+POST    /search                     controllers.Search.submit()
 
 
 

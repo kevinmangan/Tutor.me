@@ -1,5 +1,5 @@
 @(message: String)
-
+@import helper._
 @signedInStudentMain("Welcome to Tutor.me") {
 
 
@@ -31,32 +31,44 @@
              <div class="row span12"> 
 
               <div class="col-lg-4">
+
+              @helper.form(action = routes.Search.submit) {
                 <form class="form-inline" role="form">  
                     <div class="form-group"> 
                       <label for="subjectInput">Subject</label>  
-                          <input type="text" class="form-control" id="subjectInput" placeholder=" Eg. GRE Math">  
+                          <input type="text" class="form-control" id="subject" placeholder=" Eg. GRE Math">  
                     </div>
-                </form>
+               <!-- </form> -->
               </div>
 
               <div class="col-lg-4">
-                <form class="form-horizontal" role="form">
+              <!--  <form class="form-horizontal" role="form"> -->
                     <div class="form-group">
                       <label for="minPrice">Price per hour</label>
-                      <input type="text" class="form-control" id="minPrice" placeholder="Min price per hour">
+                      <div class="input-group">
+                        <span class="input-group-addon">$</span>
+                        <input type="text" class="form-control" id="minCost" placeholder="Min price per hour">
+                      </div>
                     </div>
                     <div class="form-group">
                       <label for="maxPrice">to</label>
-                      <input type="text" class="form-control" id="maxPrice" placeholder="Max price per hour">
+                      <div class="input-group">
+                        <span class="input-group-addon">$</span>
+                        <input type="text" class="form-control" id="maxCost" placeholder="Max price per hour">
+                      </div>
                     </div>
-                </form>
+              <!--  </form> -->
               </div>
 
               <div class="col-lg-4">
-                  <label for="rateit">Rating</label><br>
-                  <input type="range" min="0" max="10" value="0" step="0.5" id="backing2">
-                  <div class="rateit" data-rateit-backingfld="#backing2"></div>
+                  <label for="rateit">Minimum rating</label><br>
+                  <input type="range" min="0" max="10" value="0" step="0.5" id="minRating">
+                  <div class="rateit" data-rateit-backingfld="#minRating"></div>
+                  <br><br><br><br>
+                  <button  type="submit" class="btn btn-primary btn-lg pull-right">Search</button>
               </div>
+              </form>
+              } <!-- end of form helper -->
             </div> <!-- row -->  
           </div> <!-- well -->
           
@@ -66,14 +78,16 @@
           <!-- Create a col for each teacher -->
             <div class="col-6 col-sm-6 col-lg-6">
               <div class="well">
-                <h2>Teacher 1</h2>
+                <h2>Tutor 1</h2>
+                <span class="glyphicon glyphicon-search"></span>
                 <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
                 <p><a class="btn btn-default" href="#">View details &raquo;</a></p>
               </div>
             </div><!--/col-->
             <div class="col-6 col-sm-6 col-lg-6">
               <div class="well">
-                <h2>Teacher 2</h2>
+                <h2>Tutor 2</h2>
+                <span class="glyphicon glyphicon-search"></span>
                 <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
                 <p><a class="btn btn-default" href="#">View details &raquo;</a></p>
               </div>
@@ -105,7 +119,7 @@
       <hr>
 
       <footer>
-        <p>&copy; Company 2013</p>
+        <p>&copy; Tutor.me 2013</p>
       </footer>
 
     </div><!--/.container-->
