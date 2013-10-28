@@ -17,10 +17,10 @@ import com.avaje.ebean.ExpressionList;
 public abstract class User extends Model {
 
   // : The name of the field that could contain a reference to this user in a request object
-  private static abstract final String requestSelfFieldName;
+  private static final String requestSelfFieldName;
   
   // : The name of the field that could contain a reference to this user in a session object
-  private static abstract final String sessionSelfFieldName;
+  private static final String sessionSelfFieldName;
 
   private static final long serialVersionUID = -2547732540294543775L;
 

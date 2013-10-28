@@ -230,7 +230,7 @@ public class Session extends Model {
     NodeList list = doc.getElementsByTagName("response");
     if(list.item(0).getAttributes().getNamedItem("status").getNodeValue().equals("ok")) {
       // Success!
-      return roomId
+      return roomId;
     } else {
       // An error occured!
       return null;
