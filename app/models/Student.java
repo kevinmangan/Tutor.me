@@ -37,7 +37,7 @@ public class Student extends User {
    */
   public Request createRequest(Tutor tutor, long startTime, long endTime) {
     Request request = new Request(this, tutor, startTime, endTime);
-    request.notifyTutor(true);
+    request.notifyTutorOfRequet(tutor, request, true);
     return request;
   }
 
@@ -47,7 +47,7 @@ public class Student extends User {
    * @param request: The request to be canceled
    */
   public void cancelRequest(Request request) {
-    request.notifyTutor(false);
+    request.notifyTutorOfRequest(request.getRequestedTutor(), request, false);
     request.delete();
   }
   
