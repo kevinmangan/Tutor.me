@@ -95,7 +95,7 @@ public class Student extends User {
   }
 
   /**
-   * Rates a tutor on their performance s
+   * Rates a tutor on their performance
    * 
    * @param tutor: The tutor to rate
    * @param rating: The rating to give the tutor
