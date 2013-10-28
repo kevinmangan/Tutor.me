@@ -145,7 +145,7 @@ public class Request extends Model {
    * @param session: The session that is being created or null if
    * a new request is being made
    */
-  public void notifyTutor(Session session) {
+  public void notifyTutor(Tutor tutor, Session session) {
     // TODO
   }
 
@@ -156,7 +156,7 @@ public class Request extends Model {
    * @param session: The session that has been created for the student,
    * or null if the tutor did not approve the request 
    */
-  public void notifyStudent(Session session) {
+  public void notifyStudent(Student student, Session session) {
     // TODO
   }
 
