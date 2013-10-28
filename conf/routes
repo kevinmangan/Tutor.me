@@ -20,6 +20,9 @@ POST    /student_register            controllers.Application.studentRegister()
 # Home page
 POST    /tutor_register              controllers.Application.tutorRegister()
 
+# Just temporary while I work on layout
+GET     /search						controllers.Application.search()
+
 
 
 # Map static resources from the /public folder to the /assets URL path

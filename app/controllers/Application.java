@@ -18,4 +18,8 @@ public class Application extends Controller {
         return TODO;
     }
 
+     public static Result search() {
+        return ok(search.render("Your new application is ready."));
+    }
+
 }
