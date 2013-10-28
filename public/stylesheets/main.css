@@ -93,7 +93,7 @@ h1 {
 
 .navbar-fixed-top {
 	margin-bottom:0;
-	border-top: 4px solid #d54872;
+	border-top: 4px solid #66CCFF;
 	position: fixed;
 }
 
@@ -118,7 +118,7 @@ h1 {
 	text-shadow:none;
 	padding:20px 0 0;
 	font-family: raleway;
-	color: #fff!important;
+	color: black;
 }
 
 .navbar .nav.pull-right {
