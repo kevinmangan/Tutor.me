@@ -50,6 +50,34 @@ public class Student extends User {
     request.notifyTutor(false);
     request.delete();
   }
+  
+   /** 
+   * Finds all tutors that teach the specified subject
+   * 
+   * @param subject: The subject the student is searching for a tutor for
+   * 
+   * @return: The tutors who teach the given subject
+   */
+  public List<Tutor> searchForTutors(String subject) {
+    return searchForTutors(subject, 0, 10);
+  }
+  
+  /** 
+   * Finds all tutors that teach the specified subject
+   * 
+   * @param subject: The subject the student is searching for a tutor for
+   * @param minRating: The minimum rating a tutor can have
+   * @param maxRating: The maximum rating a tutor can have
+   * 
+   * @return: The tutors who teach the given subject, ordered by their ratings
+   */
+  public List<Tutor> searchForTutors(String subject, double minRating, double maxRating) {
+    return Tutor.find.where()
+      .contains("subjects", subject)
+      .gte("rating", minRating)
+      .lte("rating", maxnRating)
+      .orderBy("rating");
+  }
 
   /**
    * Rates a tutor on their performance s
