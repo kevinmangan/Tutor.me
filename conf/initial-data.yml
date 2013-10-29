@@ -9,6 +9,8 @@ tutors:
         name:       Kevin Mangan
         rating:     5 
         tagline:    Computer Science student at Columbia
+        costUSD:    100
+        subjects:   ["math", "history"]
 
     - !!models.Tutor
         id:         54321
@@ -17,6 +19,8 @@ tutors:
         name:       Bob Smith
         rating:     1 
         tagline:    This is the description for test user 1
+        costUSD:    2
+        subjects:   ["math"]
 
     - !!models.Tutor
         id:         348274
@@ -25,6 +29,8 @@ tutors:
         name:       Joe Something
         rating:     4 
         tagline:    This is the description for test user 2
+        costUSD:    400
+        subjects:   ["math", "physics"]
 
     - !!models.Tutor
         id:         9284992
@@ -33,3 +39,5 @@ tutors:
         name:       Jane Doe
         rating:     3
         tagline:    This is the description for test user 3
+        costUSD:    14
+        subjects:   ["physics"]
