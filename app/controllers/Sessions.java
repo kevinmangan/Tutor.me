@@ -25,10 +25,6 @@ String ApiKey = PrivateVars.SCRIBBLAR_API_KEY;
         //return ok(index.render("Your new application is ready."));
     }
 
-    public static Result xmlTest() {
-        return ok(Session.addRoom());
-    }
-
     public static Result studentRegister() {
         return TODO;
     }

@@ -48,7 +48,7 @@ public class Session extends Model {
   // The id of the scribblar room that will be used for this tutoring session
   private String scribblarId;
 
-  public Session(Student student, Tutor tutor, long startTime, long endTime) throws Exception {
+  public Session(Student student, Tutor tutor, long startTime, long endTime) {
     this.student = student;
     this.tutor = tutor;
     this.startTime = startTime;
@@ -56,7 +56,7 @@ public class Session extends Model {
     this.scribblarId = null;
     addScribblarRoom();
     if(this.scribblarId==null) {
-      throw new Exception();//Should be a SessionGenerationException
+      //throw new Exception();//Should be a SessionGenerationException
     }
     Session.create(this);
   }
