@@ -1,6 +1,6 @@
-@(message: String)
+@(tutors: List[Tutor])
 @import helper._
-@signedInStudentMain("Welcome to Tutor.me") {
+@signedInStudentMain() {
 
 
   <div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
@@ -76,22 +76,17 @@
 
           <div class="row">
           <!-- Create a col for each teacher -->
+          @for(tutor <- tutors) {
             <div class="col-6 col-sm-6 col-lg-6">
               <div class="well">
-                <h2>Tutor 1</h2>
-                <span class="glyphicon glyphicon-search"></span>
-                <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-                <p><a class="btn btn-default" href="#">View details &raquo;</a></p>
+                <h2>@tutor.getName()</h2>
+                <img alt="" src="@routes.Assets.at("images/noPic.png")">
+                <p>@tutor.getTagline() </p>
+                <div class="rateit" data-rateit-value= "@tutor.getRating()" data-rateit-ispreset="true" data-rateit-readonly="true"></div>
+                <p><a class="btn btn-default" href="#">View profile &raquo;</a></p>
               </div>
             </div><!--/col-->
-            <div class="col-6 col-sm-6 col-lg-6">
-              <div class="well">
-                <h2>Tutor 2</h2>
-                <span class="glyphicon glyphicon-search"></span>
-                <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-                <p><a class="btn btn-default" href="#">View details &raquo;</a></p>
-              </div>
-            </div><!--/col-->
+            }
           </div><!--/row-->
         
 
