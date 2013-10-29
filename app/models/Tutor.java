@@ -27,8 +27,7 @@ public class Tutor extends User {
     find.ref(id).delete();
   }
 
-  // Name of the tutor
-  private String name;
+
 
   // The rating of this tutor
   private double rating;
@@ -48,19 +47,7 @@ public class Tutor extends User {
   //The cost in U.S. dollars of a single session with this tutor
   private double costUSD;
 
-  /**
-   * @return the name
-   */
-  public String getName() {
-    return name;
-  }
-
-  /**
-   * @param the name to set
-   */
-  public void setName(String name) {
-    this.name = name;
-  }
+  
 
   /**
    * @return the rating

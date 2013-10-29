@@ -20,7 +20,7 @@ public class Sessions extends Controller {
 String ApiKey = PrivateVars.SCRIBBLAR_API_KEY;
 
     public static Result launchSession(String chatRoomId, String userScribblarId) {
-    	return ok(chatroom.render("This is the page title for the chatroom.", charRoomId, userScribblarId));
+    	return ok(chatroom.render("This is the page title for the chatroom.", chatRoomId, userScribblarId));
     	//return ok(""+chatRoomId);
         //return ok(index.render("Your new application is ready."));
     }

@@ -1,5 +1,6 @@
 package controllers;
-
+import play.data.DynamicForm;
+import java.util.*;
 import models.*;
 import static play.data.Form.*;
 import play.mvc.Controller;
@@ -9,19 +10,19 @@ import views.html.search;
 public class Search extends Controller {
 
 	public static Result search() {
-		List<tutor> tutors = NULL;
+		List<Tutor> tutors = null;
         return ok(search.render(tutors));
     }
 
     public static Result submit() {
     	// make new student and call find tutor
-    	Student student = new Student;
-    	DynamicForm requestData = form.bindFromRequest();
+
+    	DynamicForm requestData = form().bindFromRequest();
     	String subject = requestData.get("subject");
-    	double minCost = requestData.get("minCost");
-    	double maxCost = requestData.get("maxCost");
-    	double minRating = requestData.get("minRating");
-		List<tutor> tutors = student.searchForTutors(subject, minCost, maxCost, minRating);
+    	double minCost = Double.parseDouble(requestData.get("minCost"));
+    	double maxCost = Double.parseDouble(requestData.get("maxCost"));
+    	double minRating = Double.parseDouble(requestData.get("minRating"));
+		List<Tutor> tutors = Student.searchForTutors(subject, minCost, maxCost, minRating);
         return ok(search.render(tutors));
     }
 
