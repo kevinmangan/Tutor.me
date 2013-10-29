@@ -1,10 +1,14 @@
 package models;
 
+import play.*;
 import java.util.List;
+import com.avaje.ebean.*;
+import javax.persistence.*;
 
 /**
  * Represents a Tutor.me tutor
  */
+@Entity
 public class Tutor extends User {
 
   private static final String requestSelfFieldName = "requestedTutor";

@@ -10,8 +10,8 @@ import views.html.search;
 public class Search extends Controller {
 
 	public static Result search() {
-		List<Tutor> tutors = null;
-        return ok(search.render(tutors));
+		List<Tutor> emptyList = Collections.<Tutor>emptyList();
+        return ok(search.render(emptyList));
     }
 
     public static Result submit() {

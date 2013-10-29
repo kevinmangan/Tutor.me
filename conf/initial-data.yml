@@ -1,0 +1,35 @@
+# Tutors
+
+tutors:
+
+    - !!models.Tutor
+        id:         12345
+        username:   kmm2256
+        email:      kmm2256@columbia.edu
+        name:       Kevin Mangan
+        rating:     5 
+        tagline:    Computer Science student at Columbia
+
+    - !!models.Tutor
+        id:         54321
+        username:   testuser1
+        email:      test1@columbia.edu
+        name:       Bob Smith
+        rating:     1 
+        tagline:    This is the description for test user 1
+
+    - !!models.Tutor
+        id:         348274
+        username:   testuser2
+        email:      test2@columbia.edu
+        name:       Joe Something
+        rating:     4 
+        tagline:    This is the description for test user 2
+
+    - !!models.Tutor
+        id:         9284992
+        username:   testuser3
+        email:      test3@columbia.edu
+        name:       Jane Doe
+        rating:     3
+        tagline:    This is the description for test user 3

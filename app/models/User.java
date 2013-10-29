@@ -2,8 +2,8 @@ package models;
 
 import java.util.List;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+
+import javax.persistence.*;
 
 import org.joda.time.DateTime;
 
@@ -14,6 +14,7 @@ import com.avaje.ebean.ExpressionList;
 /**
  * Represents a user of Tutor.me
  */
+@MappedSuperclass
 public abstract class User extends Model {
 
   // : The name of the field that could contain a reference to this user in a request object
