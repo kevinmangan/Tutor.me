@@ -141,19 +141,17 @@ public class Request extends Model {
   /**
    * Notifies a tutor that a request has been created or canceled
    * 
-   * @param request: The created or cancelled request
    * @param created: True if this is a new request, false otherwise
    */
-  public void notifyTutorOfRequest(Request request, boolean created) {
+  public void notifyTutorOfRequest(boolean created) {
     // TODO
   }
 
   /**
    * Notifies a student of a cancelled request
    * 
-   * @param request: The cancelled request
    */
-  public void notifyStudentOfCancellation(Request request) {
+  public void notifyStudentOfCancellation() {
     // TODO
   }
 
@@ -162,7 +160,7 @@ public class Request extends Model {
    * 
    * @param session: The upcooming session
    */
-  public void sendSessionNotificaitons(Session session) {
+  public void sendSessionNotifications(Session session) {
     // TODO
   }
 

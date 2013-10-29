@@ -157,7 +157,7 @@ public class Tutor extends User {
       Session session = request.generateSession();
       request.sendSessionNotifications(session);
     } else {
-      request.notifyStudentOfCancellation(this);
+      request.notifyStudentOfCancellation();
     }
     request.delete();
   }

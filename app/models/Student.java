@@ -2,6 +2,8 @@ package models;
 
 import java.util.List;
 
+import com.avaje.ebean.Query;
+
 /**
  * Represents a Tutor.me student
  */
@@ -37,7 +39,7 @@ public class Student extends User {
    */
   public Request createRequest(Tutor tutor, long startTime, long endTime) {
     Request request = new Request(this, tutor, startTime, endTime);
-    request.notifyTutorOfRequet(tutor, request, true);
+    request.notifyTutorOfRequest(true);
     return request;
   }
 
@@ -47,7 +49,7 @@ public class Student extends User {
    * @param request: The request to be canceled
    */
   public void cancelRequest(Request request) {
-    request.notifyTutorOfRequest(request.getRequestedTutor(), request, false);
+    request.notifyTutorOfRequest(false);
     request.delete();
   }
   
@@ -58,8 +60,8 @@ public class Student extends User {
    * 
    * @return: The tutors who teach the given subject
    */
-  public static List<Tutor> searchForTutors(String subject) {
-    return searchForTutors(subject, 0, Double.MaxValue);
+  public List<Tutor> searchForTutors(String subject) {
+    return searchForTutors(subject, 0, Double.MAX_VALUE);
   }
   
    /** 
@@ -71,8 +73,8 @@ public class Student extends User {
    * 
    * @return: The tutors who teach the given subject, ordered by their cost
    */
-  public static List<Tutor> searchForTutors(String subject, double minCost, double maxCost) {
-    searchForTutors(subject, minCost, maxCost, Double.MaxValue);
+  public List<Tutor> searchForTutors(String subject, double minCost, double maxCost) {
+    return searchForTutors(subject, minCost, maxCost, Double.MAX_VALUE);
   }
   
   /** 
@@ -86,11 +88,11 @@ public class Student extends User {
    * @return: The tutors who teach the given subject, ordered by their ratings
    */
   public static List<Tutor> searchForTutors(String subject, double minCost, double maxCost, double minRating) {
-    ExpressionList<Tutor> tutorResults = Tutor.find.where()
+    Query<Tutor> tutorResults = Tutor.find.where()
       .contains("subjects", subject)
-      .gte("costUSD", minCost)
-      .lte("costUSD", maxCost)
-      .gte("rating", minRating)
+      .ge("costUSD", new Double(minCost))
+      .le("costUSD", new Double(maxCost))
+      .ge("rating", minRating)
       .orderBy("rating");
     return tutorResults.findList();
   }
