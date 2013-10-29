@@ -58,7 +58,7 @@ public class Student extends User {
    * 
    * @return: The tutors who teach the given subject
    */
-  public List<Tutor> searchForTutors(String subject) {
+  public static List<Tutor> searchForTutors(String subject) {
     return searchForTutors(subject, 0, Double.MaxValue);
   }
   
@@ -71,7 +71,7 @@ public class Student extends User {
    * 
    * @return: The tutors who teach the given subject, ordered by their cost
    */
-  public List<Tutor> searchForTutors(String subject, double minCost, double maxCost) {
+  public static List<Tutor> searchForTutors(String subject, double minCost, double maxCost) {
     searchForTutors(subject, minCost, maxCost, Double.MaxValue);
   }
   
@@ -85,13 +85,14 @@ public class Student extends User {
    * 
    * @return: The tutors who teach the given subject, ordered by their ratings
    */
-  public List<Tutor> searchForTutors(String subject, double minCost, double maxCost, double minRating) {
-    return Tutor.find.where()
+  public static List<Tutor> searchForTutors(String subject, double minCost, double maxCost, double minRating) {
+    ExpressionList<Tutor> tutorResults = Tutor.find.where()
       .contains("subjects", subject)
       .gte("costUSD", minCost)
       .lte("costUSD", maxCost)
       .gte("rating", minRating)
       .orderBy("rating");
+    return tutorResults.findList();
   }
 
   /**
