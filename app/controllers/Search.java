@@ -19,10 +19,12 @@ public class Search extends Controller {
 
     	DynamicForm requestData = form().bindFromRequest();
     	String subject = requestData.get("subject");
-    	double minCost = Double.parseDouble(requestData.get("minCost"));
-    	double maxCost = Double.parseDouble(requestData.get("maxCost"));
-    	double minRating = Double.parseDouble(requestData.get("minRating"));
-		List<Tutor> tutors = Student.searchForTutors(subject, minCost, maxCost, minRating);
+    	//String minCost = requestData.get("minCost");
+    	//double newmin = Double.parseDouble(minCost);
+    	//double maxCost = Double.parseDouble(requestData.get("maxCost"));
+    	//double minRating = Double.parseDouble(requestData.get("minRating"));
+		//List<Tutor> tutors = Student.searchForTutors(subject, newmin, maxCost, minRating);
+    	List<Tutor> tutors = Student.searchForTutors("math", 1, 1000, 3);
         return ok(search.render(tutors));
     }
 

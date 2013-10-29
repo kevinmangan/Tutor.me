@@ -80,8 +80,12 @@
             <div class="col-6 col-sm-6 col-lg-6">
               <div class="well">
                 <h2>@tutor.getName()</h2>
-                <img alt="" src="@routes.Assets.at("images/noPic.png")">
-                <p>@tutor.getTagline() </p>
+                <img alt="" style="border:1px solid black" height="100" width="100" src="@routes.Assets.at("images/noPic.png")"> <br><br>
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    <p>@tutor.getTagline() </p>
+                  </div>
+                </div>
                 <div class="rateit" data-rateit-value= "@tutor.getRating()" data-rateit-ispreset="true" data-rateit-readonly="true"></div>
                 <p><a class="btn btn-default" href="#">View profile &raquo;</a></p>
               </div>

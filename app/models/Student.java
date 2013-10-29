@@ -89,7 +89,7 @@ public class Student extends User {
    */
   public static List<Tutor> searchForTutors(String subject, double minCost, double maxCost, double minRating) {
     Query<Tutor> tutorResults = Tutor.find.where()
-      .contains("subjects", subject)
+      //.contains("subjects", subject)
       .ge("costUSD", new Double(minCost))
       .le("costUSD", new Double(maxCost))
       .ge("rating", minRating)
