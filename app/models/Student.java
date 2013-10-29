@@ -9,8 +9,8 @@ import com.avaje.ebean.Query;
  */
 public class Student extends User {
 
-  private static final String requestSelfFieldName = "requestingStudent";
-  private static final String sessionSelfFieldName = "student";
+  protected static final String requestSelfFieldName = "requestingStudent";
+  protected static final String sessionSelfFieldName = "student";
 
   private static final long serialVersionUID = -6347603101193360297L;
 
@@ -52,8 +52,8 @@ public class Student extends User {
     request.notifyTutorOfRequest(false);
     request.delete();
   }
-  
-   /** 
+
+  /**
    * Finds all tutors that teach the specified subject
    * 
    * @param subject: The subject the student is searching for a tutor for
@@ -63,8 +63,8 @@ public class Student extends User {
   public List<Tutor> searchForTutors(String subject) {
     return searchForTutors(subject, 0, Double.MAX_VALUE);
   }
-  
-   /** 
+
+  /**
    * Finds all tutors that teach the specified subject
    * 
    * @param subject: The subject the student is searching for a tutor for
@@ -76,8 +76,8 @@ public class Student extends User {
   public List<Tutor> searchForTutors(String subject, double minCost, double maxCost) {
     return searchForTutors(subject, minCost, maxCost, Double.MAX_VALUE);
   }
-  
-  /** 
+
+  /**
    * Finds all tutors that teach the specified subject
    * 
    * @param subject: The subject the student is searching for a tutor for
@@ -89,11 +89,9 @@ public class Student extends User {
    */
   public static List<Tutor> searchForTutors(String subject, double minCost, double maxCost, double minRating) {
     Query<Tutor> tutorResults = Tutor.find.where()
-      //.contains("subjects", subject)
-      .ge("costUSD", new Double(minCost))
-      .le("costUSD", new Double(maxCost))
-      .ge("rating", minRating)
-      .orderBy("rating");
+        .contains("subjectsCSV", subject).ge("costUSD", new Double(minCost))
+        .le("costUSD", new Double(maxCost)).ge("rating", minRating)
+        .orderBy("rating");
     return tutorResults.findList();
   }
 
