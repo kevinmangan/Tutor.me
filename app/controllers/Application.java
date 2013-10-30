@@ -24,12 +24,12 @@ public class Application extends Controller {
 
     public static Result mailTest() {
       MailerAPI mail = play.Play.application().plugin(MailerPlugin.class).email();
-      mail.setSubject("Tutor.me");
-      //mail.setRecipient("some display name <sometoadd@email.com>");
-      //mail.setRecipient("Daniel Alexander Perlmutter <dap2163@columbia.edu>", "Jose Daniel Contreras <jdc2168@columbia.edu>"/*, "Joaquín Ruales <jar2262@columbia.edu>", "Kevin Michael Mangan <kmm2256@columbia.edu>"*/);
-      //mail.setFrom("Tutor.me <jar2262@columbia.edu>");
+      mail.setSubject("Tutor.me Mailer Test");
+      //mail.addRecipient("some display name <sometoadd@email.com>");
+      mail.addRecipient("Daniel Alexander Perlmutter <dap2163@columbia.edu>", "Jose Daniel Contreras <jdc2168@columbia.edu>", "Joaquín Ruales <jar2262@columbia.edu>", "Kevin Michael Mangan <kmm2256@columbia.edu>");
+      mail.addFrom("Tutor.me Mailer <tutor.me.mailer@gmail.com>");
       //sends html
-      mail.sendHtml("<html>Welcome to Tutor.me!</html>" );
+      mail.sendHtml("<html>Welcome to Tutor.me!<br/>This is tutorme's friendly email robot.</html>" );
       
       //sends text/text
       //mail.send( "text" );
