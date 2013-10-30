@@ -12,6 +12,7 @@ create table tutor (
   num_raters                integer,
   description               varchar(255),
   tagline                   varchar(255),
+  subjects_csv              varchar(255),
   cost_usd                  double,
   constraint pk_tutor primary key (id))
 ;

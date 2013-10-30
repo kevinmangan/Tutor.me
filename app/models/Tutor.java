@@ -1,9 +1,10 @@
 package models;
 
-import play.*;
 import java.util.List;
-import com.avaje.ebean.*;
-import javax.persistence.*;
+
+import javax.persistence.Entity;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Represents a Tutor.me tutor
@@ -11,8 +12,8 @@ import javax.persistence.*;
 @Entity
 public class Tutor extends User {
 
-  private static final String requestSelfFieldName = "requestedTutor";
-  private static final String sessionSelfFieldName = "tutor";
+  protected static final String requestSelfFieldName = "requestedTutor";
+  protected static final String sessionSelfFieldName = "tutor";
 
   private static final long serialVersionUID = 7353992572780743627L;
 
@@ -31,8 +32,6 @@ public class Tutor extends User {
     find.ref(id).delete();
   }
 
-
-
   // The rating of this tutor
   private double rating;
 
@@ -48,10 +47,12 @@ public class Tutor extends User {
   // A list of the subjects the tutor teaches
   private List<String> subjects;
 
+  // A csv list of the subjects the tutor teaches
+  @SuppressWarnings("unused")
+  private String subjectsCSV;
+
   //The cost in U.S. dollars of a single session with this tutor
   private double costUSD;
-
-  
 
   /**
    * @return the rating
@@ -120,6 +121,7 @@ public class Tutor extends User {
    * @param subjects the subjects to set
    */
   public void setSubjects(List<String> subjects) {
+    subjectsCSV = StringUtils.join(subjects, ",");
     this.subjects = subjects;
   }
 

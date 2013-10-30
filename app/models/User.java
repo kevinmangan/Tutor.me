@@ -2,8 +2,9 @@ package models;
 
 import java.util.List;
 
-
-import javax.persistence.*;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
 import org.joda.time.DateTime;
 
@@ -17,11 +18,13 @@ import com.avaje.ebean.ExpressionList;
 @MappedSuperclass
 public abstract class User extends Model {
 
-  // : The name of the field that could contain a reference to this user in a request object
-  private static String requestSelfFieldName;
-  
-  // : The name of the field that could contain a reference to this user in a session object
-  private static String sessionSelfFieldName;
+  // The name of the field that could contain a reference to this user in a
+  // request object
+  protected static String requestSelfFieldName;
+
+  // The name of the field that could contain a reference to this user in a
+  // session object
+  protected static String sessionSelfFieldName;
 
   private static final long serialVersionUID = -2547732540294543775L;
 
@@ -125,7 +128,7 @@ public abstract class User extends Model {
   public List<Session> getCurrentSessions(String selfFieldName) {
     ExpressionList<Session> completedSessionResults = Session.find.where()
     .eq(sessionSelfFieldName, this).le("startTime", DateTime.now())
-        .ge("endTime", DateTime.now());
+    .ge("endTime", DateTime.now());
     return completedSessionResults.findList();
   }
 
