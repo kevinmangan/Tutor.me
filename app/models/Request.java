@@ -153,12 +153,12 @@ public class Request extends Model {
   public void sendRequestNotification() {
     String emailSubject = "New Tutor Request";
     String emailRecipient = requestedTutor.getName() + "<"
-    + requestedTutor.getEmail() + ">";
+        + requestedTutor.getEmail() + ">";
     String emailHtml = "Hi, "
-      + requestedTutor.getName()
-      + "<br /><br />You have a new tutoring request. To review it, please log in to your account at <a href=\""
-      + Play.application().path() + "\">" + Play.application().path()
-      + "</a>.";
+        + requestedTutor.getName()
+        + "<br /><br />You have a new tutoring request. To review it, please log in to your account at <a href=\""
+        + Play.application().path() + "\">" + Play.application().path()
+        + "</a>.";
     Application.sendEmail(emailSubject, emailRecipient, emailHtml);
   }
 
