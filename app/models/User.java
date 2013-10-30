@@ -12,6 +12,8 @@ import play.db.ebean.Model;
 
 import com.avaje.ebean.ExpressionList;
 
+import models.Scribblar;
+
 /**
  * Represents a user of Tutor.me
  */
@@ -40,6 +42,9 @@ public abstract class User extends Model {
 
   // The full name of this user
   private String name;
+
+  // The id of the scribblar user corresponding to this user
+  private String scribblarId;
 
   public static Finder<Long, User> find = new Finder<Long, User>(Long.class,
       User.class);
@@ -100,6 +105,22 @@ public abstract class User extends Model {
    */
   public void setName(String name) {
     this.name = name;
+  }
+
+  /**
+   * @return the scribblarId
+   */
+  public String getScribblarId() {
+    if(scribblarId == null) {
+      setScribblarId();
+    }
+    return scribblarId;
+  }
+  public boolean setScribblarId() {
+    if(scribblarId == null) {
+      scribblarId = Scribblar.addScribblarUser(this);
+    }
+    return scribblarId != null;
   }
 
   /**

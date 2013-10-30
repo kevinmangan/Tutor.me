@@ -8,6 +8,7 @@ create table tutor (
   username                  varchar(255),
   email                     varchar(255),
   name                      varchar(255),
+  scribblar_id              varchar(255),
   rating                    double,
   num_raters                integer,
   description               varchar(255),

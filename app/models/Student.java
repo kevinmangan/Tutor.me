@@ -39,7 +39,7 @@ public class Student extends User {
    */
   public Request createRequest(Tutor tutor, long startTime, long endTime) {
     Request request = new Request(this, tutor, startTime, endTime);
-    request.notifyTutorOfRequest(true);
+    request.sendRequestNotification();
     return request;
   }
 
@@ -49,7 +49,7 @@ public class Student extends User {
    * @param request: The request to be canceled
    */
   public void cancelRequest(Request request) {
-    request.notifyTutorOfRequest(false);
+    request.sendCancellationNotification(false);
     request.delete();
   }
 
@@ -89,9 +89,9 @@ public class Student extends User {
    */
   public static List<Tutor> searchForTutors(String subject, double minCost, double maxCost, double minRating) {
     Query<Tutor> tutorResults = Tutor.find.where()
-        .contains("subjectsCSV", subject).ge("costUSD", new Double(minCost))
-        .le("costUSD", new Double(maxCost)).ge("rating", minRating)
-        .orderBy("rating");
+    .contains("subjectsCSV", subject).ge("costUSD", new Double(minCost))
+    .le("costUSD", new Double(maxCost)).ge("rating", minRating)
+    .orderBy("rating");
     return tutorResults.findList();
   }
 

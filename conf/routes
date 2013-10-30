@@ -12,7 +12,6 @@ GET     /                                          controllers.Application.index
 # GET     /logout                                  controllers.Application.logout()
 
 GET     /classroom/:chatRoomId/:userScribblarId    controllers.Sessions.launchSession(chatRoomId: String, userScribblarId)
-GET     /mailtest                                  controllers.Application.mailTest()
 
 # Student Register
 POST    /student_register                          controllers.Application.studentRegister()
