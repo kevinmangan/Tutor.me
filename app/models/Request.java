@@ -1,6 +1,7 @@
 package models;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -152,6 +153,10 @@ public class Request extends Model {
    */
   public void notifyTutorOfRequest(boolean created) {
     // TODO
+    String emailSubject = "New Tutor Request";
+    String emailRecipient = requestedTutor.getEmail();
+    String emailHtml = "Hi, " + requestedTutor.getName() + "<br /><br />You have a new tutoring request. To review it, please log in to your account at <a href=\"" + Play.application().path() + "\">"+Play.application().path()+"</a>.";
+    Application.sendEmail(emailSubject, emailRecipient, emailHtml);
   }
 
   /**
@@ -195,9 +200,9 @@ public class Request extends Model {
         + "</hmtl>";
     String studentEmailHtml = "<hmtl>" + emailText + "<br/>" + studentLink
         + "</hmtl>";
-    Application.sendMail(sessionNotificationSubject, tutorRecipient,
+    Application.sendEmail(sessionNotificationSubject, tutorRecipient,
         tutorEmailHtml);
-    Application.sendMail(sessionNotificationSubject, studentRecipient,
+    Application.sendEmail(sessionNotificationSubject, studentRecipient,
         studentEmailHtml);
   }
 
