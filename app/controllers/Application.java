@@ -6,6 +6,7 @@ import java.util.List;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.index;
+import com.typesafe.plugin.*;
 
 import com.typesafe.plugin.MailerAPI;
 import com.typesafe.plugin.MailerPlugin;
