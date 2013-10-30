@@ -19,7 +19,6 @@ public class Application extends Controller {
     }
 
     public static Result mailTest() {
-      /*
       MailerAPI mail = play.Play.application().plugin(MailerPlugin.class).email();
       mail.setSubject("Tutor.me Mailer Test");
       //mail.addRecipient("some display name <sometoadd@email.com>");
@@ -34,7 +33,6 @@ public class Application extends Controller {
       //mail.send( "text", "<html>html</html>");
       
       return ok("Email sent!");
-      */
     }
 
 }
