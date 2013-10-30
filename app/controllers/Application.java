@@ -3,6 +3,7 @@ package controllers;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.index;
+import com.typesafe.plugin.*;
 
 public class Application extends Controller {
 

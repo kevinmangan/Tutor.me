@@ -56,6 +56,9 @@ public class Request extends Model {
   public static Finder<Long, Request> find = new Finder<Long, Request>(
       Long.class, Request.class);
 
+  /**
+  * @return the list of all requests
+  */
   public static List<Request> all() {
     return find.all();
   }
