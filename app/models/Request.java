@@ -5,8 +5,12 @@ import java.util.List;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import org.joda.time.DateTime;
+
+import play.Play;
 import play.data.validation.Constraints.Required;
 import play.db.ebean.Model;
+import controllers.Application;
 
 /**
  * Represents a request for a tutoring session
@@ -148,7 +152,7 @@ public class Request extends Model {
   }
 
   /**
-   * Notifies a student of a cancelled request
+   * Notifies a student of a canceled request
    * 
    */
   public void notifyStudentOfCancellation() {
@@ -158,10 +162,40 @@ public class Request extends Model {
   /**
    * Notifies a student and tutor of an upcoming sesssion
    * 
-   * @param session: The upcooming session
+   * @param session: The upcoming session
    */
   public void sendSessionNotifications(Session session) {
-    // TODO
+    String sessionNotificationSubject = "New Tutor.me Session";
+    Tutor sessionTutor = session.getTutor();
+    String tutorRecipient = sessionTutor.getName() + " <"
+        + sessionTutor.getEmail() + ">";
+    Student sessionStudent = session.getStudent();
+    String studentRecipient = sessionStudent.getName() + " <"
+        + sessionStudent.getEmail() + ">";
+    DateTime startTimeDate = new DateTime(session.getStartTime());
+    String startTimeString = startTimeDate.toGregorianCalendar().toString();
+    DateTime endTimeDate = new DateTime(session.getEndTime());
+    String endTimeString = endTimeDate.toGregorianCalendar().toString();
+    String emailText = 
+          "  You have been signed up for a Tutor.Me session! <br/>"
+        + "  Your session is from"
+        + startTimeString
+        + " to "
+        + endTimeString
+        + "<br/>"
+        + "  Please use the following link to access your session at the specified time: ";
+    String tutorLink = Play.application().path() + "/"
+        + session.getScribblarId() + "/" + sessionTutor.getScribblarId();
+    String studentLink = Play.application().path() + "/"
+        + session.getScribblarId() + "/" + sessionStudent.getScribblarId();
+    String tutorEmailHtml = "<hmtl>" + emailText + "<br/>" + tutorLink
+        + "</hmtl>";
+    String studentEmailHtml = "<hmtl>" + emailText + "<br/>" + studentLink
+        + "</hmtl>";
+    Application.sendMail(sessionNotificationSubject, tutorRecipient,
+        tutorEmailHtml);
+    Application.sendMail(sessionNotificationSubject, studentRecipient,
+        studentEmailHtml);
   }
 
   public Session generateSession() {
