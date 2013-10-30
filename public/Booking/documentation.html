@@ -1,0 +1,680 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Booking Calendar PRO (jQuery Plugin)</title>
+
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+        <link rel="stylesheet" type="text/css" href="http://envato-help.dotonpaper.net/assets/gui/css/style.css" />
+        <link href='http://fonts.googleapis.com/css?family=Antic+Didone|Sintony' rel='stylesheet' type='text/css' />
+        <link rel="shortcut icon" href="http://envato-help.dotonpaper.net/assets/gui/images/icon.ico" />
+
+        <script type="text/JavaScript" src="http://code.jquery.com/jquery-latest.js"></script>
+        <script type="text/JavaScript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.0/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="http://envato-help.dotonpaper.net/libraries/js/syntax-highlighter/shCore.js"></script>
+	<script type="text/javascript" src="http://envato-help.dotonpaper.net/libraries/js/syntax-highlighter/shBrushCss.js"></script>
+	<script type="text/javascript" src="http://envato-help.dotonpaper.net/libraries/js/syntax-highlighter/shBrushJScript.js"></script>
+	<script type="text/javascript" src="http://envato-help.dotonpaper.net/libraries/js/syntax-highlighter/shBrushPhp.js"></script>
+	<script type="text/javascript" src="http://envato-help.dotonpaper.net/libraries/js/syntax-highlighter/shBrushSql.js"></script>
+	<script type="text/javascript" src="http://envato-help.dotonpaper.net/libraries/js/syntax-highlighter/shBrushXml.js"></script>
+        <script type="text/Javascript" src="http://envato-help.dotonpaper.net/assets/js/main.js"></script>
+    </head>
+    <body>
+        <div id="wrapper">
+            <div id="sidebar">
+                <a href="javascript:toggleMenu()" id="menu-button">
+                    <span class="icon hide"></span>
+                </a>
+                <ul id="menu">
+                    <li>
+                        <a href="#getting-started">Getting Started</a>
+                    </li>
+                    <li>
+                    	<a href="#licence">Licence</a>
+                    </li>
+                    <li>
+                        <a href="#how-to-use-it">How to use/install it</a>
+                    </li>
+                    <li>
+                        <a href="#integration-json-database-structure">Integration & JSON/Database structure</a>
+                    </li>
+                    <li>
+                        <a href="#how-to-customize-it">How to customize it</a>
+                    </li>
+                    <li>
+                        <a href="#faq">FAQ</a>
+                    </li>
+                    <li>
+                    	<a href="#how-to-update">How to update</a>
+                    </li>
+                    <li>
+                    	<a href="#changelog">Changelog</a>
+                    </li>
+                    <li>
+                        <a href="#support">Support</a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div id="content">
+            	<h1>
+                    Booking Calendar PRO<br />
+                    jQuery Plugin
+                </h1>
+                
+                <section id="getting-started">
+                    <h2>Getting Started</h2>
+                    <p>
+                        This item is ideal if you want to add information about bookings to your rentals website. The Back End is easy to use and can be easily integrated into your own CMS as the Front End can be easily integrated into your website. Both Back End and Front End can be customized separately, and the number of usages on your webpage or website is unlimited.
+                    </p>
+                    <p>
+                        The Calendar comes with a PHP script, but any server side script can be used to load or to save data from any database.
+                    </p>
+                    <p>
+                        The Booking Calendar is compatible with all browsers and devices (iPhone, iPad and Android smartphones).
+                    </p>
+                    <p>
+                        If you like this plugin, feel free to rate it five stars
+                        &nbsp;<img alt="" class="star" src="http://2.envato-static.com/assets/common/icons-buttons/rating/star-on-24a8d2589eca9f34bc2ff72a59bd9af7.png" />
+                        <img alt="" class="star" src="http://2.envato-static.com/assets/common/icons-buttons/rating/star-on-24a8d2589eca9f34bc2ff72a59bd9af7.png" />
+                        <img alt="" class="star" src="http://2.envato-static.com/assets/common/icons-buttons/rating/star-on-24a8d2589eca9f34bc2ff72a59bd9af7.png" />
+                        <img alt="" class="star" src="http://2.envato-static.com/assets/common/icons-buttons/rating/star-on-24a8d2589eca9f34bc2ff72a59bd9af7.png" />
+                        <img alt="" class="star" src="http://2.envato-static.com/assets/common/icons-buttons/rating/star-on-24a8d2589eca9f34bc2ff72a59bd9af7.png" />&nbsp;
+                        at your <a href="http://codecanyon.net/?ref=DOTonPAPER" target="_blank">CodeCanyon</a> account in <strong>Downloads</strong> section.
+                        If you encounter any problems, before rating the item, <a href="http://envato-support.dotonpaper.net/" target="_blank">contact us</a> so we can help you fix them.
+                    </p>
+                </section>
+
+                <section id="licence">
+                    <h2>Licence</h2>
+                    <p>
+                        This item is sold under <a href="http://themeforest.net/licenses" target="_blank">Envato Licences</a>. Please read them and contact <a href="http://support.envato.com/" target="_blank">Envato Support</a> if you have any questions.
+                    </p>
+                </section>
+
+                <section id="how-to-use-it">
+                    <h2>How to use/install it</h2>
+                    
+                    <p>
+                        <strong>Note:</strong> For this to work, because of Access-Control-Allow-Origin, you need to use it on a web/localhost server.
+                    </p>
+
+                    In <strong>sources/index.html</strong> you have an example:
+                    <br /><br />
+                    1. Copy the folder <strong>dopbcp</strong> somewhere on your server (preferably in the same folder with the page you want to add the calendar to).
+                    <br /><br />
+                    2. Add the following <strong>CSS</strong> and <strong>JS</strong> files in the <strong>&lt;head&gt;&lt;/head&gt;</strong> section of your website:
+                    <br /><br />
+                    <script type="syntaxhighlighter" class="brush: xml; toolbar: false;">
+                        <![CDATA[                            
+                            dopbcp/assets/gui/css/jquery.dop.BackendBookingCalendarPRO.css
+                            dopbcp/assets/gui/css/jquery.dop.FrontendBookingCalendarPRO.css
+
+                            http://code.jquery.com/jquery-latest.js
+                            dopbcp/assets/js/jquery.dop.BackendBookingCalendarPRO.js
+                            dopbcp/assets/js/jquery.dop.FrontendBookingCalendarPRO.js
+                        ]]>
+                    </script>
+                    <br />
+                    <strong>Note</strong>: The files can be anywhere on your server or web. Just make sure that they are loaded by your web page.
+                    <br />
+                        
+                    <h3>Back End Verision</h3>
+                    Add the plugin to a container (HTML tag, class or id).
+                    <br /><br />
+                    <strong>Example:</strong>
+                    <br />
+                    <script type="syntaxhighlighter" class="brush: js; toolbar: false;">
+                        <![CDATA[
+                            $('#backend').DOPBackendBookingCalendarPRO();
+                        ]]>
+                    </script>
+                    <br />
+                    <p>
+                        You can add the following options to the back end version of the plugin:
+                    </p>
+                    <ul class="settings">
+                        <li>
+                            <div class="property">AddtMonthViewText</div>
+                            <div class="info">Default value: 'Add Month View'.<br />Add Month View button title (plus icon).</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">AvailableDays</div>
+                            <div class="info">Default value: [true, true, true, true, true, true, true].<br />Set available/unavailable days starting with Monday.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">AvailableLabel</div>
+                            <div class="info">Default value: 'No. Available'.<br />Form label for Number of Available Items.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">AvailableOneText</div>
+                            <div class="info">Default value: 'available'.<br />Available Day text for one item.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">AvailableText</div>
+                            <div class="info">Default value: 'available'.<br />Available text for more items.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">BookedText</div>
+                            <div class="info">Default value: 'booked'.<br />Booked Day text.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">CloseLabel</div>
+                            <div class="info">Default value: 'Close'.<br />Form label for Close button.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">Currency</div>
+                            <div class="info">Default value: '$'.<br />Currency icon.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">DataURL</div>
+                            <div class="info">Default value: 'dopbcp/php-file/load.php'.<br />URL from were JSON data is loaded.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">DateEndLabel</div>
+                            <div class="info">Default value: 'End Date'.<br />Form label for End Date.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">DateStartLabel</div>
+                            <div class="info">Default value: 'Start Date'.<br />Form label for Start Date.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">DateType</div>
+                            <div class="info">Default value: 1.<br />Form date display type (1 = American, 2 = European)</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">DayNames</div>
+                            <div class="info">Default value: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].<br />Weekdays long names.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">DayShortNames</div>
+                            <div class="info">Default value: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].<br />Weekdays short names.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">FirstDay</div>
+                            <div class="info">Default value: 1.<br />Set the first day of the week (1 = Monday, 2 = Tuesday, 3 = Wednesday, 4 = Thursday, 5 = Friday, 6 = Saturday, 7 = Sunday)</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">GroupDaysLabel</div>
+                            <div class="info">Default value: 'Group Days'.<br />Form label for Group Days checkbox.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">ID</div>
+                            <div class="info">Default value: 0.<br />Calendar ID. Change it if you have more then one calendar. Make it the same as the Front End version.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">InfoLabel</div>
+                            <div class="info">Default value: 'Information (users will see this message)'.<br />Form label for Information field.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">MonthNames</div>
+                            <div class="info">Default value: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].<br />Months long names.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">MonthShortNames</div>
+                            <div class="info">Default value: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].<br />Months short names.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">NextMonthText</div>
+                            <div class="info">Default value: 'Next Month'.<br />Next Month button title.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">NotesLabel</div>
+                            <div class="info">Default value: 'Notes (only you will see this message)'.<br />Form label for Notes field.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">PreviousMonthText</div>
+                            <div class="info">Default value: 'Previous Month'.<br />Previous Month button title.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">PriceLabel</div>
+                            <div class="info">Default value: 'Price'.<br />Form label for Price Field.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">PromoLabel</div>
+                            <div class="info">Default value: 'Promo Price'.<br />Form label for Promo Price field.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">Reinitialize</div>
+                            <div class="info">Default value: false.<br />Reinitialize the calendar if already loaded.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">RemoveMonthViewText</div>
+                            <div class="info">Default value: 'Remove Month View'.<br />Remove Month View button title (minus icon).</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">ResetConfirmation</div>
+                            <div class="info">Default value: 'Are you sure you want to reset data?'.<br />Form Reset Confirmation text.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">ResetLabel</div>
+                            <div class="info">Default value: 'Reset'.<br />Form label for Reset Button.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">SaveURL</div>
+                            <div class="info">Default value: 'dopbcp/php-file/save.php'.<br />URL to were JSON data is saved.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">StatusAvailableText</div>
+                            <div class="info">Default value: 'Available'.<br />Form Status - Available text.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">StatusBookedText</div>
+                            <div class="info">Default value: 'Booked'.<br />Form Status - Booked text.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">StatusLabel</div>
+                            <div class="info">Default value: 'Status'.<br />Form label for Status Select field.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">StatusSpecialText</div>
+                            <div class="info">Default value: 'Special'.<br />Form Status - Special text.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">StatusUnavailableText</div>
+                            <div class="info">Default value: 'Unavailable'.<br />Form Status - Unavailable text.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">SubmitLabel</div>
+                            <div class="info">Default value: 'Submit'.<br />Form label for Submit Button.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">UnavailableText</div>
+                            <div class="info">Default value: 'unavailable'.<br />Unavailable Day text.</div>
+                            <br class="clear" />
+                        </li>
+                    </ul>
+                    
+                    <strong>Example:</strong>
+                    <br />
+                    <script type="syntaxhighlighter" class="brush: js; toolbar: false;">
+                        <![CDATA[
+                            $('#backend').DOPBackendBookingCalendarPRO({
+                                'ID': 1,
+                                'DataURL': 'dopbcp/php-database/load.php',
+                                'SaveURL': 'dopbcp/php-database/save.php'
+                            });
+                        ]]>
+                    </script>  
+                    <br />
+                    
+                    <h3>Front End Verision</h3>
+                    Add the plugin to a container (HTML tag, class or id).
+                    <br /><br />
+                    <strong>Example:</strong>
+                    <br />
+                    <script type="syntaxhighlighter" class="brush: js; toolbar: false;">
+                        <![CDATA[
+                            $('#frontend').DOPFrontendBookingCalendarPRO();
+                        ]]>
+                    </script>
+                    <br />
+                    <p>
+                        You can add the following options to the back end version of the plugin:
+                    </p>
+                    
+                    <ul class="settings">
+                        <li>
+                            <div class="property">AddtMonthViewText</div>
+                            <div class="info">Default value: 'Add Month View'.<br />Add Month View button title (plus icon).</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">AvailableDays</div>
+                            <div class="info">Default value: [true, true, true, true, true, true, true].<br />Set available/unavailable days starting with Monday.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">AvailableOneText</div>
+                            <div class="info">Default value: 'available'.<br />Available Day text for one item.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">AvailableText</div>
+                            <div class="info">Default value: 'available'.<br />Available text for more items.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">BookedText</div>
+                            <div class="info">Default value: 'booked'.<br />Booked Day text.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">Currency</div>
+                            <div class="info">Default value: '$'.<br />Currency icon.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">DataURL</div>
+                            <div class="info">Default value: 'dopbcp/php-file/load.php'.<br />URL from were JSON data is loaded.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">DayNames</div>
+                            <div class="info">Default value: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].<br />Weekdays long names.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">DayShortNames</div>
+                            <div class="info">Default value: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].<br />Weekdays short names.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">FirstDay</div>
+                            <div class="info">Default value: 1.<br />Set the first day of the week (1 = Monday, 2 = Tuesday, 3 = Wednesday, 4 = Thursday, 5 = Friday, 6 = Saturday, 7 = Sunday)</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">ID</div>
+                            <div class="info">Default value: 0.<br />Calendar ID. Change it if you have more then one calendar. Make it the same as the Front End version.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">MonthNames</div>
+                            <div class="info">Default value: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].<br />Months long names.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">MonthShortNames</div>
+                            <div class="info">Default value: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].<br />Months short names.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">MorningCheckOut</div>
+                            <div class="info">Default value: false.<br />Display the calendar with Morning Checkout days.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">NextMonthText</div>
+                            <div class="info">Default value: 'Next Month'.<br />Next Month button title.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">PreviousMonthText</div>
+                            <div class="info">Default value: 'Previous Month'.<br />Previous Month button title.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">Reinitialize</div>
+                            <div class="info">Default value: false.<br />Reinitialize the calendar if already loaded.</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">RemoveMonthViewText</div>
+                            <div class="info">Default value: 'Remove Month View'.<br />Remove Month View button title (minus icon).</div>
+                            <br class="clear" />
+                        </li>
+                        <li>
+                            <div class="property">UnavailableText</div>
+                            <div class="info">Default value: 'unavailable'.<br />Unavailable Day text.</div>
+                            <br class="clear" />
+                        </li>
+                    </ul>
+                    
+                    <strong>Example:</strong>
+                    <br />
+                    <script type="syntaxhighlighter" class="brush: js; toolbar: false;">
+                        <![CDATA[
+                            $('#frontend').DOPFrontendBookingCalendarPRO({
+                                'ID': 1,
+                                'DataURL': 'dopbcp/php-database/load.php'
+                            });
+                        ]]>
+                    </script>
+                    <br />
+                </section>
+                
+                <section id="integration-json-database-structure">
+                    <h2>Integration & JSON/Database structure</h2>
+                    <p>
+                        The calendar receives and saves data in a JSON.
+                    </p> 
+                    <h5>JSON Structure</h5>
+                    <script type="syntaxhighlighter" class="brush: js; toolbar: false;">
+                        <![CDATA[
+                            {
+                                "YYYY-MM-DD":{"available": "", // Number of Available Items
+                                              "bind": 0, // Set if a day is a part of a group (0 = none; 1 = first day of a group; 2 = in the group; 3 = last day of a group)
+                                              "info": "", // Day informations
+                                              "notes": "", // Day notes
+                                              "price": "", // Price
+                                              "promo": "", // Promotional Price
+                                              "status": ""}, // Day status (none, available, booked, special, unavailable)
+                                // Another day              
+                                "YYYY-MM-DD":{"available": "",
+                                              "bind": 0,
+                                              "info": "",
+                                              "notes": "",
+                                              "price": "",
+                                              "promo": "",
+                                              "status": ""}
+                            }
+                        ]]>
+                    </script>
+                    <br />
+                    <p>
+                        You can connect the plugin to your own script to get data using <strong>DataURL</strong> option.<br />
+                        You will receive a POST variable in your script named <strong>dopbcp_calendar_id</strong> representing Calendar ID. You can pass any variable using GET method.
+                        <br /><br />
+                        Make sure you parse the JSON in the above format. 
+                    <p>
+                    <script type="syntaxhighlighter" class="brush: js; toolbar: false;">
+                        <![CDATA[
+                            $('#frontend').DOPFrontendBookingCalendarPRO({
+                                'ID': 1,
+                                'DataURL': 'your-script.php?var1=value1&var2=value2'
+                            });
+                        ]]>
+                    </script> 
+                    <p>
+                        You can connect the plugin to your own script to get save using <strong>SaveURL</strong> option.<br />
+                        You will receive 2 POST variables in your script named <strong>dopbcp_calendar_id</strong>, representing Calendar ID, and <strong>dopbcp_schedule</strong>, representing the calendar data saved in the above JSON format. You can pass any variable using GET method. 
+                    <p>
+                    <script type="syntaxhighlighter" class="brush: js; toolbar: false;">
+                        <![CDATA[
+                            $('#backend').DOPBackendBookingCalendarPRO({
+                                'ID': 1,
+                                'SaveURL': 'your-script.php?var1=value1&var2=value2'
+                            });
+                        ]]>
+                    </script> 
+                    <br />
+                    
+                    <h5>Database Structure</h5>
+                    <p>
+                        In the example I provide you have 2 fields:<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;<strong>id</strong> type INT - calendar id<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;<strong>data</strong> type TEXT - were jSON is saved<br />
+                    </p>
+                    <p>
+                        <strong>Please take into consideration that you can save the JSON into a file or you can break it to save the data into your own database structure.</strong>
+                    </p>
+                </section>
+                
+                <section id="how-to-customize-it">
+                    <h2>How to customize it</h2>
+                    <p>
+                        You can customize the calendar from the 2 CSS files:<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;<strong>dopbcp/assets/gui/css/jquery.dop.BackendBookingCalendarPRO.css</strong><br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;<strong>dopbcp/assets/gui/css/jquery.dop.FrontendBookingCalendarPRO.css</strong><br />
+                    </p>
+                        
+                    Days color styles are marked with the folowing messages, depending on day status:
+                    <script type="syntaxhighlighter" class="brush: css; toolbar: false;">
+                        <![CDATA[
+                            /* <<<<<<<<<< Change to your DEFAULT color. */
+                            /* <<<<<<<<<< Change to your AVAILABLE color. */
+                            /* <<<<<<<<<< Change to your BOOKED color. */
+                            /* <<<<<<<<<< Change to your SPECIAL color. */
+                            /* <<<<<<<<<< Change to your UNAVAILABLE color. */
+                            /* <<<<<<<<<< Change to your SELECTED color. */
+                        ]]>
+                    </script> 
+                    <br />
+                    <p>
+                        Navigation buttons colors can be changed in <strong>dopbcp/assets/gui/images/sprite.png</strong>.
+                    </p>
+                </section>
+                
+                <section id="faq">
+                    <h2>FAQ</h2>
+                    <ul class="faq">
+                        <li>
+                            <p class="question">
+                                1. Why does not the gallery appear on my website?
+                            </p>
+                            <p class="answer">
+                                1. The plugin files are not loaded on your page.
+                                <br /><br />
+                                2. If the gallery does not appear, it might be because there is a problem with the JavaScript in your website. If you cannot identify the problem, contact us, including in the message a link to the page where the problem appears. We will identify and fix the issue for you. However, we will not fix the problems that are not caused by this plugin.
+                            </p>
+                        </li>
+                    </ul>
+                </section>
+
+                <section id="how-to-update">
+                    <h2>How to update</h2>
+                    <p>
+                        <strong>Latest Version: 1.2</strong>
+                    </p>
+                    <p>
+                        <strong>Please note:</strong><br />
+                        Make a <strong>backup</strong> of folder <strong>dopbcp</strong> from your web server.
+                    </p>
+                    <p>
+                        To update the Plugin, login to <a href="http://www.codecanyon.net/?ref=DOTonPAPER">CodeCanyon</a>, head over to your <strong>Downloads</strong> section and re-download the plugin like you did when you bought it.
+                    </p>
+                    <p>
+                        Extract the zip's contents, look for the <strong>sources/dopbcp</strong> folder, and after you have all the new files upload them using FTP to the your web server folder overwriting the old ones (this is why it's important to backup any changes you've made to the plugin files).
+                        <br />
+                        After, you add the settings and content files from the backup you did earlier.
+                        <br />
+                        If you didn't make any changes to the plugin files, you are free to overwrite them with the new ones without the risk of losing any plugins settings, and backwards compatibility is guaranteed.
+                    </p>
+                </section>
+                
+                <section id="changelog">
+                    <h2>Changelog</h2>
+                    <ul class="changelog">
+                        <li>
+                            <p class="date">
+                                <strong>Version 1.2</strong>&nbsp;&nbsp;-&nbsp;&nbsp;20 May 2013
+                            </p>
+                            <ul>
+                                <li class="info">New Features:</li>
+                                <li>Add day informations.</li>
+                                <li>Add day internal notes.</li>
+                                <li>Calendars are responsive.</li>
+                                <li>Change first weekday feature added.</li>
+                                <li>Days display morning checkout.</li>
+                                <li>Group days.</li>
+                                <li>Make certain weekdays unavailable.</li>
+                                <li>View more months feature added.</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <p class="date">
+                                <strong>Version 1.1</strong>&nbsp;&nbsp;-&nbsp;&nbsp;20 September 2011
+                            </p>
+                            <ul>
+                                <li class="info">New Features:</li>
+                                <li>Price validation.</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <p class="date">
+                                <strong>Version 1.0</strong>&nbsp;&nbsp;-&nbsp;&nbsp;30 May 2011
+                            </p>
+                            <ul>
+                                <li>Initial release.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+
+                <section id="support">
+                    <h2>Support</h2>
+                    <p>
+                    	If you did not find the answer you were looking for in the given documentation, please access our <a href="http://envato-support.dotonpaper.net/" target="_blank">Support Forums</a>. If you cannot find the answer to your issue, post a new topic, describing the problem you are having. Please add in your message a link to where you use the item or any other stuff that might be relevant (don’t include any passwords or any confidential information).
+                    </p>
+                    <p>
+                        <strong>Note:</strong>
+                        <br />
+                        On our <a href="http://envato-support.dotonpaper.net/" target="_blank">Support Forums</a> you need to login and confirm the <strong>Item Purchase Code</strong> for the item you need help with.
+                    </p>
+                    <p>
+                        <img src="http://envato-help.dotonpaper.net/assets/gui/images/purchase-code.png" alt="" />
+                    </p>
+                    <p>
+                        <strong>Work time:</strong>
+                        <br />
+                        07:00 (07:00 AM) – 16:00 (04:00 PM) GMT | Working days only (Monday – Friday)
+                    </p>
+                    <p>
+                        <strong>We do NOT provide support in comments section. Please use it for presale questions only.</strong>
+                    </p>
+                    <h3>Disclaymer</h3>
+                    <p class="disclaymer">
+                        <em>
+                            If you buy an Envato item, according to Envato rules, you are not entitled to support or free customizations.<br />
+                            WE WILL OFFER FREE SUPPORT only for bugs, item related issues and very small modifications(a few minutes of work). Everything else will be considered as custom work, for which we charge $35/hour.<br /> 
+                            Offering support will help us improve and fix the bugs in our products and a great way to do this is to see what problem appear when people use them.<br />
+                            If your request for a feature has been made by other people is it possible, but not a rule, to add that feature in a future update. Please don't buy the item if a feature doesn't exist and you need it. We will not add it for you in record time. If you are not sure if the feature exists please ask first.  
+                        </em>
+                    </p>
+                </section>
+                
+                <section>
+                    <p class="info">
+                        <strong>PS: Do not forget to rate this item
+                        &nbsp;<img alt="" class="star" src="http://2.envato-static.com/assets/common/icons-buttons/rating/star-on-24a8d2589eca9f34bc2ff72a59bd9af7.png" />
+                        <img alt="" class="star" src="http://2.envato-static.com/assets/common/icons-buttons/rating/star-on-24a8d2589eca9f34bc2ff72a59bd9af7.png" />
+                        <img alt="" class="star" src="http://2.envato-static.com/assets/common/icons-buttons/rating/star-on-24a8d2589eca9f34bc2ff72a59bd9af7.png" />
+                        <img alt="" class="star" src="http://2.envato-static.com/assets/common/icons-buttons/rating/star-on-24a8d2589eca9f34bc2ff72a59bd9af7.png" />
+                        <img alt="" class="star" src="http://2.envato-static.com/assets/common/icons-buttons/rating/star-on-24a8d2589eca9f34bc2ff72a59bd9af7.png" />.</strong>
+                    </p>                
+                </section>
+            </div>
+        </div>
+    </body>
+</html>
+

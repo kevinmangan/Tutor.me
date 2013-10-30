@@ -10,6 +10,14 @@ public class Application extends Controller {
     return ok(index.render("Your new application is ready."));
   }
 
+  public static Result studentLogin() {
+    return TODO;
+  }
+
+  public static Result tutorLogin() {
+    return TODO;
+  }
+
   public static Result studentRegister() {
     return TODO;
   }

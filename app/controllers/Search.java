@@ -6,17 +6,24 @@ import java.util.List;
 
 import models.Student;
 import models.Tutor;
-import play.data.DynamicForm;
-import play.mvc.Controller;
-import play.mvc.Result;
+import play.*;
+import play.mvc.*;
+import play.data.*;
 import views.html.search;
 
 public class Search extends Controller {
 
   public static Result search() {
-    List<Tutor> emptyList = Collections.<Tutor>emptyList();
-    return ok(search.render(emptyList));
+    //String user = session("connected");
+    //if(user != null){
+      List<Tutor> emptyList = Collections.<Tutor>emptyList();
+      return ok(search.render(emptyList));
+    //}else {
+    //  return unauthorized("Oops, you are not connected");
+    //}
   }
+
+    
 
   public static Result submit() {
     DynamicForm requestData = form().bindFromRequest();

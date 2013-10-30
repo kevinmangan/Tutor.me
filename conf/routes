@@ -3,26 +3,30 @@
 # ~~~~
 
 # Index page
-GET     /                           controllers.Application.index()
+GET     /                                          controllers.Application.index()
 
 # Some routes we might use, taken from the "zentasks" sample Java Play project
 # Authentication
-# GET     /login                              controllers.Application.login()
-# POST    /login                              controllers.Application.authenticate()
-# GET     /logout                             controllers.Application.logout()
+# GET     /login                                   controllers.Application.login()
+# POST    /login                                   controllers.Application.authenticate()
+# GET     /logout                                  controllers.Application.logout()
 
 GET     /classroom/:chatRoomId/:userScribblarId    controllers.Sessions.launchSession(chatRoomId: String, userScribblarId)
-GET     /mailtest                             controllers.Application.mailTest()
+GET     /mailtest                                  controllers.Application.mailTest()
 
 # Student Register
-POST    /student_register            controllers.Application.studentRegister()
+POST    /student_register                          controllers.Application.studentRegister()
 
 # Home page
-POST    /tutor_register              controllers.Application.tutorRegister()
+POST    /tutor_register                            controllers.Application.tutorRegister()
 
-# Just temporary while I work on layout
-GET     /search						controllers.Search.search()
-POST    /search                     controllers.Search.submit()
+# The student-side routes
+GET     /search						               controllers.Search.search()
+POST    /search                                    controllers.Search.submit()
+
+# Tutor profile routes
+GET     /tutors/:username                                controllers.Profile.viewProfile(username: String)
+#POST    /tutors/:username                                controllers.Profile.editProfile(username: String)           
 
 
 

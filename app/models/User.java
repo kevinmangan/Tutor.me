@@ -56,6 +56,10 @@ public abstract class User extends Model {
     find.ref(id).delete();
   }
 
+  public Long getID(){
+    return id;
+  }
+
   /**
    * @return the username
    */

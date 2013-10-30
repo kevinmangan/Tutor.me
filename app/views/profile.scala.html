@@ -1,0 +1,93 @@
+@(tutor: Tutor, owner: Integer, edit: Integer)
+@import helper._
+@profileMain() {
+
+            <script>
+  
+            $(document).ready(function(){
+                
+                
+                /* if(@edit == 1){ */
+                $('#backend').DOPBackendBookingCalendarPRO({
+                     'ID': @tutor.getID()
+                     'DataURL': @routes.Assets.at("Booking/sources/dopbcp/php-database/load.php")
+                     'SaveURL': @routes.Assets.at("Booking/sources/dopbcp/php-database/save.php")
+                });
+              /* }else{
+                    $('#booking').DOPFrontendBookingCalendarPRO({
+                      'ID': @tutor.getID()
+                      'DataURL': @routes.Assets.at("Booking/sources/dopbcp/php-database/load.php")
+                    });
+                  } */
+                }
+
+            </script>
+
+ 
+
+  <div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Tutor.me</a>
+        </div>
+        
+      </div><!-- /.container -->
+    </div><!-- /.navbar -->
+
+    <div class="container">
+
+      <div class="row row-offcanvas row-offcanvas-right">
+          
+        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">@tutor.getName()</h3>
+            </div>
+            <div class="panel-body">
+                <img alt="" style="border:1px solid black" height="100" width="100" src="@routes.Assets.at("images/noPic.png")"> <br><br>
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    <p>@tutor.getTagline() </p>
+                  </div>
+                </div>
+                <span class="label label-info">Rating</span>
+                <div class="rateit" data-rateit-value= "@tutor.getRating()" data-rateit-ispreset="true" data-rateit-readonly="true"></div>
+                <br><p><span class="label label-info">Price per hour</span> $@tutor.getCostUSD()</p><br>
+                <p><a class="btn btn-success" href="#">Book tutor &raquo;</a></p>
+            </div>
+          </div><!--/.well -->
+        </div><!--/span-->
+
+
+        <div class="col-xs-12 col-sm-9">
+          <div class="well">
+              <div class="page-header">
+                <h1>About:</h1>
+              </div>
+              <p>@tutor.getDescription()</p>
+              <div id="backend"></div>
+          </div> <!-- well -->
+        </div><!--/span -->
+
+        
+         
+        
+
+
+
+      </div><!--/row-->
+
+      <hr>
+
+      <footer>
+        <p>&copy; Tutor.me 2013</p>
+      </footer>
+
+    </div><!--/.container-->
+
+}

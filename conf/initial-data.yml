@@ -11,6 +11,7 @@ tutors:
         tagline:    Computer Science student at Columbia
         costUSD:    100
         subjects:   ["math", "history"]
+        description: Description Description Description Description Description Description Description Description Description Description
 
     - !!models.Tutor
         id:         54321
