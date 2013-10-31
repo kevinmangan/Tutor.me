@@ -58,10 +58,11 @@ public class Profile extends Controller {
       MultipartFormData body = request().body().asMultipartFormData();
       FilePart picture = body.getFile("picture");
       if (picture != null) {
-        String fileName = picture.getFilename();
+        String filename = picture.getFilename();
         String contentType = picture.getContentType(); 
         File file = picture.getFile();
-        tutor.setPicture(file);
+        file.renameTo(new File("assets/images/profilePics", filename));
+        tutor.setPicture(filename);
       } else {
       flash("error", "Missing file");
       }

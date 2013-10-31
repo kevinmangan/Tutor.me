@@ -37,7 +37,7 @@ public class Tutor extends User {
   }
 
   // Profile picture
-  private File picture;
+  private String picture;
 
   // The rating of this tutor
   private double rating;
@@ -67,17 +67,14 @@ public class Tutor extends User {
    */
   public String getPicture() {
         if(picture != null){
-          String path = picture.getAbsolutePath();
-          return path;
-        }else{
-          return "none";
-        }
+          return "/images/profilePics/" + picture;
+        }else{ return "none";}
   }
 
   /**
    * @param 
    */
-  public void setPicture(File picture) {
+  public void setPicture(String picture) {
     this.picture = picture;
   } 
 

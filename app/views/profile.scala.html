@@ -33,7 +33,7 @@
             @if(tutor.getPicture() == "none"){
                <img alt="" style="border:1px solid black" height="100" width="100" src="@routes.Assets.at("images/noPic.png")"> <br><br>
                }else{
-               <img alt="" style="border:1px solid black" height="100" width="100" src="@tutor.getPicture()"> <br><br> 
+               <img alt="" style="border:1px solid black" height="100" width="100" src="@routes.Assets.at(tutor.getPicture())"> <br><br> 
                }
                 <div class="panel panel-default">
                   
