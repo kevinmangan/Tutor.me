@@ -4,7 +4,7 @@
 # --- !Ups
 
 create table tutor (
-  id                        bigint auto_increment not null,
+  id                        bigint not null,
   username                  varchar(255),
   email                     varchar(255),
   name                      varchar(255),
@@ -18,14 +18,18 @@ create table tutor (
   constraint pk_tutor primary key (id))
 ;
 
+create sequence tutor_seq;
+
 
 
 
 # --- !Downs
 
-SET FOREIGN_KEY_CHECKS=0;
+SET REFERENTIAL_INTEGRITY FALSE;
 
-drop table tutor;
+drop table if exists tutor;
 
-SET FOREIGN_KEY_CHECKS=1;
+SET REFERENTIAL_INTEGRITY TRUE;
+
+drop sequence if exists tutor_seq;
 

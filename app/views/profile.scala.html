@@ -1,27 +1,8 @@
-@(tutor: Tutor, owner: Integer, edit: Integer)
+@(tutor: Tutor, owner: Integer)
 @import helper._
-@profileMain() {
+@profileMain(tutor, owner) {
 
-            <script>
-  
-            $(document).ready(function(){
-                
-                
-                /* if(@edit == 1){ */
-                $('#backend').DOPBackendBookingCalendarPRO({
-                     'ID': @tutor.getID()
-                     'DataURL': @routes.Assets.at("Booking/sources/dopbcp/php-database/load.php")
-                     'SaveURL': @routes.Assets.at("Booking/sources/dopbcp/php-database/save.php")
-                });
-              /* }else{
-                    $('#booking').DOPFrontendBookingCalendarPRO({
-                      'ID': @tutor.getID()
-                      'DataURL': @routes.Assets.at("Booking/sources/dopbcp/php-database/load.php")
-                    });
-                  } */
-                }
-
-            </script>
+           
 
  
 
@@ -51,30 +32,84 @@
             <div class="panel-body">
                 <img alt="" style="border:1px solid black" height="100" width="100" src="@routes.Assets.at("images/noPic.png")"> <br><br>
                 <div class="panel panel-default">
+                  
                   <div class="panel-body">
-                    <p>@tutor.getTagline() </p>
+                    <div id="tagline"><p>@tutor.getTagline() </p></div>
                   </div>
+                  
+
+
                 </div>
                 <span class="label label-info">Rating</span>
                 <div class="rateit" data-rateit-value= "@tutor.getRating()" data-rateit-ispreset="true" data-rateit-readonly="true"></div>
                 <br><p><span class="label label-info">Price per hour</span> $@tutor.getCostUSD()</p><br>
                 <p><a class="btn btn-success" href="#">Book tutor &raquo;</a></p>
-            </div>
+            
+              @helper.form(action = routes.Profile.editProfile(tutor.getUsername())) {
+                <div id="schedule">
+                  <form role="form">
+                    <div class="form-group">
+                      <label for="startTime">Start time</label>
+                      
+
+                    </div>
+                   <div class="form-group">
+                     <label for="endTime">End time</label>
+                      
+                   </div>
+                    
+                    <button type="submit" id="submitSchedule" class="btn btn-success">Submit</button>
+                    <button type="button" id="cancel" class="btn btn-danger">Cancel</button>
+                  </form>
+                  }
+                </div>
+
+            </div> <!-- panel -->
           </div><!--/.well -->
         </div><!--/span-->
 
 
         <div class="col-xs-12 col-sm-9">
-          <div class="well">
-              <div class="page-header">
-                <h1>About:</h1>
-              </div>
-              <p>@tutor.getDescription()</p>
-              <div id="backend"></div>
+          <div class="well" >
+            
+            <div id="about">
+                <div class="page-header">
+                  <h1>About:</h1>
+                </div>
+                <p>@tutor.getDescription()</p>
+            </div>
           </div> <!-- well -->
-        </div><!--/span -->
 
-        
+          @helper.form(action = routes.Profile.editProfile(tutor.getUsername())) {
+          <button type="button" id="edit" class="btn btn-primary">Edit Profile</button>
+          
+          <!-- Profile edit form -->
+          
+          <div id="editForm">
+            <form role="form">
+              <div class="form-group">
+                <label for="editAbout">About</label>
+                <input type="textarea" class="form-control" name="editAbout" id="editAbout" placeholder="@tutor.getDescription()">
+              </div>
+              <div class="form-group">
+                <label for="editTagline">Tagline</label>
+                <input type="text" class="form-control" name="editTagline" id="editTagline" placeholder="@tutor.getTagline() ">
+              </div>
+              <div class="form-group">
+                <label for="editPrice">Price per hour</label>
+                <input type="text" class="form-control" name="editPrice" id="editPrice" placeholder="@tutor.getCostUSD()">
+              </div>
+              <button type="submit" id="submitEdit" class="btn btn-success">Submit</button>
+              <button type="button" id="cancel" class="btn btn-danger">Cancel</button>
+            </form>
+            }
+          </div>
+
+
+          
+        </div><!--/column -->
+
+
          
         
 
