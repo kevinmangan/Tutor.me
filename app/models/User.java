@@ -128,6 +128,14 @@ public abstract class User extends Model {
    * @return the scribblarId
    */
   public String getScribblarId() {
+    if(username.equals("dap2163")) {
+      return "8407F720-F071-6389-DB2BFC968B95788F";
+    } else if(username.equals("jar2262")) {
+      return "8407FF3F-959A-BDEE-6CFB7072AA2081D7";
+    } else if(username.equals("kmm2256")) {
+      return "9D3EC0E5-BBDA-C65E-C303B4D08BC8A1A3";
+    }
+
     if(scribblarId == null) {
       setScribblarId();
     }

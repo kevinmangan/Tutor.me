@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.*;
 
 import javax.persistence.*;
 
@@ -136,6 +137,13 @@ public class Request extends Model {
   }
 
   /**
+   * 
+   */
+  public DateTimeFormatter getDateTimeFormatter() {
+    return DateTimeFormat.forPattern("MMM dd, YYYY @ hh:mm a");
+  }
+
+  /**
    * Notifies a tutor that a request has been created or canceled
    * 
    * @param created: True if this is a new request, false otherwise
@@ -200,21 +208,19 @@ public class Request extends Model {
     String studentRecipient = sessionStudent.getName() + " <"
     + sessionStudent.getEmail() + ">";
     DateTime startTimeDate = new DateTime(session.getStartTime());
-    String startTimeString = startTimeDate.toGregorianCalendar().toString();
+    String startTimeString = getDateTimeFormatter().print(startTimeDate);
     DateTime endTimeDate = new DateTime(session.getEndTime());
-    String endTimeString = endTimeDate.toGregorianCalendar().toString();
+    String endTimeString = getDateTimeFormatter().print(endTimeDate);
     String emailText =
       "  You have been signed up for a Tutor.Me session! <br/>"
-      + "  Your session is from"
+      + "  Your session is from "
       + startTimeString
       + " to "
       + endTimeString
       + "<br/>"
       + "  Please use the following link to access your session at the specified time: ";
-    String tutorLink = Play.application().path() + "/"
-    + session.getScribblarId() + "/" + sessionTutor.getScribblarId();
-    String studentLink = Play.application().path() + "/"
-    + session.getScribblarId() + "/" + sessionStudent.getScribblarId();
+    String tutorLink = ROOT_URL + "/classroom/" + session.getScribblarId() + "/" + sessionTutor.getScribblarId();
+    String studentLink = ROOT_URL + "/classroom/" + session.getScribblarId() + "/" + sessionStudent.getScribblarId();
     String tutorEmailHtml = "<hmtl>" + emailText + "<br/>" + tutorLink
     + "</hmtl>";
     String studentEmailHtml = "<hmtl>" + emailText + "<br/>" + studentLink
