@@ -12,6 +12,10 @@ GET     /                                          controllers.Application.index
 # GET     /logout                                  controllers.Application.logout()
 
 GET     /classroom/:chatRoomId/:userScribblarId    controllers.Sessions.launchSession(chatRoomId: String, userScribblarId)
+<<<<<<< HEAD
+GET     /mailtest                                  controllers.Application.mailTest()
+=======
+>>>>>>> 50ff5eb006f41b983194c451d3ed5a920c91350f
 
 # Student Register
 POST    /student_register                          controllers.Application.studentRegister()
@@ -25,12 +29,7 @@ POST    /search                                    controllers.Search.submit()
 
 # Tutor profile routes
 GET     /tutors/:username                                controllers.Profile.viewProfile(username: String)
-POST    /tutors/:username                                controllers.Profile.editProfile(username: String)           
-
-
-# Test Pages
-GET     /test/user_list                                                  controllers.TestController.userListTest()
-GET     /test/send_request/:studentId/:tutorId/:startTime/:endTime       controllers.TestController.sendRequestTest(studentId: Long, tutorId: Long, startTime: Long, endTime: Long)
+#POST    /tutors/:username                                controllers.Profile.editProfile(username: String)           
 
 
 

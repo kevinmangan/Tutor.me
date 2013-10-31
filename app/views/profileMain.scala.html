@@ -1,4 +1,4 @@
-@()(content: Html)
+@(tutor: Tutor, owner: Integer)(content: Html)
 
 <!DOCTYPE html>
 
@@ -12,6 +12,7 @@
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("Booking/sources/dopbcp/assets/gui/css/jquery.dop.BackendBookingCalendarPRO.css")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("Booking/sources/dopbcp/assets/gui/css/jquery.dop.FrontendBookingCalendarPRO.css")">
 
+        <script type="text/JavaScript" src="http://code.jquery.com/jquery-latest.js"></script>
         <script src="@routes.Assets.at("javascripts/bootstrap3.js")"></script>    
         <script src="@routes.Assets.at("javascripts/jquery-ui-1.8.22.custom.min.js")" type="text/javascript"></script>
         <script src="@routes.Assets.at("javascripts/jquery-1.7.2.min.js")" type="text/javascript"></script>
@@ -21,7 +22,41 @@
         <script src="@routes.Assets.at("Booking/sources/dopbcp/assets/js/jquery.dop.BackendBookingCalendarPRO.js")" type="text/javascript"></script>
         <script src="@routes.Assets.at("Booking/sources/dopbcp/assets/js/jquery.dop.FrontendBookingCalendarPRO.js")" type="text/javascript"></script>
 
+         <script>
+  
+            $(document).ready(function(){
+                
+                $('#submitEdit').hide();
+                $('#cancel').hide();
+                $('#editForm').hide();
+                
+                
+        
+              if(@owner == 1){
+                $('#edit').show();
+              }else{
+                 $('#edit').hide();
+              }
 
+              $('#edit').click(function(){
+                  $("#editForm").show();
+                  $('#edit').hide();
+                  $('#submitEdit').show();
+                  $('#cancel').show();
+
+              });
+
+               $('#cancel').click(function(){
+                  $("#editForm").hide();
+                  $('#edit').show();
+                  $('#submitEdit').hide();
+              });
+
+
+
+                });
+
+            </script>
        
 
         <style>
