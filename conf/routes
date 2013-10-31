@@ -28,6 +28,11 @@ GET     /tutors/:username                                controllers.Profile.vie
 POST    /tutors/:username                                controllers.Profile.editProfile(username: String)           
 POST    /tutors/:username                                controllers.Profile.schedule(username: String)
 
+# Test Pages
+GET     /test/user_list                                                  controllers.TestController.userListTest()
+GET     /test/send_request/:studentId/:tutorId/:startTime/:endTime       controllers.TestController.sendRequestTest(studentId: Long, tutorId: Long, startTime: Long, endTime: Long)
+
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

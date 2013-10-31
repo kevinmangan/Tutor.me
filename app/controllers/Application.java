@@ -40,7 +40,7 @@ public class Application extends Controller {
    * @param emailHtml: The html text contained in the email
    */
   public static void sendEmail(String emailSubject, String emailRecipient, String emailHtml) {
-    sendEmail(emailSubject, Arrays.asList(emailRecipient), emailSubject);
+    sendEmail(emailSubject, Arrays.asList(emailRecipient), emailHtml);
   }
 
   /**
@@ -53,7 +53,7 @@ public class Application extends Controller {
   public static void sendEmail(String emailSubject,
       List<String> emailRecipients, String emailHtml) {
     MailerAPI mail = play.Play.application().plugin(MailerPlugin.class).email();
-    mail.addFrom("Tutor.me Mailer <tutor.me.mailer@gmail.com>");
+    mail.addFrom("Tutor.me Mailing Robot <tutor.me.mailer@gmail.com>");
     mail.setSubject(emailSubject);
     for (String emailRecipient : emailRecipients) {
       mail.addRecipient(emailRecipient);
