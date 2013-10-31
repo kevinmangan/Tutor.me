@@ -34,6 +34,59 @@ public class Student extends User {
   public static void delete(Long id) {
     find.ref(id).delete();
   }
+  
+  /**
+   * Validates a student
+   * @param identifier: The student's email or username
+   * @param password: The student's password
+   * @return: True if the validation was succesful, false otherwise
+   */
+  public static boolean authenticate(String identifier, String password){
+    Student student = findStudent(identifier);
+    if(encrypt(password,student.getSalt()).equals(student.getPwhash())){
+      return true;
+	}
+    return false;
+  }
+  
+  /**
+   * Finds the student corresponding to the given identifier
+   * @param identifier: The student's email or username
+   * @return: The student corresponding to the given identifier
+   */
+  public static Student findStudent(String identifier) {
+    Student matchingUser = find.where().eq("email",identifier).findUnique();
+    if(matchingUser==null){
+      matchingUser = find.where().eq("username",identifier).findUnique();
+      if(matchingUser==null){
+        return null;
+      }
+      else{
+        return matchingUser;
+      }
+    }
+    else{
+      return matchingUser;
+    }
+  }
+  
+  /**
+   * Checks if student exists in database
+   * 
+   * @param username: The potential username for the Student
+   * @param email: The potential email for the Student
+   */
+  public static boolean existsStudent(String username, String email){
+  	Student matchingStudent = find.where()
+  			.or(com.avaje.ebean.Expr.eq("username",username),
+  					com.avaje.ebean.Expr.eq("email", email)).findUnique();
+  	if(matchingStudent!=null){
+  		return true;
+  	}
+  	else{
+  		return false;
+  	}
+  }
 
   /**
    * Creates a new tutoring session request
@@ -114,39 +167,5 @@ public class Student extends User {
     double ratingAggregate = tutor.getRating() * numRaters;
     tutor.setRating((ratingAggregate + rating) / updateNumRaters);
     tutor.setNumRaters(updateNumRaters);
-  }
-  /**
-   * Checks if student exists in database
-   * 
-   * @param username: The potential username for the Student
-   * @param email: The potential email for the Student
-   */
-  public static boolean existsStudent(String username, String email){
-  	Student matchingStudent = find.where()
-  			.or(com.avaje.ebean.Expr.eq("username",username),
-  					com.avaje.ebean.Expr.eq("email", email)).findUnique();
-  	if(matchingStudent!=null){
-  		return true;
-  	}
-  	else{
-  		return false;
-  	}
-  }
-  /**
-   * Find student by username or email
-   * 
-   * @param unoe: Username or email
-   * 
-   * @return Student
-   */
-  public static Student findStudent(String unoe){
-  	Student students = find.where().eq("email",unoe).findUnique();
-  	if(students==null){
-			students = find.where().eq("username",unoe).findUnique();
-			return students;
-		}
-		else{
-			return students;
-		}
   }
 }

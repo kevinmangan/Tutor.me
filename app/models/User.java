@@ -77,28 +77,7 @@ public abstract class User extends Model {
   public static void delete(Long id) {
     find.ref(id).delete();
   }
-	public static boolean authenticate(String identifier, String password){
-		User user= find(identifier);
-		if(encrypt(password,user.getSalt()).equals(user.getPwhash())){
-			return true;
-		}
-		return false;
-	}
-	public static User find(String identifier){
-		User matchingUser = find.where().eq("email",identifier).findUnique();
-		if(matchingUser==null){
-			matchingUser = find.where().eq("username",identifier).findUnique();
-			if(matchingUser==null){
-				return null;
-			}
-			else{
-				return matchingUser;
-			}
-		}
-		else{
-			return matchingUser;
-		}
-	}
+
   public Long getID(){
     return id;
   }

@@ -164,22 +164,42 @@ public class Tutor extends User {
   public void setCostUSD(double costUSD) {
     this.costUSD = costUSD;
   }
-
+  
   /**
-   * Responds to a request for a tutoring session
-   * 
-   * @param request: The request to respond to
-   * @param response: True if the tutor approves of the request, false otherwise
+   * Validates a student
+   * @param identifier: The student's email or username
+   * @param password: The student's password
+   * @return: True if the validation was succesful, false otherwise
    */
-  public void respondToRequest(Request request, boolean response) {
-    if (response) {
-      TMSession session = request.generateSession();
-      request.sendSessionNotifications(session);
-    } else {
-      request.sendCancellationNotification(true);
-    }
-    request.delete();
+  public static boolean authenticate(String identifier, String password){
+    Tutor tutor = findTutor(identifier);
+    if(encrypt(password,tutor.getSalt()).equals(tutor.getPwhash())){
+      return true;
+	}
+    return false;
   }
+  
+  /**
+   * Finds the student corresponding to the given identifier
+   * @param identifier: The student's email or username
+   * @return: The student corresponding to the given identifier
+   */
+  public static Tutor findTutor(String identifier) {
+    Tutor matchingTutor = find.where().eq("email",identifier).findUnique();
+    if(matchingTutor==null){
+      matchingTutor = find.where().eq("username",identifier).findUnique();
+      if(matchingTutor==null){
+        return null;
+      }
+      else{
+        return matchingTutor;
+      }
+    }
+    else{
+      return matchingTutor;
+    }
+  }
+  
   /**
    * Checks if Tutor exists in database
    * 
@@ -197,26 +217,20 @@ public class Tutor extends User {
   		return true;
   	}
   }
-	/**
-	 * Find Tutor by username or email
-	 *
-	 * @param unoe: Username or email
-	 *
-	 * @return Tutor
-	 */
-	public static Tutor findTutor(String unoe){
-		Tutor matchingTutors = find.where().eq("email",unoe).findUnique();
-		if(matchingTutors==null){
-			matchingTutors = find.where().eq("username",unoe).findUnique();
-			if(matchingTutors==null){
-				return null;
-			}
-			else{
-				return matchingTutors;
-			}
-		}
-		else{
-			return matchingTutors;
-		}
-	}
+
+  /**
+   * Responds to a request for a tutoring session
+   * 
+   * @param request: The request to respond to
+   * @param response: True if the tutor approves of the request, false otherwise
+   */
+  public void respondToRequest(Request request, boolean response) {
+    if (response) {
+      TMSession session = request.generateSession();
+      request.sendSessionNotifications(session);
+    } else {
+      request.sendCancellationNotification(true);
+    }
+    request.delete();
+  }
 }
