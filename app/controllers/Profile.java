@@ -15,6 +15,10 @@ import play.*;
 import play.mvc.*;
 import play.data.*;
 import views.html.profile;
+import play.mvc.Http.MultipartFormData;
+import play.mvc.Http.MultipartFormData.*;
+import java.io.File;
+
 
 public class Profile extends Controller {
 
@@ -45,11 +49,22 @@ public class Profile extends Controller {
     List<Tutor> tutors = tutorResults.findList();
     Tutor tutor = tutors.get(0);
 
+    // Edit Profile
     if(type == 2){
       String tagline = requestData.get("editTagline");
       String description = requestData.get("editAbout");
       double cost = Double.parseDouble(requestData.get("editPrice"));
       
+      MultipartFormData body = request().body().asMultipartFormData();
+      FilePart picture = body.getFile("picture");
+      if (picture != null) {
+        String fileName = picture.getFilename();
+        String contentType = picture.getContentType(); 
+        File file = picture.getFile();
+        tutor.setPicture(file);
+      } else {
+      flash("error", "Missing file");
+      }
       tutor.setTagline(tagline);
       tutor.setDescription(description);
       tutor.setCostUSD(cost);

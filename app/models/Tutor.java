@@ -6,6 +6,10 @@ import javax.persistence.Entity;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.sql.Blob;
+
+import java.io.File;
+
 /**
  * Represents a Tutor.me tutor
  */
@@ -32,6 +36,9 @@ public class Tutor extends User {
     find.ref(id).delete();
   }
 
+  // Profile picture
+  private File picture;
+
   // The rating of this tutor
   private double rating;
 
@@ -53,6 +60,26 @@ public class Tutor extends User {
 
   //The cost in U.S. dollars of a single session with this tutor
   private double costUSD;
+
+
+ /**
+   * @return the picture
+   */
+  public String getPicture() {
+        if(picture != null){
+          String path = picture.getAbsolutePath();
+          return path;
+        }else{
+          return "none";
+        }
+  }
+
+  /**
+   * @param 
+   */
+  public void setPicture(File picture) {
+    this.picture = picture;
+  } 
 
   /**
    * @return the rating

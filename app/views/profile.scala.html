@@ -30,7 +30,11 @@
               <h3 class="panel-title">@tutor.getName()</h3>
             </div>
             <div class="panel-body">
-                <img alt="" style="border:1px solid black" height="100" width="100" src="@routes.Assets.at("images/noPic.png")"> <br><br>
+            @if(tutor.getPicture() == "none"){
+               <img alt="" style="border:1px solid black" height="100" width="100" src="@routes.Assets.at("images/noPic.png")"> <br><br>
+               }else{
+               <img alt="" style="border:1px solid black" height="100" width="100" src="@tutor.getPicture()"> <br><br> 
+               }
                 <div class="panel panel-default">
                   
                   <div class="panel-body">
@@ -45,7 +49,7 @@
                 <br><p><span class="label label-info">Price per hour</span> $@tutor.getCostUSD()</p><br>
                 <p><button id="bookTutor" class="btn btn-success" href="#">Book tutor &raquo;</button></p>
             
-              @helper.form(action = routes.Profile.postForm(tutor.getUsername())) {
+              @helper.form(action = routes.Profile.postForm(tutor.getUsername()), 'enctype -> "multipart/form-data") {
                 <div id="editSchedule">
                   <form role="form">
                     <input type="hidden" name="type" value="1">
@@ -79,7 +83,7 @@
             </div>
           </div> <!-- well -->
 
-          @helper.form(action = routes.Profile.postForm(tutor.getUsername())) {
+          @helper.form(action = routes.Profile.postForm(tutor.getUsername()), 'enctype -> "multipart/form-data") {
           <button type="button" id="edit" class="btn btn-primary">Edit Profile</button>
           
           <!-- Profile edit form -->
@@ -98,6 +102,10 @@
               <div class="form-group">
                 <label for="editPrice">Price per hour</label>
                 <input type="text" class="form-control" name="editPrice" id="editPrice" placeholder="@tutor.getCostUSD()">
+              </div>
+              <div class="form-group">
+                <label for="picture">Upload Picture</label>
+                <input type="file" id="picture" name="picture">
               </div>
               <button type="submit" id="submitEdit" name="1" class="btn btn-success">Submit</button>
               <button type="button" id="cancel" class="btn btn-danger">Cancel</button>
