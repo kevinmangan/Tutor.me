@@ -7,6 +7,8 @@ import javax.persistence.Id;
 
 import org.joda.time.DateTime;
 
+import javax.persistence.Entity;
+
 import play.Play;
 import play.data.validation.Constraints.Required;
 import play.db.ebean.Model;
@@ -15,6 +17,7 @@ import controllers.Application;
 /**
  * Represents a request for a tutoring session
  */
+@Entity
 public class Request extends Model {
 
   private static final long serialVersionUID = -8504063147212754838L;
@@ -37,23 +40,12 @@ public class Request extends Model {
   @Required
   private long requestedEndTime;
 
-  // True if this request has already been approved, false otherwise
-  private boolean approved;
-
   public Request(Student requestingStudent, Tutor requestedTutor,
       long requestedStartTime, long requestedEndTime) {
-    this(requestingStudent, requestedTutor, requestedStartTime,
-        requestedEndTime, false);
-  }
-
-  public Request(Student requestingStudent, Tutor requestedTutor,
-      long requestedStartTime, long requestedEndTime,
-      boolean approved) {
     this.requestingStudent = requestingStudent;
     this.requestedTutor = requestedTutor;
     this.requestedStartTime = requestedStartTime;
     this.requestedEndTime = requestedEndTime;
-    this.approved = approved;
     Request.create(this);
   }
 
@@ -132,33 +124,20 @@ public class Request extends Model {
   }
 
   /**
-   * @return the approved
-   */
-  public boolean isApproved() {
-    return approved;
-  }
-
-  /**
-   * @param approved the approved to set
-   */
-  public void setApproved(boolean approved) {
-    this.approved = approved;
-  }
-
-  /**
    * Notifies a tutor that a request has been created or canceled
    * 
    * @param created: True if this is a new request, false otherwise
    */
   public void sendRequestNotification() {
-    String emailSubject = "New Tutor Request";
-    String emailRecipient = requestedTutor.getName() + "<"
-        + requestedTutor.getEmail() + ">";
-    String emailHtml = "Hi, "
+    String emailSubject = "Tutor.me Mailer Test";
+    String emailRecipient = ""
+        + requestedTutor.getEmail() + "";
+    String emailHtml = "Hi "
         + requestedTutor.getName()
-        + "<br /><br />You have a new tutoring request. To review it, please log in to your account at <a href=\""
+        + ",<br /><br />You have a new tutoring request. To review it, please log in to your account. at <a href=\""
         + Play.application().path() + "\">" + Play.application().path()
-        + "</a>.";
+        + "</a>."
+        + "<br /><br />Cheers,<br />The Tutor.me team";
     Application.sendEmail(emailSubject, emailRecipient, emailHtml);
   }
 

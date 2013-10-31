@@ -1,11 +1,30 @@
-# Tutors
+# Student
+students:
 
+    - !!models.Student
+        id:         1
+        username:   jar2262
+        email:      joaqo182@gmail.com
+        name:       Antonio Ruales Chieruzzi
+
+# Tutors
 tutors:
+
+    - !!models.Tutor
+        id:         2
+        username:   dap2163
+        email:      dperlmut@gmail.com
+        name:       Daniel Perlmutter
+        rating:     4.5
+        tagline:    Computer Science student at Columbia
+        costUSD:    10
+        subjects:   ["underwater-basketball"]
+        description: Description Description Description Description Description Description Description Description Description Description
 
     - !!models.Tutor
         id:         12345
         username:   kmm2256
-        email:      kmm2256@columbia.edu
+        email:      kevinmangan13@gmail.com
         name:       Kevin Mangan
         rating:     5 
         tagline:    Computer Science student at Columbia

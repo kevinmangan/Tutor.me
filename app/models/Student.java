@@ -2,11 +2,14 @@ package models;
 
 import java.util.List;
 
+import javax.persistence.Entity;
+
 import com.avaje.ebean.Query;
 
 /**
  * Represents a Tutor.me student
  */
+@Entity
 public class Student extends User {
 
   protected static final String requestSelfFieldName = "requestingStudent";

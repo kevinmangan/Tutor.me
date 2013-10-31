@@ -12,6 +12,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import javax.persistence.Entity;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -23,6 +25,7 @@ import play.db.ebean.Model;
 /**
  * Represents a tutoring session
  */
+@Entity
 public class Session extends Model {
   private static final long serialVersionUID = -1999689496450297894L;
 
