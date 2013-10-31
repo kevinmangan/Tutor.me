@@ -36,40 +36,46 @@ public class Profile extends Controller {
    // }
   }
 
+  public static Result postForm(String username) {
     
-
-  public static Result editProfile(String username) {
     DynamicForm requestData = form().bindFromRequest();
-    String tagline = requestData.get("editTagline");
-    String description = requestData.get("editAbout");
-    double cost = Double.parseDouble(requestData.get("editPrice"));
-    
+    double type = Double.parseDouble(requestData.get("type"));
+
     Query<Tutor> tutorResults  = Tutor.find.where().contains("username", username).orderBy("rating");
     List<Tutor> tutors = tutorResults.findList();
     Tutor tutor = tutors.get(0);
-    tutor.setTagline(tagline);
-    tutor.setDescription(description);
-    tutor.setCostUSD(cost);
-    return ok(profile.render(tutor, 1));
-  }
 
-  public static Result schedule(String username){
-    DynamicForm requestData = form().bindFromRequest();
+    if(type == 2){
+      String tagline = requestData.get("editTagline");
+      String description = requestData.get("editAbout");
+      double cost = Double.parseDouble(requestData.get("editPrice"));
+      
+      tutor.setTagline(tagline);
+      tutor.setDescription(description);
+      tutor.setCostUSD(cost);
+    
+    }else{
     String startTime = requestData.get("startTime");
     String endTime = requestData.get("endTime");
 
-    DateTimeFormatter formatter = DateTimeFormat.forPattern("hh/mm HH:mm:ss");
+    DateTimeFormatter formatter = DateTimeFormat.forPattern("hh/mm/YYYY hh:mm a");
     DateTime st = formatter.parseDateTime(startTime);
     DateTime et = formatter.parseDateTime(endTime);
 
     long startMillis = st.getMillis();
     long endMillis = et.getMillis();
 
-    Query<Tutor> tutorResults  = Tutor.find.where().contains("username", username).orderBy("rating");
-    List<Tutor> tutors = tutorResults.findList();
-    Tutor tutor = tutors.get(0);
-    Student.createRequest(tutor, startMillis, endMillis);
+    
+
+    // Test student
+    Student theStudent = Student.find.ref(1L);
+    theStudent.createRequest(tutor, startMillis, endMillis);
+  }
+    
+
     return ok(profile.render(tutor, 1));
   }
+
+ 
 
 }

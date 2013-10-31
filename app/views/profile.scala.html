@@ -45,9 +45,10 @@
                 <br><p><span class="label label-info">Price per hour</span> $@tutor.getCostUSD()</p><br>
                 <p><button id="bookTutor" class="btn btn-success" href="#">Book tutor &raquo;</button></p>
             
-              @helper.form(action = routes.Profile.schedule(tutor.getUsername())) {
+              @helper.form(action = routes.Profile.postForm(tutor.getUsername())) {
                 <div id="editSchedule">
                   <form role="form">
+                    <input type="hidden" name="type" value="1">
                     <div class="form-group">
                       <label for="startTime">Start time</label>
                       <input type="text" class="form-control" id="startTime" name="startTime">
@@ -56,7 +57,7 @@
                      <label for="endTime">End time</label>
                     <input type="text" class="form-control" id="endTime" name="endTime">
                    </div>
-                    <button type="submit" id="submitSchedule" class="btn btn-success">Submit</button>
+                    <button type="submit" id="submitSchedule" name="2" class="btn btn-success">Submit</button>
                    <button type="button" id="cancelSchedule" class="btn btn-danger">Cancel</button>
                   </form>
                   }
@@ -78,13 +79,14 @@
             </div>
           </div> <!-- well -->
 
-          @helper.form(action = routes.Profile.editProfile(tutor.getUsername())) {
+          @helper.form(action = routes.Profile.postForm(tutor.getUsername())) {
           <button type="button" id="edit" class="btn btn-primary">Edit Profile</button>
           
           <!-- Profile edit form -->
           
           <div id="editForm">
             <form role="form">
+              <input type="hidden" name="type" value="2">
               <div class="form-group">
                 <label for="editAbout">About</label>
                 <input type="textarea" class="form-control" name="editAbout" id="editAbout" placeholder="@tutor.getDescription()">
@@ -97,7 +99,7 @@
                 <label for="editPrice">Price per hour</label>
                 <input type="text" class="form-control" name="editPrice" id="editPrice" placeholder="@tutor.getCostUSD()">
               </div>
-              <button type="submit" id="submitEdit" class="btn btn-success">Submit</button>
+              <button type="submit" id="submitEdit" name="1" class="btn btn-success">Submit</button>
               <button type="button" id="cancel" class="btn btn-danger">Cancel</button>
             </form>
             }

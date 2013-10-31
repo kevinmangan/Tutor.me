@@ -25,8 +25,7 @@ POST    /search                                    controllers.Search.submit()
 
 # Tutor profile routes
 GET     /tutors/:username                                controllers.Profile.viewProfile(username: String)
-POST    /tutors/:username                                controllers.Profile.editProfile(username: String)           
-POST    /tutors/:username                                controllers.Profile.schedule(username: String)
+POST    /tutors/:username                                controllers.Profile.postForm(username: String)           
 
 # Test Pages
 GET     /test/user_list                                                  controllers.TestController.userListTest()
