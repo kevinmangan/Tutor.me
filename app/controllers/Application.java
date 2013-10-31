@@ -47,7 +47,12 @@ public class Application extends Controller {
   	String user = session("connected");
     if(user != null) {
     	//go to the users homepage
-      return ok(index.render("Welcome"));
+			if(Tutor.findTutor(user)!=null){
+				//Return Tutor Homepage
+				return TutorHome();
+			} else{
+				return StudentHome();
+			}
     } else {
     	//show signup or login
       return ok(index.render("Welcome"));
