@@ -2,6 +2,7 @@ package models;
 
 import java.util.List;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
@@ -190,7 +191,7 @@ public class Request extends Model {
    * 
    * @param session: The upcoming session
    */
-  public void sendSessionNotifications(Session session) {
+  public void sendSessionNotifications(TMSession session) {
     String sessionNotificationSubject = "New Tutor.me Session";
     Tutor sessionTutor = session.getTutor();
     String tutorRecipient = sessionTutor.getName() + " <"
@@ -224,8 +225,8 @@ public class Request extends Model {
         studentEmailHtml);
   }
 
-  public Session generateSession() {
-    Session session = new Session(requestingStudent, requestedTutor,
+  public TMSession generateSession() {
+    TMSession session = new TMSession(requestingStudent, requestedTutor,
         requestedStartTime, requestedEndTime);
     return session;
   }

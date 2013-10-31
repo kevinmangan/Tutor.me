@@ -2,43 +2,198 @@ package controllers;
 
 import java.util.Arrays;
 import java.util.List;
-
+import java.security.MessageDigest;
+import java.security.*;
+import java.io.*;
+import java.math.BigInteger;
+import models.User;
+import models.Student;
+import models.Tutor;
+import play.data.DynamicForm;
 import play.mvc.Controller;
 import play.mvc.Result;
-import views.html.index;
-
+import play.api.mvc.Session;
+import views.html.*;
 import com.typesafe.plugin.MailerAPI;
 import com.typesafe.plugin.MailerPlugin;
+import play.data.*;
+import static play.data.Form.*;
 
 public class Application extends Controller {
+	Form<Student> studentForm = form(Student.class);
+	Form<Tutor> tutorForm = form(Tutor.class);
 
-  public static Result index() {
-    return ok(index.render("Your new application is ready."));
+
+
+	/**
+	 *
+	 * @return  if user logged in
+	 */
+	public static boolean isLoggedIn(){
+		String user = session("connected");
+		if(user==null){
+			return false;
+		}
+		else{
+			return true;
+		}
+	}
+	/**
+	 *
+	 * @return  index Page
+	 */
+
+	public static Result index() {
+  	String user = session("connected");
+    if(user != null) {
+    	//go to the users homepage
+      return ok(index.render("Welcome"));
+    } else {
+    	//show signup or login
+      return ok(index.render("Welcome"));
+    }
   }
 
-  public static Result studentLogin() {
-    return TODO;
+	/**
+	 *
+	 * @return Tutor Home
+	 */
+
+	 public static Result TutorHome(){
+		 if(!isLoggedIn()){
+			 return redirect("/");
+		 }
+		 //
+		 //return ok(signedInTutorMain.render());
+		 return ok("TutorHOME");
+	 }
+	public static Result StudentHome(){
+		if(!isLoggedIn()){
+			return redirect("/");
+		}
+		String user = session("connected");
+		//
+		return ok("StudentHOME");
+	}
+	/**
+	 *
+	 * @return  to Index page with log in info for student
+	 */
+
+  public static Result studentLogin(){
+		DynamicForm requestData = form().bindFromRequest();
+		String userinfo = requestData.get("userIdentifier");
+		String password = requestData.get("password");
+		Student student = Student.findStudent(userinfo);
+		if(student!=null){
+			session("connected",student.getUsername());
+			return redirect("/StudentHome");
+		}
+		return ok(index.render("welcome"));
   }
 
-  public static Result tutorLogin() {
-    return TODO;
+	/**
+	 *
+	 * @return  to Index page of tutor
+	 */
+
+  public static Result tutorLogin(){
+		DynamicForm requestData = form().bindFromRequest();
+		String userinfo = requestData.get("userIdentifier");
+		String password = requestData.get("password");
+		Tutor tutor = Tutor.findTutor(userinfo);
+		if(tutor!=null){
+			session("connected",tutor.getUsername());
+			return redirect("/TutorHome");
+		}
+		return ok(index.render("welcome"));
   }
+
+	/**
+	 *
+	 * @return to Student Homepage
+	 */
 
   public static Result studentRegister() {
-    return TODO;
+  	DynamicForm requestData = form().bindFromRequest();
+  	String username = requestData.get("username");
+  	String email = requestData.get("email");
+		String fname = requestData.get("fname");
+		String lname = requestData.get("lname");
+		String fullName = fname+ " "+lname;
+		String password = requestData.get("password");
+		//Validate Data
+  	if(Student.existsStudent(username,email)){
+  		return index();
+  	}
+  	else{
+  		Student user = new Student();
+  		user.setUsername(username);
+  		user.setEmail(email);
+			user.setName(fullName);
+			String salt  = User.saltGenerate();
+			user.setSalt(salt);
+			user.setPwhash(User.encrypt(password,salt));
+			if(user.validate()){
+				Student.create(user);
+				session("connected",username);
+				return StudentHome();
+			}
+  		return index();
+  	}
   }
 
+	/**
+	 *
+	 * @return responseToTutorRegistrationAttempt
+	 */
   public static Result tutorRegister() {
-    return TODO;
+  	  	DynamicForm requestData = form().bindFromRequest();
+  	  	String username = requestData.get("username");
+  	  	String email = requestData.get("email");
+				String fname = requestData.get("fname");
+				String lname = requestData.get("lname");
+				String fullName = fname+ " "+lname;
+				String password = requestData.get("password");
+				//Validate Data
+  	  	if(Tutor.existsTutor(username,email)){
+  	  		return index();
+  	  	}
+  	  	else{
+  	  		Tutor user = new Tutor();
+  	  		user.setUsername(username);
+  	  		user.setEmail(email);
+					user.setName(fullName);
+					String salt  = User.saltGenerate();
+					user.setSalt(salt);
+					user.setPwhash(User.encrypt(password,salt));
+					if(user.validate()){
+						Tutor.create(user);
+						session("connected",username);
+						return TutorHome();
+					}
+  	  		return index();
+  	  	}
   }
 
-  /**
+	/**
+	 *
+	 * @return mainSignedOutPage
+	 */
+
+	public static Result logout(){
+		session().clear();
+		//Go to log out page
+		return index();
+	}
+/**
    * Sends an email to the specified recipients
    * 
    * @param emailSubject: The subject of the email
    * @param emailRecipient: The recipient of the email
    * @param emailHtml: The html text contained in the email
    */
+
   public static void sendEmail(String emailSubject, String emailRecipient, String emailHtml) {
     sendEmail(emailSubject, Arrays.asList(emailRecipient), emailHtml);
   }
@@ -50,6 +205,7 @@ public class Application extends Controller {
    * @param emailRecipients: The recipients of the email
    * @param emailHtml: The html text contained in the email
    */
+
   public static void sendEmail(String emailSubject,
       List<String> emailRecipients, String emailHtml) {
     MailerAPI mail = play.Play.application().plugin(MailerPlugin.class).email();

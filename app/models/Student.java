@@ -3,8 +3,11 @@ package models;
 import java.util.List;
 
 import javax.persistence.Entity;
-
 import com.avaje.ebean.Query;
+import javax.persistence.Table;
+import play.api.mvc.Session;
+
+import static play.data.Form.*;
 
 /**
  * Represents a Tutor.me student
@@ -111,5 +114,39 @@ public class Student extends User {
     double ratingAggregate = tutor.getRating() * numRaters;
     tutor.setRating((ratingAggregate + rating) / updateNumRaters);
     tutor.setNumRaters(updateNumRaters);
+  }
+  /**
+   * Checks if student exists in database
+   * 
+   * @param username: The potential username for the Student
+   * @param email: The potential email for the Student
+   */
+  public static boolean existsStudent(String username, String email){
+  	Student matchingStudent = find.where()
+  			.or(com.avaje.ebean.Expr.eq("username",username),
+  					com.avaje.ebean.Expr.eq("email", email)).findUnique();
+  	if(matchingStudent!=null){
+  		return true;
+  	}
+  	else{
+  		return false;
+  	}
+  }
+  /**
+   * Find student by username or email
+   * 
+   * @param unoe: Username or email
+   * 
+   * @return Student
+   */
+  public static Student findStudent(String unoe){
+  	Student students = find.where().eq("email",unoe).findUnique();
+  	if(students==null){
+			students = find.where().eq("username",unoe).findUnique();
+			return students;
+		}
+		else{
+			return students;
+		}
   }
 }

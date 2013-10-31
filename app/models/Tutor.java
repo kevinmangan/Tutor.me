@@ -3,13 +3,15 @@ package models;
 import java.util.List;
 
 import javax.persistence.Entity;
-
 import org.apache.commons.lang3.StringUtils;
 
 import java.sql.Blob;
 
 import java.io.File;
 
+
+import javax.persistence.Table;
+import play.api.mvc.Session;
 /**
  * Represents a Tutor.me tutor
  */
@@ -171,11 +173,50 @@ public class Tutor extends User {
    */
   public void respondToRequest(Request request, boolean response) {
     if (response) {
-      Session session = request.generateSession();
+      TMSession session = request.generateSession();
       request.sendSessionNotifications(session);
     } else {
       request.sendCancellationNotification(true);
     }
     request.delete();
   }
+  /**
+   * Checks if Tutor exists in database
+   * 
+   * @param username: The potential username for the Student
+   * @param email: The potential email for the Student
+   */
+  public static boolean existsTutor(String username, String email){
+  	Tutor matchingTutors = find.where()
+  			.or(com.avaje.ebean.Expr.eq("username",username),
+  					com.avaje.ebean.Expr.eq("email", email)).findUnique();
+  	if(matchingTutors==null){
+  		return false;
+  	}
+  	else{
+  		return true;
+  	}
+  }
+	/**
+	 * Find Tutor by username or email
+	 *
+	 * @param unoe: Username or email
+	 *
+	 * @return Tutor
+	 */
+	public static Tutor findTutor(String unoe){
+		Tutor matchingTutors = find.where().eq("email",unoe).findUnique();
+		if(matchingTutors==null){
+			matchingTutors = find.where().eq("username",unoe).findUnique();
+			if(matchingTutors==null){
+				return null;
+			}
+			else{
+				return matchingTutors;
+			}
+		}
+		else{
+			return matchingTutors;
+		}
+	}
 }
