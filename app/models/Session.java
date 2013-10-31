@@ -12,7 +12,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -20,7 +20,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import play.db.ebean.Model;
+import play.db.ebean.*;
+import com.avaje.ebean.*;
 
 /**
  * Represents a tutoring session
@@ -34,9 +35,11 @@ public class Session extends Model {
   public Long id;
 
   // The student for this session
+  @ManyToOne
   private Student student;
 
   // The tutor for this session
+  @ManyToOne
   private Tutor tutor;
 
   // The start time of this tutoring session
@@ -53,8 +56,7 @@ public class Session extends Model {
     this.tutor = tutor;
     this.startTime = startTime;
     this.endTime = endTime;
-    this.scribblarId = null;
-    addScribblarRoom();
+    this.scribblarId = Scribblar.addScribblarRoom();
     if(this.scribblarId==null) {
       //throw new Exception();//Should be a SessionGenerationException
     }
@@ -151,14 +153,14 @@ public class Session extends Model {
    * Activates the Scribblar room for this tutoring session
    */
   public void activateRoom() {
-    setScribblarId(addScribblarRoom());
+    setScribblarId(Scribblar.addScribblarRoom());
   }
 
   /**
    * Deactivates the Scribblar room for this tutoring session
    */
   public void deactivateRoom() {
-    deleteScribblarRoom(scribblarId);
+    Scribblar.deleteScribblarRoom(scribblarId);
   }
 
   /**
@@ -187,52 +189,6 @@ public class Session extends Model {
         return null;
       }
     } catch (Exception e) {
-      return null;
-    }
-  }
-  /*
-   * Adds a room to external Scribblar database, returns the room id, which needs to be passed to Sessions.launchSession along with Scribblar user id
-   *
-   * returns roomId if successful, null if not
-   */
-  public static String addScribblarRoom() {
-    String requestString = "function=rooms.add" +
-    "&roomname=testroom" +
-    "&allowguests=0" +
-    "&roomvideo=1" +
-    "&roomwolfram=1" +
-    "&hideflickr=1" +
-    "&autostartcam=1"+
-    "&autostartaudio=1";
-    Document doc = makeScribblarRequest(requestString);
-
-    NodeList list = doc.getElementsByTagName("response");
-    if(list.item(0).getAttributes().getNamedItem("status").getNodeValue().equals("ok")) {
-      // Success!
-      Node roomIdNode = doc.getElementsByTagName("roomid").item(0);
-      return roomIdNode.getTextContent();
-    } else {
-      // An error occured!
-      return null;
-    }
-  }
-  /*
-   * deleteScribblarRoom
-   *
-   * deletes the room with the given id from Scribblar's database
-   * returns roomId if successful, null if not
-   */
-  public static String deleteScribblarRoom(String roomId) {
-    String requestString = "function=rooms.delete" +
-    "&roomid="+roomId;
-    Document doc = makeScribblarRequest(requestString);
-
-    NodeList list = doc.getElementsByTagName("response");
-    if(list.item(0).getAttributes().getNamedItem("status").getNodeValue().equals("ok")) {
-      // Success!
-      return roomId;
-    } else {
-      // An error occured!
       return null;
     }
   }

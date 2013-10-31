@@ -5,6 +5,8 @@
 
 create table request (
   id                        bigint not null,
+  requesting_student_id     bigint,
+  requested_tutor_id        bigint,
   requested_start_time      bigint,
   requested_end_time        bigint,
   constraint pk_request primary key (id))
@@ -12,6 +14,8 @@ create table request (
 
 create table session (
   id                        bigint not null,
+  student_id                bigint,
+  tutor_id                  bigint,
   start_time                bigint,
   end_time                  bigint,
   scribblar_id              varchar(255),
@@ -51,6 +55,14 @@ create sequence student_seq;
 
 create sequence tutor_seq;
 
+alter table request add constraint fk_request_requestingStudent_1 foreign key (requesting_student_id) references student (id) on delete restrict on update restrict;
+create index ix_request_requestingStudent_1 on request (requesting_student_id);
+alter table request add constraint fk_request_requestedTutor_2 foreign key (requested_tutor_id) references tutor (id) on delete restrict on update restrict;
+create index ix_request_requestedTutor_2 on request (requested_tutor_id);
+alter table session add constraint fk_session_student_3 foreign key (student_id) references student (id) on delete restrict on update restrict;
+create index ix_session_student_3 on session (student_id);
+alter table session add constraint fk_session_tutor_4 foreign key (tutor_id) references tutor (id) on delete restrict on update restrict;
+create index ix_session_tutor_4 on session (tutor_id);
 
 
 

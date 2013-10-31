@@ -27,6 +27,9 @@ POST    /search                                    controllers.Search.submit()
 GET     /tutors/:username                                controllers.Profile.viewProfile(username: String)
 POST    /tutors/:username                                controllers.Profile.postForm(username: String)           
 
+# Unique link to responds to the given request
+GET     /tutors/requests/respond_to_request/:requestId/:response      controllers.Tutors.respondToRequest(requestId: Long, response: Boolean)      
+
 # Test Pages
 GET     /test/user_list                                                  controllers.TestController.userListTest()
 GET     /test/send_request/:studentId/:tutorId/:startTime/:endTime       controllers.TestController.sendRequestTest(studentId: Long, tutorId: Long, startTime: Long, endTime: Long)

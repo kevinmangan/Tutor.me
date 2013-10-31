@@ -12,7 +12,8 @@ import com.typesafe.plugin.MailerPlugin;
 
 import models.Tutor;
 import models.Student;
-import com.avaje.ebean.Query;
+import models.Request;
+import com.avaje.ebean.*;
 
 public class TestController extends Controller {
 
@@ -29,8 +30,7 @@ public class TestController extends Controller {
   public static Result sendRequestTest(Long studentId, Long tutorId, long startTime, long endTime) {
     Student theStudent = Student.find.ref(studentId);
     Tutor theTutor = Tutor.find.ref(tutorId);
-    theStudent.createRequest(theTutor, startTime, endTime);
-
-    return ok("The request should have been created. Please check tutor's email.");
+    Request theRequest = theStudent.createRequest(theTutor, startTime, endTime);
+    return ok("The request should have been created. Please check tutor's email. request:"+theRequest.id + ", tutor"+theRequest.getRequestedTutor() + ", student:"+theRequest.getRequestingStudent());
   }
 }

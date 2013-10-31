@@ -42,6 +42,7 @@ public class Student extends User {
    */
   public Request createRequest(Tutor tutor, long startTime, long endTime) {
     Request request = new Request(this, tutor, startTime, endTime);
+    request.save();
     request.sendRequestNotification();
     return request;
   }

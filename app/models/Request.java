@@ -7,12 +7,15 @@ import javax.persistence.Id;
 
 import org.joda.time.DateTime;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 import play.Play;
 import play.data.validation.Constraints.Required;
-import play.db.ebean.Model;
+import play.db.ebean.*;
 import controllers.Application;
+
+import com.avaje.ebean.*;
+
 
 /**
  * Represents a request for a tutoring session
@@ -26,10 +29,14 @@ public class Request extends Model {
   @GeneratedValue
   public Long id;
 
+  public static final String ROOT_URL = "http://localhost:9000";
+
   // The student requesting this session
+  @ManyToOne
   private Student requestingStudent;
 
   // The tutor this request is being made of
+  @ManyToOne
   private Tutor requestedTutor;
 
   // The requested start time
@@ -71,6 +78,8 @@ public class Request extends Model {
    * @return the requestinStudent
    */
   public Student getRequestingStudent() {
+    //TODO
+    //return Student.find.ref(1L);
     return requestingStudent;
   }
 
@@ -85,6 +94,8 @@ public class Request extends Model {
    * @return the requestedTutor
    */
   public Tutor getRequestedTutor() {
+    //TODO
+    //return Tutor.find.ref(2L);
     return requestedTutor;
   }
 
@@ -134,8 +145,8 @@ public class Request extends Model {
         + requestedTutor.getEmail() + "";
     String emailHtml = "Hi "
         + requestedTutor.getName()
-        + ",<br /><br />You have a new tutoring request. To review it, please log in to your account. at <a href=\""
-        + Play.application().path() + "\">" + Play.application().path()
+        + ",<br /><br />You have a new tutoring request. To accept it, click the link at <a href=\""
+        + ROOT_URL + controllers.routes.Tutors.respondToRequest(id, true) + "\">" + ROOT_URL + controllers.routes.Tutors.respondToRequest(id, true)
         + "</a>."
         + "<br /><br />Cheers,<br />The Tutor.me team";
     Application.sendEmail(emailSubject, emailRecipient, emailHtml);
