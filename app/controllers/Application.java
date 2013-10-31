@@ -1,13 +1,12 @@
 package controllers;
 
-import java.util.Arrays;
-import java.util.List;
 import java.security.MessageDigest;
 import java.security.*;
 import java.io.*;
 import java.math.BigInteger;
 import models.User;
 import models.Student;
+import java.util.*;
 import models.Tutor;
 import play.data.DynamicForm;
 import play.mvc.Controller;
@@ -16,6 +15,7 @@ import play.api.mvc.Session;
 import views.html.*;
 import com.typesafe.plugin.MailerAPI;
 import com.typesafe.plugin.MailerPlugin;
+import com.avaje.ebean.Query;
 import play.data.*;
 import static play.data.Form.*;
 
@@ -24,6 +24,55 @@ public class Application extends Controller {
 	Form<Tutor> tutorForm = form(Tutor.class);
 
 
+	public static Result loginRoute(){
+
+		DynamicForm requestData = form().bindFromRequest();
+		double type = Double.parseDouble(requestData.get("type"));
+
+		// Student log in
+		if(type == 1){
+			String username = requestData.get("username");
+			String password = requestData.get("password");
+			studentLogin(username, password);
+			List<Tutor> emptyList = Collections.<Tutor>emptyList();
+      		return ok(search.render(emptyList));
+
+		// Student register
+		}else if(type == 2){
+			String username = requestData.get("username");
+			String password = requestData.get("password");
+			String fullName = requestData.get("fullName");
+			String email = requestData.get("email");
+			studentRegister(username, password, fullName, email);
+			List<Tutor> emptyList = Collections.<Tutor>emptyList();
+      		return ok(search.render(emptyList));
+
+		// Tutor sign in
+		}else if(type == 3){
+			String username = requestData.get("username");
+			String password = requestData.get("password");
+			tutorLogin(username, password);
+			Query<Tutor> tutorResults  = Tutor.find.where().contains("username", username).orderBy("rating");
+        	List<Tutor> tutors = tutorResults.findList();
+        	Tutor tutor = tutors.get(0);
+      		return ok(profile.render(tutor, 1));
+
+		// Tutor register
+		}else if(type == 4){
+			String username = requestData.get("username");
+			String password = requestData.get("password");
+			String fullName = requestData.get("fullName");
+			String email = requestData.get("email");
+			tutorRegister(username, password, fullName, email);
+			Query<Tutor> tutorResults  = Tutor.find.where().contains("username", username).orderBy("rating");
+       	 	List<Tutor> tutors = tutorResults.findList();
+        	Tutor tutor = tutors.get(0);
+			return ok(profile.render(tutor, 1));
+
+		}
+
+
+	}
 
 	/**
 	 *
@@ -38,6 +87,13 @@ public class Application extends Controller {
 			return true;
 		}
 	}
+
+	public static String loggedUser(){
+		String username = session("connected");
+		return username;
+	}
+
+
 	/**
 	 *
 	 * @return  index Page
@@ -85,15 +141,12 @@ public class Application extends Controller {
 	 * @return  to Index page with log in info for student
 	 */
 
-  public static Result studentLogin(){
-		DynamicForm requestData = form().bindFromRequest();
-		String userinfo = requestData.get("userIdentifier");
-		String password = requestData.get("password");
-		if(Student.authenticate(userinfo,password)){
-			session("connected",Student.findStudent("userinfo").getEmail());
+  public static void studentLogin(String username, String password){
+		if(Student.authenticate(username, password)){
+			session("connected",Student.findStudent("username").getUsername());
 			return redirect("/StudentHome");
 		}
-		return ok(index.render("welcome"));
+		
   }
 
 	/**
@@ -101,15 +154,12 @@ public class Application extends Controller {
 	 * @return  to Index page of tutor
 	 */
 
-  public static Result tutorLogin(){
-		DynamicForm requestData = form().bindFromRequest();
-		String userinfo = requestData.get("userIdentifier");
-		String password = requestData.get("password");
-		if(Student.authenticate(userinfo,password)){
-			session("connected",Tutor.findTutor(userinfo).getEmail());
+  public static void tutorLogin(String username, String password){
+		if(Student.authenticate(username, password)){
+			session("connected",Tutor.findTutor(username).getUsername());
 			return redirect("/TutorHome");
 		}
-		return ok(index.render("welcome"));
+		
   }
 
 	/**
@@ -117,7 +167,7 @@ public class Application extends Controller {
 	 * @return to Student Homepage
 	 */
 
-  public static Result studentRegister() {
+  public static void studentRegister(String username, String password, String fullName, String email) {
   	DynamicForm requestData = form().bindFromRequest();
   	/*String username = requestData.get("username");
   	String email = requestData.get("email");
@@ -126,10 +176,6 @@ public class Application extends Controller {
 		String fullName = fname+ " "+lname;
 		String password = requestData.get("password");*/
 		//TODO fix this
-  	String username = "1337h4xor";
-  	String email = "full_name@email.com";
-	String fullName = "FULL NAME";
-	String password = "SECRET";
 		
 		
   	if(Student.existsStudent(username,email)){
@@ -146,10 +192,10 @@ public class Application extends Controller {
 
 			if(user.validate()){
 				Student.create(user);
-				session("connected",email);
+				session("connected", username);
 				return StudentHome();
 			}
-  		return index();
+  		
   	}
   }
 
@@ -157,14 +203,8 @@ public class Application extends Controller {
 	 *
 	 * @return responseToTutorRegistrationAttempt
 	 */
-  public static Result tutorRegister() {
-  	  	DynamicForm requestData = form().bindFromRequest();
-  	  	String username = requestData.get("username");
-  	  	String email = requestData.get("email");
-				String fname = requestData.get("fname");
-				String lname = requestData.get("lname");
-				String fullName = fname+ " "+lname;
-				String password = requestData.get("password");
+  public static void tutorRegister(String username, String password, String fullName, String email) {
+  	  	
 				//Validate Data
   	  	if(Tutor.existsTutor(username,email)){
   	  		return index();
@@ -179,10 +219,10 @@ public class Application extends Controller {
 					user.setPwhash(User.encrypt(password,salt));
 					if(user.validate()){
 						Tutor.create(user);
-						session("connected",email);
+						session("connected",username);
 						return TutorHome();
 					}
-  	  		return index();
+  	  		
   	  	}
   }
 

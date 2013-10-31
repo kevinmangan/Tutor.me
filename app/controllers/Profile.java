@@ -23,22 +23,26 @@ import java.io.File;
 public class Profile extends Controller {
 
   public static Result viewProfile(String username) {
-    //final User localUser = getLocalUser(session());
-    //String localName = localUser.getUsername();
-    Query<Tutor> tutorResults  = Tutor.find.where().contains("username", username).orderBy("rating");
-    List<Tutor> tutors = tutorResults.findList();
-    Tutor tutor = tutors.get(0);
-
-    // If the user viewing the profile is the tutor himself, pass in 1 so view knows to show the edit button  
-    //if(localName.equals(username)){
-        return ok(profile.render(tutor, 1));
-    //}else if(username != null){
     
-      //return ok(profile.render(tutor, 0, 1));
-    //}else{
-    //  return unauthorized("Oops, you are not connected");
-   // }
-  }
+    if(isLoggedIn()){
+        String localUser = loggedUser();
+
+        Query<Tutor> tutorResults  = Tutor.find.where().contains("username", username).orderBy("rating");
+        List<Tutor> tutors = tutorResults.findList();
+        Tutor tutor = tutors.get(0);
+
+        // If the user viewing the profile is the tutor himself, pass in 1 so view knows to show the edit button  
+        if(localUser.equals(username)){
+            return ok(profile.render(tutor, 1));
+
+        }else{   
+          return ok(profile.render(tutor, 0));
+        }
+    }else{
+      return unauthorized("Oops, you are not connected");
+    }
+}
+
 
   public static Result postForm(String username) {
     

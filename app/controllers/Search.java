@@ -14,13 +14,16 @@ import views.html.search;
 public class Search extends Controller {
 
   public static Result search() {
-    //String user = session("connected");
-    //if(user != null){
-      List<Tutor> emptyList = Collections.<Tutor>emptyList();
-      return ok(search.render(emptyList));
-    //}else {
-    //  return unauthorized("Oops, you are not connected");
-    //}
+    
+
+    if(isLoggedIn()){
+        List<Tutor> emptyList = Collections.<Tutor>emptyList();
+        return ok(search.render(emptyList));
+    }else{
+      return unauthorized("Oops, you are not connected");
+    }
+
+      
   }
 
     

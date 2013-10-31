@@ -4,6 +4,7 @@
 
 # Index page
 GET     /                                          controllers.Application.index()
+POST    /                                          controllers.Application.loginRoute()
 
 #Main Pages
 GET /TutorHome                                      controllers.Application.TutorHome()
@@ -12,18 +13,10 @@ GET /StudentHome                                    controllers.Application.Stud
 # Some routes we might use, taken from the "zentasks" sample Java Play project
 # Authentication
 
-GET     /studentLogin                              controllers.Application.studentLogin()
-GET     /tutorLogin                                controllers.Application.tutorLogin()
-GET     /logout                                    controllers.Application.logout()
-
 
 GET     /classroom/:chatRoomId/:userScribblarId    controllers.Sessions.launchSession(chatRoomId: String, userScribblarId)
 
-# Student Register
-GET    /student_register                          controllers.Application.studentRegister()
 
-# Home page
-GET    /tutor_register                            controllers.Application.tutorRegister()
 
 # The student-side routes
 GET     /search						               controllers.Search.search()
