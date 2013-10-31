@@ -7,8 +7,10 @@ GET     /                                          controllers.Application.index
 POST    /                                          controllers.Application.loginRoute()
 
 #Main Pages
-GET /TutorHome                                      controllers.Application.TutorHome()
-GET /StudentHome                                    controllers.Application.StudentHome()
+#GET /TutorHome                                      controllers.Application.TutorHome()
+#GET /StudentHome                                    controllers.Application.StudentHome()
+
+POST /logout	         									controllers.Logout.logout()
 
 # Some routes we might use, taken from the "zentasks" sample Java Play project
 # Authentication

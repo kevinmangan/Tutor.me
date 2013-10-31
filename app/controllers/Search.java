@@ -13,6 +13,21 @@ import views.html.search;
 
 public class Search extends Controller {
 
+  public static boolean isLoggedIn(){
+    String user = session("connected");
+    if(user==null){
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
+
+  public static String loggedUser(){
+    String username = session("connected");
+    return username;
+  }
+
   public static Result search() {
     
 

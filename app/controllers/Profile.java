@@ -20,7 +20,25 @@ import play.mvc.Http.MultipartFormData.*;
 import java.io.File;
 
 
+
+
 public class Profile extends Controller {
+
+
+  public static boolean isLoggedIn(){
+    String user = session("connected");
+    if(user==null){
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
+
+  public static String loggedUser(){
+    String username = session("connected");
+    return username;
+  }
 
   public static Result viewProfile(String username) {
     

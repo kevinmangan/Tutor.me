@@ -13,6 +13,12 @@
           </button>
           <a class="navbar-brand" href="#">Tutor.me</a>
         </div>
+
+        <div class="navbar-collapse collapse">
+        @helper.form(action = routes.Logout.logout){
+        <br><button  type="submit" class="btn btn-danger btn-sm navbar-right" action="@routes.Logout.logout">Logout</button>
+        }
+        </div>
         
       </div><!-- /.container -->
     </div><!-- /.navbar -->

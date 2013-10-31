@@ -70,7 +70,7 @@ public class Application extends Controller {
 			return ok(profile.render(tutor, 1));
 
 		}
-
+		return unauthorized("Oops, you are not connected");
 
 	}
 
@@ -105,9 +105,11 @@ public class Application extends Controller {
     	//go to the users homepage
 			if(Tutor.findTutor(user)!=null){
 				//Return Tutor Homepage
-				return TutorHome();
+				Tutor tutor = Tutor.findTutor(user);
+				return ok(profile.render(tutor, 1));
 			} else{
-				return StudentHome();
+				List<Tutor> emptyList = Collections.<Tutor>emptyList();
+      			return ok(search.render(emptyList));
 			}
     } else {
     	//show signup or login
@@ -120,6 +122,7 @@ public class Application extends Controller {
 	 * @return Tutor Home
 	 */
 
+/*
 	 public static Result TutorHome(){
 		 if(!isLoggedIn()){
 			 return redirect("/");
@@ -136,6 +139,7 @@ public class Application extends Controller {
 		//
 		return ok("StudentHOME");
 	}
+	*/
 	/**
 	 *
 	 * @return  to Index page with log in info for student
@@ -144,7 +148,7 @@ public class Application extends Controller {
   public static void studentLogin(String username, String password){
 		if(Student.authenticate(username, password)){
 			session("connected",Student.findStudent("username").getUsername());
-			return redirect("/StudentHome");
+			
 		}
 		
   }
@@ -157,7 +161,7 @@ public class Application extends Controller {
   public static void tutorLogin(String username, String password){
 		if(Student.authenticate(username, password)){
 			session("connected",Tutor.findTutor(username).getUsername());
-			return redirect("/TutorHome");
+			
 		}
 		
   }
@@ -179,7 +183,7 @@ public class Application extends Controller {
 		
 		
   	if(Student.existsStudent(username,email)){
-  		return index();
+  		index();
   	}
   	else{
   		Student user = new Student();
@@ -193,7 +197,7 @@ public class Application extends Controller {
 			if(user.validate()){
 				Student.create(user);
 				session("connected", username);
-				return StudentHome();
+				index();
 			}
   		
   	}
@@ -207,7 +211,7 @@ public class Application extends Controller {
   	  	
 				//Validate Data
   	  	if(Tutor.existsTutor(username,email)){
-  	  		return index();
+  	  		 index();
   	  	}
   	  	else{
   	  		Tutor user = new Tutor();
@@ -220,7 +224,7 @@ public class Application extends Controller {
 					if(user.validate()){
 						Tutor.create(user);
 						session("connected",username);
-						return TutorHome();
+						 index();
 					}
   	  		
   	  	}
@@ -234,7 +238,7 @@ public class Application extends Controller {
 	public static Result logout(){
 		session().clear();
 		//Go to log out page
-		return index();
+		return  ok(index.render("Welcome"));
 	}
 /**
    * Sends an email to the specified recipients
