@@ -1,10 +1,16 @@
 package controllers;
+
 import static play.data.Form.form;
 import java.lang.*;
 import java.util.Collections;
 import java.util.List;
+import java.util.*;
+import java.util.Date.*;
+import org.joda.time.format.*;
+import org.joda.time.DateTime;
 import com.avaje.ebean.Query;
 import models.Tutor;
+import models.Student;
 import play.*;
 import play.mvc.*;
 import play.data.*;
@@ -46,6 +52,24 @@ public class Profile extends Controller {
     tutor.setCostUSD(cost);
     return ok(profile.render(tutor, 1));
   }
-  
+
+  public static Result schedule(String username){
+    DynamicForm requestData = form().bindFromRequest();
+    String startTime = requestData.get("startTime");
+    String endTime = requestData.get("endTime");
+
+    DateTimeFormatter formatter = DateTimeFormat.forPattern("hh/mm HH:mm:ss");
+    DateTime st = formatter.parseDateTime(startTime);
+    DateTime et = formatter.parseDateTime(endTime);
+
+    long startMillis = st.getMillis();
+    long endMillis = et.getMillis();
+
+    Query<Tutor> tutorResults  = Tutor.find.where().contains("username", username).orderBy("rating");
+    List<Tutor> tutors = tutorResults.findList();
+    Tutor tutor = tutors.get(0);
+    Student.createRequest(tutor, startMillis, endMillis);
+    return ok(profile.render(tutor, 1));
+  }
 
 }

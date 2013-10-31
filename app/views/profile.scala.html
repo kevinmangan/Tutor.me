@@ -43,23 +43,21 @@
                 <span class="label label-info">Rating</span>
                 <div class="rateit" data-rateit-value= "@tutor.getRating()" data-rateit-ispreset="true" data-rateit-readonly="true"></div>
                 <br><p><span class="label label-info">Price per hour</span> $@tutor.getCostUSD()</p><br>
-                <p><a class="btn btn-success" href="#">Book tutor &raquo;</a></p>
+                <p><button id="bookTutor" class="btn btn-success" href="#">Book tutor &raquo;</button></p>
             
-              @helper.form(action = routes.Profile.editProfile(tutor.getUsername())) {
-                <div id="schedule">
+              @helper.form(action = routes.Profile.schedule(tutor.getUsername())) {
+                <div id="editSchedule">
                   <form role="form">
                     <div class="form-group">
                       <label for="startTime">Start time</label>
-                      
-
+                      <input type="text" class="form-control" id="startTime" name="startTime">
                     </div>
                    <div class="form-group">
                      <label for="endTime">End time</label>
-                      
+                    <input type="text" class="form-control" id="endTime" name="endTime">
                    </div>
-                    
                     <button type="submit" id="submitSchedule" class="btn btn-success">Submit</button>
-                    <button type="button" id="cancel" class="btn btn-danger">Cancel</button>
+                   <button type="button" id="cancelSchedule" class="btn btn-danger">Cancel</button>
                   </form>
                   }
                 </div>

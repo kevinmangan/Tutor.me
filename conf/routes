@@ -26,7 +26,7 @@ POST    /search                                    controllers.Search.submit()
 # Tutor profile routes
 GET     /tutors/:username                                controllers.Profile.viewProfile(username: String)
 POST    /tutors/:username                                controllers.Profile.editProfile(username: String)           
-
+POST    /tutors/:username                                controllers.Profile.schedule(username: String)
 
 
 # Map static resources from the /public folder to the /assets URL path
