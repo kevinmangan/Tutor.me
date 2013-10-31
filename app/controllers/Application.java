@@ -84,9 +84,8 @@ public class Application extends Controller {
 		DynamicForm requestData = form().bindFromRequest();
 		String userinfo = requestData.get("userIdentifier");
 		String password = requestData.get("password");
-		Student student = Student.findStudent(userinfo);
-		if(student!=null){
-			session("connected",student.getUsername());
+		if(Student.authenticate(userinfo,password)){
+			session("connected",Student.findStudent("userinfo").getEmail());
 			return redirect("/StudentHome");
 		}
 		return ok(index.render("welcome"));
@@ -101,9 +100,8 @@ public class Application extends Controller {
 		DynamicForm requestData = form().bindFromRequest();
 		String userinfo = requestData.get("userIdentifier");
 		String password = requestData.get("password");
-		Tutor tutor = Tutor.findTutor(userinfo);
-		if(tutor!=null){
-			session("connected",tutor.getUsername());
+		if(Student.authenticate(userinfo,password)){
+			session("connected",Tutor.findTutor(userinfo).getEmail());
 			return redirect("/TutorHome");
 		}
 		return ok(index.render("welcome"));
@@ -136,7 +134,7 @@ public class Application extends Controller {
 			user.setPwhash(User.encrypt(password,salt));
 			if(user.validate()){
 				Student.create(user);
-				session("connected",username);
+				session("connected",email);
 				return StudentHome();
 			}
   		return index();
@@ -169,7 +167,7 @@ public class Application extends Controller {
 					user.setPwhash(User.encrypt(password,salt));
 					if(user.validate()){
 						Tutor.create(user);
-						session("connected",username);
+						session("connected",email);
 						return TutorHome();
 					}
   	  		return index();
