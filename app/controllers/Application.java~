@@ -47,12 +47,7 @@ public class Application extends Controller {
   	String user = session("connected");
     if(user != null) {
     	//go to the users homepage
-			if(Tutor.findTutor(user)!=null){
-				//Return Tutor Homepage
-				return TutorHome();
-			} else{
-				return StudentHome();
-			}
+      return ok(index.render("Welcome"));
     } else {
     	//show signup or login
       return ok(index.render("Welcome"));
@@ -119,19 +114,13 @@ public class Application extends Controller {
 
   public static Result studentRegister() {
   	DynamicForm requestData = form().bindFromRequest();
-  	/*String username = requestData.get("username");
+  	String username = requestData.get("username");
   	String email = requestData.get("email");
 		String fname = requestData.get("fname");
 		String lname = requestData.get("lname");
 		String fullName = fname+ " "+lname;
-		String password = requestData.get("password");*/
-		//TODO fix this
-  	String username = "1337h4xor";
-  	String email = "full_name@email.com";
-	String fullName = "FULL NAME";
-	String password = "SECRET";
-		
-		
+		String password = requestData.get("password");
+		//Validate Data
   	if(Student.existsStudent(username,email)){
   		return index();
   	}
@@ -142,7 +131,13 @@ public class Application extends Controller {
 			user.setName(fullName);
 			String salt  = User.saltGenerate();
 			user.setSalt(salt);
+
+
+			password = "SECRET";
+
 			user.setPwhash(User.encrypt(password,salt));
+
+			
 
 			if(user.validate()){
 				Student.create(user);

@@ -1,16 +1,25 @@
 package models;
 
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.List;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-
+import models.TMSession;
 import org.joda.time.DateTime;
 
+import play.data.validation.Constraints.*;
 import play.db.ebean.Model;
 
 import com.avaje.ebean.ExpressionList;
+import play.api.mvc.Session;
+
 
 import models.Scribblar;
 
@@ -35,9 +44,11 @@ public abstract class User extends Model {
   public Long id;
 
   // The username of this user on Tutor.me
+	@Required
   private String username;
 
   // The email address of this user
+	@Required
   private String email;
 
   // The full name of this user
@@ -45,6 +56,12 @@ public abstract class User extends Model {
 
   // The id of the scribblar user corresponding to this user
   private String scribblarId;
+
+	//The password hash
+	private String pwhash;
+
+	//The password salt
+	private String salt;
 
   public static Finder<Long, User> find = new Finder<Long, User>(Long.class,
       User.class);
@@ -69,7 +86,7 @@ public abstract class User extends Model {
    * @return the username
    */
   public String getUsername() {
-    return username;
+    return this.username;
   }
 
   /**
@@ -124,6 +141,28 @@ public abstract class User extends Model {
     return scribblarId != null;
   }
 
+	/**
+	 *
+	 * @return  Users salt
+	 */
+	public String getSalt(){
+		return this.salt;
+	}
+
+	/**
+	 *
+	 * @param s: salt
+	 */
+	public void setSalt(String s){
+		this.salt = s;
+	}
+
+	public String getPwhash(){
+		return this.pwhash;
+	}
+	public void setPwhash(String phash){
+		this.pwhash = phash;
+	}
   /**
    * Gets the requests associated with this user
    * 
@@ -140,8 +179,8 @@ public abstract class User extends Model {
    * 
    * @return: The list of upcoming Sessions associated with this user
    */
-  public List<Session> getUpcomingSessions() {
-    ExpressionList<Session> upcomingSessionResults = Session.find.where()
+  public List<TMSession> getUpcomingSessions() {
+    ExpressionList<TMSession> upcomingSessionResults = TMSession.find.where()
     .eq(sessionSelfFieldName, this).gt("startTime", DateTime.now());
     return upcomingSessionResults.findList();
   }
@@ -151,8 +190,8 @@ public abstract class User extends Model {
    * 
    * @return: The list of completed Sessions associated with this user
    */
-  public List<Session> getCurrentSessions(String selfFieldName) {
-    ExpressionList<Session> completedSessionResults = Session.find.where()
+  public List<TMSession> getCurrentSessions(String selfFieldName) {
+    ExpressionList<TMSession> completedSessionResults = TMSession.find.where()
     .eq(sessionSelfFieldName, this).le("startTime", DateTime.now())
     .ge("endTime", DateTime.now());
     return completedSessionResults.findList();
@@ -163,23 +202,63 @@ public abstract class User extends Model {
    * 
    * @return: The list of completed Sessions associated with this user
    */
-  public List<Session> getCompletedSessions(String selfFieldName) {
-    ExpressionList<Session> completedSessionResults = Session.find.where()
+  public List<TMSession> getCompletedSessions(String selfFieldName) {
+    ExpressionList<TMSession> completedSessionResults = TMSession.find.where()
     .eq(sessionSelfFieldName, this).lt("endTime", DateTime.now());
     return completedSessionResults.findList();
   }
 
-  /**
-   * Logs this user in
-   */
-  public void logIn() {
-    //TODO
-  }
+	/**
+	 *
+	 * @return random Salt
+	 */
+	public static String saltGenerate()
+	{
+		SecureRandom random = new SecureRandom();
+		return new BigInteger(130, random).toString(32);
+	}
 
-  /**
-   * Logs this user out
-   */
-  public void logOut() {
-    //TODO
-  }
+	/**
+	 *
+	 * @param text: string to hash
+	 * @return encoded string
+	 */
+
+	public static byte[] getMd5OfUtf8(String text) {
+		try {
+			MessageDigest digest = MessageDigest.getInstance("MD5");
+			return digest.digest(text.getBytes("UTF-8"));
+		} catch (NoSuchAlgorithmException ex) {
+			throw new RuntimeException("No MD5 implementation? Really?");
+		} catch (UnsupportedEncodingException ex) {
+			throw new RuntimeException("No UTF-8 encoding? Really?");
+		}
+	}
+
+	/**
+	 *
+	 * @param pw: Password
+	 * @param salt
+	 * @return hashed Password
+	 */
+	public static String encrypt(String pw, String salt){
+		String temp1;
+		String temp2;
+		try {
+			temp1 = new String(getMd5OfUtf8(pw+salt),"UTF-8");
+			temp2 = new String(getMd5OfUtf8(temp1+salt),"UTF-8");
+			temp1 = new String(getMd5OfUtf8(temp2+salt),"UTF-8");
+			temp2 = new String(getMd5OfUtf8(temp1+salt),"UTF-8");
+		}
+		catch(Exception e){
+			return e.getLocalizedMessage();
+		}
+		return temp2;
+	}
+	public boolean validate(){
+		if(this.username!=null&&this.email!=null&&this.pwhash!=null&&this.name!=null&&this.salt!=null){
+			return true;
+		}
+		else return false;
+	}
 }

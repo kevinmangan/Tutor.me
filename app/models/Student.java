@@ -3,8 +3,11 @@ package models;
 import java.util.List;
 
 import javax.persistence.Entity;
-
 import com.avaje.ebean.Query;
+import javax.persistence.Table;
+import play.api.mvc.Session;
+
+import static play.data.Form.*;
 
 /**
  * Represents a Tutor.me student
@@ -30,6 +33,59 @@ public class Student extends User {
 
   public static void delete(Long id) {
     find.ref(id).delete();
+  }
+  
+  /**
+   * Validates a student
+   * @param identifier: The student's email or username
+   * @param password: The student's password
+   * @return: True if the validation was succesful, false otherwise
+   */
+  public static boolean authenticate(String identifier, String password){
+    Student student = findStudent(identifier);
+    if(encrypt(password,student.getSalt()).equals(student.getPwhash())){
+      return true;
+	}
+    return false;
+  }
+  
+  /**
+   * Finds the student corresponding to the given identifier
+   * @param identifier: The student's email or username
+   * @return: The student corresponding to the given identifier
+   */
+  public static Student findStudent(String identifier) {
+    Student matchingUser = find.where().eq("email",identifier).findUnique();
+    if(matchingUser==null){
+      matchingUser = find.where().eq("username",identifier).findUnique();
+      if(matchingUser==null){
+        return null;
+      }
+      else{
+        return matchingUser;
+      }
+    }
+    else{
+      return matchingUser;
+    }
+  }
+  
+  /**
+   * Checks if student exists in database
+   * 
+   * @param username: The potential username for the Student
+   * @param email: The potential email for the Student
+   */
+  public static boolean existsStudent(String username, String email){
+  	Student matchingStudent = find.where()
+  			.or(com.avaje.ebean.Expr.eq("username",username),
+  					com.avaje.ebean.Expr.eq("email", email)).findUnique();
+  	if(matchingStudent!=null){
+  		return true;
+  	}
+  	else{
+  		return false;
+  	}
   }
 
   /**

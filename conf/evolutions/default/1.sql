@@ -28,7 +28,19 @@ create table student (
   email                     varchar(255),
   name                      varchar(255),
   scribblar_id              varchar(255),
+  pwhash                    varchar(255),
+  salt                      varchar(255),
   constraint pk_student primary key (id))
+;
+
+create table tmsession (
+  id                        bigint not null,
+  student_id                bigint,
+  tutor_id                  bigint,
+  start_time                bigint,
+  end_time                  bigint,
+  scribblar_id              varchar(255),
+  constraint pk_tmsession primary key (id))
 ;
 
 create table tutor (
@@ -37,6 +49,8 @@ create table tutor (
   email                     varchar(255),
   name                      varchar(255),
   scribblar_id              varchar(255),
+  pwhash                    varchar(255),
+  salt                      varchar(255),
   picture                   varchar(255),
   rating                    double,
   num_raters                integer,
@@ -53,6 +67,8 @@ create sequence session_seq;
 
 create sequence student_seq;
 
+create sequence tmsession_seq;
+
 create sequence tutor_seq;
 
 alter table request add constraint fk_request_requestingStudent_1 foreign key (requesting_student_id) references student (id) on delete restrict on update restrict;
@@ -63,6 +79,10 @@ alter table session add constraint fk_session_student_3 foreign key (student_id)
 create index ix_session_student_3 on session (student_id);
 alter table session add constraint fk_session_tutor_4 foreign key (tutor_id) references tutor (id) on delete restrict on update restrict;
 create index ix_session_tutor_4 on session (tutor_id);
+alter table tmsession add constraint fk_tmsession_student_5 foreign key (student_id) references student (id) on delete restrict on update restrict;
+create index ix_tmsession_student_5 on tmsession (student_id);
+alter table tmsession add constraint fk_tmsession_tutor_6 foreign key (tutor_id) references tutor (id) on delete restrict on update restrict;
+create index ix_tmsession_tutor_6 on tmsession (tutor_id);
 
 
 
@@ -76,6 +96,8 @@ drop table if exists session;
 
 drop table if exists student;
 
+drop table if exists tmsession;
+
 drop table if exists tutor;
 
 SET REFERENTIAL_INTEGRITY TRUE;
@@ -85,6 +107,8 @@ drop sequence if exists request_seq;
 drop sequence if exists session_seq;
 
 drop sequence if exists student_seq;
+
+drop sequence if exists tmsession_seq;
 
 drop sequence if exists tutor_seq;
 
