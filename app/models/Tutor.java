@@ -3,13 +3,15 @@ package models;
 import java.util.List;
 
 import javax.persistence.Entity;
-
 import org.apache.commons.lang3.StringUtils;
 
 import java.sql.Blob;
 
 import java.io.File;
 
+
+import javax.persistence.Table;
+import play.api.mvc.Session;
 /**
  * Represents a Tutor.me tutor
  */
@@ -162,6 +164,59 @@ public class Tutor extends User {
   public void setCostUSD(double costUSD) {
     this.costUSD = costUSD;
   }
+  
+  /**
+   * Validates a student
+   * @param identifier: The student's email or username
+   * @param password: The student's password
+   * @return: True if the validation was succesful, false otherwise
+   */
+  public static boolean authenticate(String identifier, String password){
+    Tutor tutor = findTutor(identifier);
+    if(encrypt(password,tutor.getSalt()).equals(tutor.getPwhash())){
+      return true;
+	}
+    return false;
+  }
+  
+  /**
+   * Finds the student corresponding to the given identifier
+   * @param identifier: The student's email or username
+   * @return: The student corresponding to the given identifier
+   */
+  public static Tutor findTutor(String identifier) {
+    Tutor matchingTutor = find.where().eq("email",identifier).findUnique();
+    if(matchingTutor==null){
+      matchingTutor = find.where().eq("username",identifier).findUnique();
+      if(matchingTutor==null){
+        return null;
+      }
+      else{
+        return matchingTutor;
+      }
+    }
+    else{
+      return matchingTutor;
+    }
+  }
+  
+  /**
+   * Checks if Tutor exists in database
+   * 
+   * @param username: The potential username for the Student
+   * @param email: The potential email for the Student
+   */
+  public static boolean existsTutor(String username, String email){
+  	Tutor matchingTutors = find.where()
+  			.or(com.avaje.ebean.Expr.eq("username",username),
+  					com.avaje.ebean.Expr.eq("email", email)).findUnique();
+  	if(matchingTutors==null){
+  		return false;
+  	}
+  	else{
+  		return true;
+  	}
+  }
 
   /**
    * Responds to a request for a tutoring session
@@ -171,7 +226,7 @@ public class Tutor extends User {
    */
   public void respondToRequest(Request request, boolean response) {
     if (response) {
-      Session session = request.generateSession();
+      TMSession session = request.generateSession();
       request.sendSessionNotifications(session);
     } else {
       request.sendCancellationNotification(true);

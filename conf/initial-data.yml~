@@ -2,6 +2,7 @@
 students:
 
     - !!models.Student
+        id:         1
         username:   jar2262
         email:      joaqo182@gmail.com
         name:       Antonio Ruales Chieruzzi
@@ -10,6 +11,7 @@ students:
 tutors:
 
     - !!models.Tutor
+        id:         2
         username:   dap2163
         email:      dperlmut@gmail.com
         name:       Daniel Perlmutter
@@ -20,6 +22,7 @@ tutors:
         description: Description Description Description Description Description Description Description Description Description Description
 
     - !!models.Tutor
+        id:         12345
         username:   kmm2256
         email:      kevinmangan13@gmail.com
         name:       Kevin Mangan
@@ -30,6 +33,7 @@ tutors:
         description: Description Description Description Description Description Description Description Description Description Description
 
     - !!models.Tutor
+        id:         54321
         username:   testuser1
         email:      test1@columbia.edu
         name:       Bob Smith
@@ -39,6 +43,7 @@ tutors:
         subjects:   ["math"]
 
     - !!models.Tutor
+        id:         348274
         username:   testuser2
         email:      test2@columbia.edu
         name:       Joe Something
@@ -48,6 +53,7 @@ tutors:
         subjects:   ["math", "physics"]
 
     - !!models.Tutor
+        id:         9284992
         username:   testuser3
         email:      test3@columbia.edu
         name:       Jane Doe

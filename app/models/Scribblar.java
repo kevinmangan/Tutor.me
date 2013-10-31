@@ -104,7 +104,7 @@ public class Scribblar {
   public static String addScribblarUser(User user) {
     String requestString = "function=users.add" +
     "&username=" + user.getUsername() +
-    "&firstname=" + user.getName() +
+    /*"&firstname=" + user.getName() +*/
     "&roleid=50";
     Document doc = makeScribblarRequest(requestString);
 

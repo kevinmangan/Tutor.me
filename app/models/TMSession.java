@@ -6,13 +6,13 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.List;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
-import javax.persistence.*;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -20,14 +20,13 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import play.db.ebean.*;
-import com.avaje.ebean.*;
+import play.db.ebean.Model;
 
 /**
  * Represents a tutoring session
  */
 @Entity
-public class Session extends Model {
+public class TMSession extends Model {
   private static final long serialVersionUID = -1999689496450297894L;
 
   @Id
@@ -35,11 +34,11 @@ public class Session extends Model {
   public Long id;
 
   // The student for this session
-  @ManyToOne
+	@ManyToOne
   private Student student;
 
   // The tutor for this session
-  @ManyToOne
+	@ManyToOne
   private Tutor tutor;
 
   // The start time of this tutoring session
@@ -51,26 +50,27 @@ public class Session extends Model {
   // The id of the scribblar room that will be used for this tutoring session
   private String scribblarId;
 
-  public Session(Student student, Tutor tutor, long startTime, long endTime) {
+  public TMSession(Student student, Tutor tutor, long startTime, long endTime) {
     this.student = student;
     this.tutor = tutor;
     this.startTime = startTime;
     this.endTime = endTime;
-    this.scribblarId = Scribblar.addScribblarRoom();
+    this.scribblarId = null;
+    this.scribblarId= addScribblarRoom();
     if(this.scribblarId==null) {
       //throw new Exception();//Should be a SessionGenerationException
     }
-    Session.create(this);
+    TMSession.create(this);
   }
 
-  public static Finder<Long, Session> find = new Finder<Long, Session>(
-      Long.class, Session.class);
+  public static Finder<Long, TMSession> find = new Finder<Long, TMSession>(
+      Long.class, TMSession.class);
 
-  public static List<Session> all() {
+  public static List<TMSession> all() {
     return find.all();
   }
 
-  public static void create(Session session) {
+  public static void create(TMSession session) {
     session.save();
   }
 
@@ -153,14 +153,14 @@ public class Session extends Model {
    * Activates the Scribblar room for this tutoring session
    */
   public void activateRoom() {
-    setScribblarId(Scribblar.addScribblarRoom());
+    setScribblarId(addScribblarRoom());
   }
 
   /**
    * Deactivates the Scribblar room for this tutoring session
    */
   public void deactivateRoom() {
-    Scribblar.deleteScribblarRoom(scribblarId);
+    deleteScribblarRoom(scribblarId);
   }
 
   /**
@@ -189,6 +189,52 @@ public class Session extends Model {
         return null;
       }
     } catch (Exception e) {
+      return null;
+    }
+  }
+  /*
+   * Adds a room to external Scribblar database, returns the room id, which needs to be passed to Sessions.launchSession along with Scribblar user id
+   *
+   * returns roomId if successful, null if not
+   */
+  public static String addScribblarRoom() {
+    String requestString = "function=rooms.add" +
+    "&roomname=testroom" +
+    "&allowguests=0" +
+    "&roomvideo=1" +
+    "&roomwolfram=1" +
+    "&hideflickr=1" +
+    "&autostartcam=1"+
+    "&autostartaudio=1";
+    Document doc = makeScribblarRequest(requestString);
+
+    NodeList list = doc.getElementsByTagName("response");
+    if(list.item(0).getAttributes().getNamedItem("status").getNodeValue().equals("ok")) {
+      // Success!
+      Node roomIdNode = doc.getElementsByTagName("roomid").item(0);
+      return roomIdNode.getTextContent();
+    } else {
+      // An error occured!
+      return null;
+    }
+  }
+  /*
+   * deleteScribblarRoom
+   *
+   * deletes the room with the given id from Scribblar's database
+   * returns roomId if successful, null if not
+   */
+  public static String deleteScribblarRoom(String roomId) {
+    String requestString = "function=rooms.delete" +
+    "&roomid="+roomId;
+    Document doc = makeScribblarRequest(requestString);
+
+    NodeList list = doc.getElementsByTagName("response");
+    if(list.item(0).getAttributes().getNamedItem("status").getNodeValue().equals("ok")) {
+      // Success!
+      return roomId;
+    } else {
+      // An error occured!
       return null;
     }
   }
