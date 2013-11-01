@@ -147,7 +147,7 @@ public class Application extends Controller {
 
   public static void studentLogin(String username, String password){
 		if(Student.authenticate(username, password)){
-			session("connected",Student.findStudent("username").getUsername());
+			session("connected",Student.findStudent(username).getUsername());
 			
 		}
 		
@@ -159,7 +159,7 @@ public class Application extends Controller {
 	 */
 
   public static void tutorLogin(String username, String password){
-		if(Student.authenticate(username, password)){
+		if(Tutor.authenticate(username, password)){
 			session("connected",Tutor.findTutor(username).getUsername());
 			
 		}
