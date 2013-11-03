@@ -1,19 +1,10 @@
 package controllers;
 
-import java.util.Arrays;
-import java.util.List;
-
+import models.Request;
+import models.Student;
+import models.Tutor;
 import play.mvc.Controller;
 import play.mvc.Result;
-import views.html.index;
-
-import com.typesafe.plugin.MailerAPI;
-import com.typesafe.plugin.MailerPlugin;
-
-import models.Tutor;
-import models.Student;
-import models.Request;
-import com.avaje.ebean.*;
 
 public class TestController extends Controller {
 

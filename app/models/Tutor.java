@@ -3,15 +3,9 @@ package models;
 import java.util.List;
 
 import javax.persistence.Entity;
+
 import org.apache.commons.lang3.StringUtils;
 
-import java.sql.Blob;
-
-import java.io.File;
-
-
-import javax.persistence.Table;
-import play.api.mvc.Session;
 /**
  * Represents a Tutor.me tutor
  */
@@ -64,21 +58,21 @@ public class Tutor extends User {
   private double costUSD;
 
 
- /**
+  /**
    * @return the picture
    */
   public String getPicture() {
-        if(picture != null){
-          return "/images/profilePics/" + picture;
-        }else{ return "none";}
+    if(picture != null){
+      return "/images/profilePics/" + picture;
+    }else{ return "none";}
   }
 
   /**
-   * @param 
+   * @param
    */
   public void setPicture(String picture) {
     this.picture = picture;
-  } 
+  }
 
   /**
    * @return the rating
@@ -164,7 +158,7 @@ public class Tutor extends User {
   public void setCostUSD(double costUSD) {
     this.costUSD = costUSD;
   }
-  
+
   /**
    * Validates a student
    * @param identifier: The student's email or username
@@ -175,10 +169,10 @@ public class Tutor extends User {
     Tutor tutor = findTutor(identifier);
     if(encrypt(password,tutor.getSalt()).equals(tutor.getPwhash())){
       return true;
-	}
+    }
     return false;
   }
-  
+
   /**
    * Finds the student corresponding to the given identifier
    * @param identifier: The student's email or username
@@ -199,7 +193,7 @@ public class Tutor extends User {
       return matchingTutor;
     }
   }
-  
+
   /**
    * Checks if Tutor exists in database
    * 
@@ -207,15 +201,15 @@ public class Tutor extends User {
    * @param email: The potential email for the Student
    */
   public static boolean existsTutor(String username, String email){
-  	Tutor matchingTutors = find.where()
-  			.or(com.avaje.ebean.Expr.eq("username",username),
-  					com.avaje.ebean.Expr.eq("email", email)).findUnique();
-  	if(matchingTutors==null){
-  		return false;
-  	}
-  	else{
-  		return true;
-  	}
+    Tutor matchingTutors = find.where()
+    .or(com.avaje.ebean.Expr.eq("username",username),
+        com.avaje.ebean.Expr.eq("email", email)).findUnique();
+    if(matchingTutors==null){
+      return false;
+    }
+    else{
+      return true;
+    }
   }
 
   /**

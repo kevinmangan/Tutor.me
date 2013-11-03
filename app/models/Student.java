@@ -3,11 +3,8 @@ package models;
 import java.util.List;
 
 import javax.persistence.Entity;
-import com.avaje.ebean.Query;
-import javax.persistence.Table;
-import play.api.mvc.Session;
 
-import static play.data.Form.*;
+import com.avaje.ebean.Query;
 
 /**
  * Represents a Tutor.me student
@@ -34,7 +31,7 @@ public class Student extends User {
   public static void delete(Long id) {
     find.ref(id).delete();
   }
-  
+
   /**
    * Validates a student
    * @param identifier: The student's email or username
@@ -45,10 +42,10 @@ public class Student extends User {
     Student student = findStudent(identifier);
     if(encrypt(password,student.getSalt()).equals(student.getPwhash())){
       return true;
-	}
+    }
     return false;
   }
-  
+
   /**
    * Finds the student corresponding to the given identifier
    * @param identifier: The student's email or username
@@ -69,7 +66,7 @@ public class Student extends User {
       return matchingUser;
     }
   }
-  
+
   /**
    * Checks if student exists in database
    * 
@@ -77,15 +74,15 @@ public class Student extends User {
    * @param email: The potential email for the Student
    */
   public static boolean existsStudent(String username, String email){
-  	Student matchingStudent = find.where()
-  			.or(com.avaje.ebean.Expr.eq("username",username),
-  					com.avaje.ebean.Expr.eq("email", email)).findUnique();
-  	if(matchingStudent!=null){
-  		return true;
-  	}
-  	else{
-  		return false;
-  	}
+    Student matchingStudent = find.where()
+    .or(com.avaje.ebean.Expr.eq("username",username),
+        com.avaje.ebean.Expr.eq("email", email)).findUnique();
+    if(matchingStudent!=null){
+      return true;
+    }
+    else{
+      return false;
+    }
   }
 
   /**
@@ -99,7 +96,7 @@ public class Student extends User {
   public Request createRequest(Tutor tutor, long startTime, long endTime) {
     Request request = new Request(this, tutor, startTime, endTime);
     request.save();
-    request.sendRequestNotification();
+    request.sendRequestNotifications();
     return request;
   }
 

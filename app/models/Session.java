@@ -6,22 +6,19 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.List;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import javax.persistence.*;
-
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import play.db.ebean.*;
-import com.avaje.ebean.*;
+import play.db.ebean.Model;
 
 /**
  * Represents a tutoring session

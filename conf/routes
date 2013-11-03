@@ -28,6 +28,9 @@ POST    /search                                    controllers.Search.submit()
 GET     /tutors/:username                                controllers.Profile.viewProfile(username: String)
 POST    /tutors/:username                                controllers.Profile.postForm(username: String)           
 
+# Unique link to cancel the given request
+GET     /student/requests/cancel_request/:requestId      controllers.Students.cancelRequest(requestId: Long)     
+
 # Unique link to responds to the given request
 GET     /tutors/requests/respond_to_request/:requestId/:response      controllers.Tutors.respondToRequest(requestId: Long, response: Boolean)      
 

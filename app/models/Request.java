@@ -5,18 +5,15 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 import org.joda.time.DateTime;
-import org.joda.time.format.*;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
-import javax.persistence.*;
-
-import play.Play;
 import play.data.validation.Constraints.Required;
-import play.db.ebean.*;
+import play.db.ebean.Model;
 import controllers.Application;
-
-import com.avaje.ebean.*;
 
 
 /**
@@ -80,8 +77,6 @@ public class Request extends Model {
    * @return the requestinStudent
    */
   public Student getRequestingStudent() {
-    //TODO
-    //return Student.find.ref(1L);
     return requestingStudent;
   }
 
@@ -96,8 +91,6 @@ public class Request extends Model {
    * @return the requestedTutor
    */
   public Tutor getRequestedTutor() {
-    //TODO
-    //return Tutor.find.ref(2L);
     return requestedTutor;
   }
 
@@ -144,21 +137,60 @@ public class Request extends Model {
   }
 
   /**
-   * Notifies a tutor that a request has been created or canceled
-   * 
-   * @param created: True if this is a new request, false otherwise
+   * Notifies a student and tutor that a request has been created
    */
-  public void sendRequestNotification() {
+  public void sendRequestNotifications() {
     String emailSubject = "Tutor.me Mailer Test";
-    String emailRecipient = ""
-        + requestedTutor.getEmail() + "";
-    String emailHtml = "Hi "
-        + requestedTutor.getName()
-        + ",<br /><br />You have a new tutoring request. To accept it, click the link at <a href=\""
-        + ROOT_URL + controllers.routes.Tutors.respondToRequest(id, true) + "\">" + ROOT_URL + controllers.routes.Tutors.respondToRequest(id, true)
-        + "</a>."
-        + "<br /><br />Cheers,<br />The Tutor.me team";
-    Application.sendEmail(emailSubject, emailRecipient, emailHtml);
+    DateTime startTimeDate = new DateTime(requestedStartTime);
+    String startTimeString = getDateTimeFormatter().print(startTimeDate);
+    DateTime endTimeDate = new DateTime(requestedEndTime);
+    String endTimeString = getDateTimeFormatter().print(endTimeDate);
+    
+    // Send Student email
+    String studentRecipient = ""
+      + requestingStudent.getEmail() + "";
+    String studentHtml =
+      "Hi "
+      + requestedTutor.getName()
+      + ",<br /><br />You have create a new tutoring request for "
+      + requestedTutor.getUsername()
+      + " from "
+      + startTimeString
+      + " to "
+      + endTimeString
+      + ".  To cancel it click the at <a href=\""
+      + ROOT_URL
+      + controllers.routes.Students.cancelRequest(id)
+      + "\">"
+      + controllers.routes.Students.cancelRequest(id)
+      + "<br /><br />Cheers,<br />The Tutor.me team";
+    Application.sendEmail(emailSubject, studentRecipient, studentHtml);
+
+    // Send tutor email
+    String tutorRecipient = ""
+      + requestedTutor.getEmail() + "";
+    String tutorHtml =
+      "Hi "
+      + requestedTutor.getName()
+      + ",<br /><br />You have a new tutoring request from "
+      + requestingStudent.getUsername()
+      + " for "
+      + startTimeString
+      + " to "
+      + endTimeString
+      +	".  To accept it, click the link at <a href=\""
+      + ROOT_URL
+      + controllers.routes.Tutors.respondToRequest(id, true)
+      + "\">"
+      + ROOT_URL
+      + controllers.routes.Tutors.respondToRequest(id, true)
+      + "</a> or to reject click the link at <a href=\""
+      + ROOT_URL
+      + controllers.routes.Tutors.respondToRequest(id, false)
+      + "\">."
+      + controllers.routes.Tutors.respondToRequest(id, false)
+      + "<br /><br />Cheers,<br />The Tutor.me team";
+    Application.sendEmail(emailSubject, tutorRecipient, tutorHtml);
   }
 
   /**
@@ -168,29 +200,33 @@ public class Request extends Model {
    */
   public void sendCancellationNotification(boolean student) {
     String emailSubject = "Cancelled Tutor Request";
-    String name;
+    String recipientName;
+    String initiatorName;
     String email;
     if (student) {
-      name = requestingStudent.getName();
+      recipientName = requestingStudent.getUsername();
+      initiatorName = requestedTutor.getUsername();
       email = requestingStudent.getEmail();
     } else {
-      name = requestedTutor.getName();
+      recipientName = requestedTutor.getUsername();
+      initiatorName = requestingStudent.getUsername();
       email = requestedTutor.getEmail();
     }
-    String emailRecipient = name + "<" + email + ">";
+    String emailRecipient = recipientName + "<" + email + ">";
     DateTime startTimeDate = new DateTime(requestedStartTime);
-    String startTimeString = startTimeDate.toGregorianCalendar().toString();
+    String startTimeString = getDateTimeFormatter().print(startTimeDate);
     DateTime endTimeDate = new DateTime(requestedEndTime);
-    String endTimeString = endTimeDate.toGregorianCalendar().toString();
-    String emailHtml = "Hi, "
-      + name
+    String endTimeString = getDateTimeFormatter().print(endTimeDate);
+    String emailHtml = 
+      "Hi, "
+      + recipientName
       + "<br /><br />Your tutoring request from "
       + startTimeString
       + " to "
       + endTimeString
-      + ".  To review outstanding requests, please log in to your account at <a href=\""
-      + Play.application().path() + "\">" + Play.application().path()
-      + "</a>.";
+      + " with " 
+      + initiatorName
+      + " has been cancelled at their request.";
     Application.sendEmail(emailSubject, emailRecipient, emailHtml);
   }
 

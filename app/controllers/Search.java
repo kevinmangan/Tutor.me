@@ -6,9 +6,9 @@ import java.util.List;
 
 import models.Student;
 import models.Tutor;
-import play.*;
-import play.mvc.*;
-import play.data.*;
+import play.data.DynamicForm;
+import play.mvc.Controller;
+import play.mvc.Result;
 import views.html.search;
 
 public class Search extends Controller {
@@ -29,19 +29,13 @@ public class Search extends Controller {
   }
 
   public static Result search() {
-    
-
-    if(isLoggedIn()){
-        List<Tutor> emptyList = Collections.<Tutor>emptyList();
-        return ok(search.render(emptyList));
-    }else{
+    if (isLoggedIn()) {
+      List<Tutor> emptyList = Collections.<Tutor>emptyList();
+      return ok(search.render(emptyList));
+    } else {
       return unauthorized("Oops, you are not connected");
     }
-
-      
   }
-
-    
 
   public static Result submit() {
     DynamicForm requestData = form().bindFromRequest();
@@ -53,5 +47,4 @@ public class Search extends Controller {
         minRating);
     return ok(search.render(tutors));
   }
-
 }
