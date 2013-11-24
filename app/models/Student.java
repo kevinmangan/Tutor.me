@@ -117,7 +117,7 @@ public class Student extends User {
    * 
    * @return: The tutors who teach the given subject
    */
-  public List<Tutor> searchForTutors(String subject) {
+  public static List<Tutor> searchForTutors(String subject) {
     return searchForTutors(subject, 0, Double.MAX_VALUE);
   }
 
@@ -126,11 +126,11 @@ public class Student extends User {
    * 
    * @param subject: The subject the student is searching for a tutor for
    * @param minCost: The minimum cost a tutor can have
-   * @param maxCost: The maximum cose a tutor can have
-   * 
+   * @param maxCost: The maximum cost a tutor can have
    * @return: The tutors who teach the given subject, ordered by their cost
    */
-  public List<Tutor> searchForTutors(String subject, double minCost, double maxCost) {
+  public static List<Tutor> searchForTutors(String subject, double minCost,
+      double maxCost) {
     return searchForTutors(subject, minCost, maxCost, Double.MAX_VALUE);
   }
 
@@ -139,9 +139,8 @@ public class Student extends User {
    * 
    * @param subject: The subject the student is searching for a tutor for
    * @param minCost: The minimum cost a tutor can have
-   * @param maxCost: The maximum cose a tutor can have
+   * @param maxCost: The maximum cost a tutor can have
    * @param minRating: The minimum rating a tutor can have
-   * 
    * @return: The tutors who teach the given subject, ordered by their ratings
    */
   public static List<Tutor> searchForTutors(String subject, double minCost, double maxCost, double minRating) {
@@ -158,11 +157,11 @@ public class Student extends User {
    * @param tutor: The tutor to rate
    * @param rating: The rating to give the tutor
    */
-  public static void rateTutor(Tutor tutor, int rating) {
-    int numRaters = tutor.getNumRaters();
-    int updateNumRaters = numRaters + 1;
-    double ratingAggregate = tutor.getRating() * numRaters;
-    tutor.setRating((ratingAggregate + rating) / updateNumRaters);
-    tutor.setNumRaters(updateNumRaters);
-  }
+  /*
+   * public static void rateTutor(Tutor tutor, int rating) { int numRaters =
+   * tutor.getNumRaters(); int updateNumRaters = numRaters + 1; double
+   * ratingAggregate = tutor.getRating() * numRaters;
+   * tutor.setRating((ratingAggregate + rating) / updateNumRaters);
+   * tutor.setNumRaters(updateNumRaters); }
+   */
 }

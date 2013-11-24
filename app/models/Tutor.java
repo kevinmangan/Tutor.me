@@ -52,7 +52,7 @@ public class Tutor extends User {
 
   // A csv list of the subjects the tutor teaches
   @SuppressWarnings("unused")
-  private String subjectsCSV;
+  public String subjectsCSV;
 
   //The cost in U.S. dollars of a single session with this tutor
   private double costUSD;

@@ -268,4 +268,15 @@ public abstract class User extends Model {
       return false;
     }
   }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof User) {
+      User other = (User) obj;
+      return this.getEmail().equals(other.getEmail())
+          && this.getUsername().equals(other.getUsername());
+    } else {
+      return false;
+    }
+  }
 }
