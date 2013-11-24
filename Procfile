@@ -1,1 +1,1 @@
-web: target/start --http.port=$PORT $PLAY_OPTS
+web: play run --Dhttp.port=$PORT $PLAY_OPTS
