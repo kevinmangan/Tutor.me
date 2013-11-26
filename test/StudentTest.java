@@ -9,7 +9,6 @@ import static play.test.Helpers.inMemoryDatabase;
 import java.util.Arrays;
 import java.util.List;
 
-import models.User;
 import models.Student;
 import models.Tutor;
 
@@ -237,11 +236,11 @@ public class StudentTest {
     assertTrue(expensiveHighRatedHistoryResults
         .contains(testHistoryTutorExpensiveHighRated));
 
-    // Metamorphic property:
-    // For any combination of mincost, maxcost, and rating, if we search for HISTORY_SUBJECT,
-    //  the list of results should be a subset of the list of all history results
-    double[] costs = {CHEAP_COST, EXPENSIVE_COST};
-    double[] ratings = {LOW_RATING, HIGH_RATING};
+    //Metamorphic property:
+    // If we search for HISTORY_SUBJECT for any combination of mincost, maxcost, and rating,
+    //  the list of results should be a subset of the list of all unconstrained history results
+    double[] costs = [CHEAP_COST, EXPENSIVE_COST];
+    double[] ratings = [LOW_RATING, HIGH_RATING];
     for(double cost1 : costs) {
       for(double cost2 : costs) {
         for(double rating : ratings) {
