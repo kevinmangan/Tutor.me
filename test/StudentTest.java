@@ -235,7 +235,7 @@ public class StudentTest {
     assertTrue(expensiveHighRatedHistoryResults
         .contains(testHistoryTutorExpensiveHighRated));
 
-    //Metamorphic property:
+    // Metamorphic property:
     // For any combination of mincost, maxcost, and rating, if we search for HISTORY_SUBJECT,
     //  the list of results should be a subset of the list of all history results
     double[] costs = [CHEAP_COST, EXPENSIVE_COST];
@@ -250,9 +250,23 @@ public class StudentTest {
       }
     }
 
-    //Metamorphic property:
+    // Metamorphic property:
     // Searching for a subject twice should yield the same results
-    
+    double[] costs = [CHEAP_COST, EXPENSIVE_COST];
+    double[] ratings = [LOW_RATING, HIGH_RATING];
+    for(double cost1 : costs) {
+      for(double cost2 : costs) {
+        for(double rating : ratings) {
+            List<Tutor> search1 = Student.searchForTutors(HISTORY_SUBJECT, cost1, cost2, rating);
+            List<Tutor> search2 = Student.searchForTutors(HISTORY_SUBJECT, cost1, cost2, rating);
+            assertEquals(search1.size(), search2.size());
+            for(Tutor tutor : search1){
+              assertTrue(search2.contains(tutor));
+            }
+          }
+        }
+      }
+    }
 
     
   }
