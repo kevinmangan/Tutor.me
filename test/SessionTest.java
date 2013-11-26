@@ -117,7 +117,7 @@ public class SessionTest {
     Date date = new Date();
     testFarFutureRequest = new Request(testStudent, testMathTutor, date.getTime()+30*oneDay, date.getTime()+30*oneDay+oneHour);
     testFutureRequest = new Request(testStudent, testMathTutor, date.getTime()+3*oneDay, date.getTime()+3*oneDay+oneHour);
-    testFarPastRequest = new Request(testStudent, testMathTutor, date.getTime()-3*oneDay, date.getTime()-3*oneDay+oneHour);
+    testFarPastRequest = new Request(testStudent, testMathTutor, date.getTime()-30*oneDay, date.getTime()-30*oneDay+oneHour);
     testPastRequest = new Request(testStudent, testMathTutor, date.getTime()-3*oneDay, date.getTime()-3*oneDay+oneHour);
     testPresentRequest = new Request(testStudent, testMathTutor, date.getTime()-oneHour, date.getTime()+oneHour);
   }
