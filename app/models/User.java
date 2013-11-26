@@ -135,6 +135,7 @@ public abstract class User extends Model {
     }
 
     if(scribblarId == null) {
+      // TODO check if true
       setScribblarId();
     }
     return scribblarId;

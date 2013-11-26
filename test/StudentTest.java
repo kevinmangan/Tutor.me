@@ -1,6 +1,7 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static play.test.Helpers.fakeApplication;
 import static play.test.Helpers.inMemoryDatabase;
@@ -17,6 +18,13 @@ import org.junit.Test;
 
 import play.test.FakeApplication;
 import play.test.Helpers;
+
+//For session tests:
+import models.Session;
+
+import java.util.Date;
+
+
 
 public class StudentTest {
 
@@ -159,6 +167,18 @@ public class StudentTest {
             + TEST_EMAIL));
   }
 
+  /**
+   * Test session
+   */
+  @Test
+  public void testSession() {
+    java.util.Date date = new java.util.Date();
+    testSimpleSession = new Session(testStudent, testMathTutor, date.getTime()+30000, date.getTime()+3030000);
+    assertEqual(testSimpleSession.getScribblarId(), );
+    testSimpleSession.activateRoom();
+    testSimpleSession.deactivateRoom();
+  }
+
   // TODO test the emails for creating and canceling requests
 
   /**
@@ -215,8 +235,26 @@ public class StudentTest {
     assertTrue(expensiveHighRatedHistoryResults
         .contains(testHistoryTutorExpensiveHighRated));
 
-    // TODO A metamorphic property is that the results of a cost or rating
-    // restricted search are a subset of the original search results
+    //Metamorphic property:
+    // For any combination of mincost, maxcost, and rating, if we search for HISTORY_SUBJECT,
+    //  the list of results should be a subset of the list of all history results
+    double[] costs = [CHEAP_COST, EXPENSIVE_COST];
+    double[] ratings = [LOW_RATING, HIGH_RATING];
+    for(double cost1 : costs) {
+      for(double cost2 : costs) {
+        for(double rating : ratings) {
+          for(Tutor thisResult : Student.searchForTutors(HISTORY_SUBJECT, cost1, cost2, rating)) {
+            assertTrue(historyResults.contains(thisResult));
+          }
+        }
+      }
+    }
+
+    //Metamorphic property:
+    // Searching for a subject twice should yield the same results
+    
+
+    
   }
 
   @After
