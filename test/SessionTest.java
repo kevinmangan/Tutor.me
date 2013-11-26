@@ -52,13 +52,7 @@ public class SessionTest {
   private Request testFarPastRequest;
   private Request testPastRequest;
   private Request testPresentRequest;
-  
-  private Session testFarFutureSession;
-  private Session testFutureSession;
-  private Session testFarPastRequest;
-  private Session testPastSession;
-  private Session testPresentSession;
-  private Session testPresentSession2;
+ 
 
   @Before
   public void setUp() {
@@ -127,11 +121,15 @@ public class SessionTest {
 	@Test
 	public void testOverlappingSession(){
 	//Should not be able to create session if overlapping session exists
+		long oneMinute = 1000*60;
+    long oneHour = oneMinute*60;
+    long oneDay = oneHour*24;
+    Date date = new Date();
     Request overlapping1 = new Request(testStudent, testMathTutor, date.getTime()+30*oneDay, date.getTime()+30*oneDay+oneHour);
     Request overlapping2 = new Request(testStudent, testHistoryTutorExpensiveHighRated, date.getTime()+30*oneDay, date.getTime()+30*oneDay+oneHour);
     TMSession testOverlapping1 = overlapping1.generateSession();
-    TMSession testOverlapping2 = overlapping2.gerateSession();
-    assertNull("Failed overlapping test");
+    TMSession testOverlapping2 = overlapping2.generateSession();
+    assertTrue(testOverlapping2==null);
 	}
 	/**
 	 * Test creating same session again
@@ -141,7 +139,7 @@ public class SessionTest {
 		//Session should not be created if it already exist
   	TMSession testRepeatSession = testFarFutureRequest.generateSession();
   	TMSession testRepeatSession1 = testFarFutureRequest.generateSession();
-    assertNull("Failed same session creation test",testPresentSession2);
+    assertTrue(testRepeatSession1==null);
 	}
   /**
    * Test past sessions
@@ -151,9 +149,9 @@ public class SessionTest {
     //Should not be able to create a session in the past
     TMSession testPastSession;
     testPastSession = testPastRequest.generateSession();
-    assertNull("Sessions in the past should not be created", testPastSession);
+    assertTrue(testPastSession==null);
     }    
-  }
+
 
   /**
    * Tests accepting a request
