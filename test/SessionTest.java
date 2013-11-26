@@ -52,6 +52,13 @@ public class SessionTest {
   private Request testFarPastRequest;
   private Request testPastRequest;
   private Request testPresentRequest;
+  
+  private Session testFarFutureSession;
+  private Session testFutureSession;
+  private Session testFarPastRequest;
+  private Session testPastSession;
+  private Session testPresentSession;
+  private Session testPresentSession2;
 
   @Before
   public void setUp() {
@@ -114,15 +121,38 @@ public class SessionTest {
     testPresentRequest = new Request(testStudent, testMathTutor, date.getTime()-oneHour, date.getTime()+oneHour);
   }
 
-
-
+	/**
+	 * Test overlapping sessions
+	 */
+	@Test
+	public void testOverlappingSession(){
+	//Should not be able to create session if overlapping session exists
+    Request overlapping1 = new Request(testStudent, testMathTutor, date.getTime()+30*oneDay, date.getTime()+30*oneDay+oneHour);
+    Request overlapping2 = new Request(testStudent, testHistoryTutorExpensiveHighRated, date.getTime()+30*oneDay, date.getTime()+30*oneDay+oneHour);
+    TMSession testOverlapping1 = overlapping1.generateSession();
+    TMSession testOverlapping2 = overlapping2.gerateSession();
+    assertNull("Failed overlapping test");
+	}
+	/**
+	 * Test creating same session again
+	 */
+	@Test
+	public void testSameSession(){
+		//Session should not be created if it already exist
+  	TMSession testRepeatSession = testFarFutureRequest.generateSession();
+  	TMSession testRepeatSession1 = testFarFutureRequest.generateSession();
+    assertNull("Failed same session creation test",testPresentSession2);
+	}
   /**
-   * Test session
+   * Test past sessions
    */
   @Test
-  public void testSession() {
-    //TODO
-    assertTrue(1==0);
+  public void testPastSession() {
+    //Should not be able to create a session in the past
+    TMSession testPastSession;
+    testPastSession = testPastRequest.generateSession();
+    assertNull("Sessions in the past should not be created", testPastSession);
+    }    
   }
 
   /**
@@ -142,8 +172,7 @@ public class SessionTest {
     List<Request> afterRequests = testMathTutor.getRequests();
     List<TMSession> afterUpcomingSessions = testMathTutor.getUpcomingSessions();
     List<TMSession> afterCurrentSessions = testMathTutor.getCurrentSessions();
-    List<TMSession> afterCompletedSessions = testMathTutor
-    .getCompletedSessions();
+    List<TMSession> afterCompletedSessions = testMathTutor.getCompletedSessions();
 
     List<Request> tempRequests = beforeRequests;
     tempRequests.remove(testFutureRequest);
@@ -166,17 +195,14 @@ public class SessionTest {
     // before without the canceled request
     // The other sessions should be unchanged
     List<Request> beforeRequests = testMathTutor.getRequests();
-    List<TMSession> beforeUpcomingSessions = testMathTutor
-    .getUpcomingSessions();
+    List<TMSession> beforeUpcomingSessions = testMathTutor.getUpcomingSessions();
     List<TMSession> beforeCurrentSessions = testMathTutor.getCurrentSessions();
-    List<TMSession> beforeCompletedSessions = testMathTutor
-    .getCompletedSessions();
+    List<TMSession> beforeCompletedSessions = testMathTutor.getCompletedSessions();
     testFutureRequest.getRequestingStudent().cancelRequest(testFutureRequest);
     List<Request> afterRequests = testMathTutor.getRequests();
     List<TMSession> afterUpcomingSessions = testMathTutor.getUpcomingSessions();
     List<TMSession> afterCurrentSessions = testMathTutor.getCurrentSessions();
-    List<TMSession> afterCompletedSessions = testMathTutor
-    .getCompletedSessions();
+    List<TMSession> afterCompletedSessions = testMathTutor.getCompletedSessions();
 
     List<Request> tempRequests = beforeRequests;
     tempRequests.remove(testFutureRequest);

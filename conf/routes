@@ -7,10 +7,10 @@ GET     /                                          controllers.Application.index
 POST    /                                          controllers.Application.loginRoute()
 
 #Main Pages
-#GET /TutorHome                                      controllers.Application.TutorHome()
-#GET /StudentHome                                    controllers.Application.StudentHome()
+#GET /TutorHome                                    controllers.Application.TutorHome()
+#GET /StudentHome                                  controllers.Application.StudentHome()
 
-POST /logout	         									controllers.Logout.logout()
+POST /logout	         						   controllers.Logout.logout()
 
 # Some routes we might use, taken from the "zentasks" sample Java Play project
 # Authentication
@@ -25,8 +25,8 @@ GET     /search						               controllers.Search.search()
 POST    /search                                    controllers.Search.submit()
 
 # Tutor profile routes
-GET     /tutors/:username                                controllers.Profile.viewProfile(username: String)
-POST    /tutors/:username                                controllers.Profile.postForm(username: String)           
+GET     /tutors/:username                          controllers.Profile.viewProfile(username: String)
+POST    /tutors/:username                          controllers.Profile.postForm(username: String)
 
 # Unique link to cancel the given request
 GET     /student/requests/cancel_request/:requestId      controllers.Students.cancelRequest(requestId: Long)     

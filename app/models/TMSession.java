@@ -251,4 +251,11 @@ public class TMSession extends Model {
       return false;
     }
   }
+  
+  public boolean overlaps(TMSession session){
+  	if(this.getStartTime() < session.getEndTime()&&this.getEndTime()>session.getEndTime()){
+  		return true;
+  	}
+  	return false;
+  }
 }
