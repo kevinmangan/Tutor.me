@@ -197,7 +197,7 @@ public abstract class User extends Model {
    * 
    * @return: The list of completed Sessions associated with this user
    */
-  public List<TMSession> getCurrentSessions(String selfFieldName) {
+  public List<TMSession> getCurrentSessions() {
     ExpressionList<TMSession> completedSessionResults = TMSession.find.where()
     .eq(sessionSelfFieldName, this).le("startTime", DateTime.now())
     .ge("endTime", DateTime.now());
@@ -209,7 +209,7 @@ public abstract class User extends Model {
    * 
    * @return: The list of completed Sessions associated with this user
    */
-  public List<TMSession> getCompletedSessions(String selfFieldName) {
+  public List<TMSession> getCompletedSessions() {
     ExpressionList<TMSession> completedSessionResults = TMSession.find.where()
     .eq(sessionSelfFieldName, this).lt("endTime", DateTime.now());
     return completedSessionResults.findList();
@@ -275,7 +275,7 @@ public abstract class User extends Model {
     if (obj instanceof User) {
       User other = (User) obj;
       return this.getEmail().equals(other.getEmail())
-          && this.getUsername().equals(other.getUsername());
+      && this.getUsername().equals(other.getUsername());
     } else {
       return false;
     }

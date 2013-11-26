@@ -145,7 +145,7 @@ public class Request extends Model {
     String startTimeString = getDateTimeFormatter().print(startTimeDate);
     DateTime endTimeDate = new DateTime(requestedEndTime);
     String endTimeString = getDateTimeFormatter().print(endTimeDate);
-    
+
     // Send Student email
     String studentRecipient = ""
       + requestingStudent.getEmail() + "";
@@ -217,14 +217,14 @@ public class Request extends Model {
     String startTimeString = getDateTimeFormatter().print(startTimeDate);
     DateTime endTimeDate = new DateTime(requestedEndTime);
     String endTimeString = getDateTimeFormatter().print(endTimeDate);
-    String emailHtml = 
+    String emailHtml =
       "Hi, "
       + recipientName
       + "<br /><br />Your tutoring request from "
       + startTimeString
       + " to "
       + endTimeString
-      + " with " 
+      + " with "
       + initiatorName
       + " has been cancelled at their request.";
     Application.sendEmail(emailSubject, emailRecipient, emailHtml);
@@ -271,5 +271,18 @@ public class Request extends Model {
     TMSession session = new TMSession(requestingStudent, requestedTutor,
         requestedStartTime, requestedEndTime);
     return session;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof Request) {
+      Request other = (Request) obj;
+      return this.getRequestingStudent().equals(other.getRequestingStudent())
+          && this.getRequestedTutor().equals(other.getRequestedTutor())
+          && this.getStartTime() == other.getStartTime()
+          && this.getEndTime() == other.getEndTime();
+    } else {
+      return false;
+    }
   }
 }

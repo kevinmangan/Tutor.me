@@ -34,11 +34,11 @@ public class TMSession extends Model {
   public Long id;
 
   // The student for this session
-	@ManyToOne
+  @ManyToOne
   private Student student;
 
   // The tutor for this session
-	@ManyToOne
+  @ManyToOne
   private Tutor tutor;
 
   // The start time of this tutoring session
@@ -236,6 +236,19 @@ public class TMSession extends Model {
     } else {
       // An error occured!
       return null;
+    }
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof TMSession) {
+      Request other = (Request) obj;
+      return this.getStudent().equals(other.getRequestingStudent())
+      && this.getTutor().equals(other.getRequestedTutor())
+      && this.getStartTime() == other.getStartTime()
+      && this.getEndTime() == other.getEndTime();
+    } else {
+      return false;
     }
   }
 }

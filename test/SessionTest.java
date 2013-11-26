@@ -1,18 +1,16 @@
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static play.test.Helpers.fakeApplication;
 import static play.test.Helpers.inMemoryDatabase;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
-import models.Student;
-import models.Tutor;
 import models.Request;
-import models.Session;
+import models.Student;
+import models.TMSession;
+import models.Tutor;
 
 import org.junit.After;
 import org.junit.Before;
@@ -20,11 +18,6 @@ import org.junit.Test;
 
 import play.test.FakeApplication;
 import play.test.Helpers;
-
-//For session tests:
-import models.Session;
-
-import java.util.Date;
 
 
 
@@ -38,7 +31,6 @@ public class SessionTest {
   private static final String TEST_PASSWORD = "Test Password";
   private static final String TEST_SALT = "1";
 
-  private static final String INVALID_SUBJECT = "INVALID";
   private static final String MATH_SUBJECT = "MATH";
   private static final String HISTORY_SUBJECT = "HISTORY";
   private static final String SCIENCE_SUBJECT = "SCIENCE";
@@ -122,7 +114,7 @@ public class SessionTest {
     testPresentRequest = new Request(testStudent, testMathTutor, date.getTime()-oneHour, date.getTime()+oneHour);
   }
 
-  
+
 
   /**
    * Test session
@@ -132,7 +124,74 @@ public class SessionTest {
     //TODO
     assertTrue(1==0);
   }
-  
+
+  /**
+   * Tests accepting a request
+   */
+  @Test
+  public void testAcceptRequest() {
+    // The list of requests after responding should be the same as the list
+    // before without the accepted request
+    // The upcoming sessions should include the request and the other sessions
+    // should be unchanged
+    List<Request> beforeRequests = testMathTutor.getRequests();
+    List<TMSession> beforeUpcomingSessions = testMathTutor.getUpcomingSessions();
+    List<TMSession> beforeCurrentSessions = testMathTutor.getCurrentSessions();
+    List<TMSession> beforeCompletedSessions = testMathTutor.getCompletedSessions();
+    testMathTutor.respondToRequest(testFutureRequest, true);
+    List<Request> afterRequests = testMathTutor.getRequests();
+    List<TMSession> afterUpcomingSessions = testMathTutor.getUpcomingSessions();
+    List<TMSession> afterCurrentSessions = testMathTutor.getCurrentSessions();
+    List<TMSession> afterCompletedSessions = testMathTutor
+    .getCompletedSessions();
+
+    List<Request> tempRequests = beforeRequests;
+    tempRequests.remove(testFutureRequest);
+    assertListEqualsUnordered(tempRequests, afterRequests);
+    List<TMSession> tempSessions = beforeUpcomingSessions;
+    TMSession newSession = testFutureRequest.generateSession();
+    tempSessions.add(newSession);
+
+    assertListEqualsUnordered(tempSessions, afterUpcomingSessions);
+    assertListEqualsUnordered(beforeCurrentSessions, afterCurrentSessions);
+    assertListEqualsUnordered(beforeCompletedSessions, afterCompletedSessions);
+  }
+
+  /**
+   * Tests canceling a request
+   */
+  @Test
+  public void testCancelRequest() {
+    // The list of requests after responding should be the same as the list
+    // before without the canceled request
+    // The other sessions should be unchanged
+    List<Request> beforeRequests = testMathTutor.getRequests();
+    List<TMSession> beforeUpcomingSessions = testMathTutor
+    .getUpcomingSessions();
+    List<TMSession> beforeCurrentSessions = testMathTutor.getCurrentSessions();
+    List<TMSession> beforeCompletedSessions = testMathTutor
+    .getCompletedSessions();
+    testFutureRequest.getRequestingStudent().cancelRequest(testFutureRequest);
+    List<Request> afterRequests = testMathTutor.getRequests();
+    List<TMSession> afterUpcomingSessions = testMathTutor.getUpcomingSessions();
+    List<TMSession> afterCurrentSessions = testMathTutor.getCurrentSessions();
+    List<TMSession> afterCompletedSessions = testMathTutor
+    .getCompletedSessions();
+
+    List<Request> tempRequests = beforeRequests;
+    tempRequests.remove(testFutureRequest);
+    assertListEqualsUnordered(tempRequests, afterRequests);
+    assertListEqualsUnordered(beforeUpcomingSessions, afterUpcomingSessions);
+    assertListEqualsUnordered(beforeCurrentSessions, afterCurrentSessions);
+    assertListEqualsUnordered(beforeCompletedSessions, afterCompletedSessions);
+  }
+
+  public void assertListEqualsUnordered(List<?> expectedList, List<?> actualList) {
+    assertEquals(expectedList.size(), actualList.size());
+    for (Object object : expectedList) {
+      assertTrue(actualList.contains(object));
+    }
+  }
 
   @After
   public void tearDown() {
