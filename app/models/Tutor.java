@@ -63,7 +63,7 @@ public class Tutor extends User {
    */
   public String getPicture() {
     if(picture != null){
-      return "/images/profilePics/" + picture;
+      return "images/profilePics/" + picture;
     }else{ return "none";}
   }
 
