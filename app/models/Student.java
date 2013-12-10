@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.Entity;
 
 import com.avaje.ebean.Query;
+import java.util.Date;
 
 /**
  * Represents a Tutor.me student
@@ -95,6 +96,10 @@ public class Student extends User {
    */
   public Request createRequest(Tutor tutor, long startTime, long endTime) {
     Request request = new Request(this, tutor, startTime, endTime);
+    //Request must be validated before saved
+    //if(!request.isValid()){
+    //  return null;
+    //}
     request.save();
     request.sendRequestNotifications();
     return request;

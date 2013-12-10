@@ -100,7 +100,16 @@ public class Request extends Model {
   public void setRequestedTutor(Tutor requestedTutor) {
     this.requestedTutor = requestedTutor;
   }
-
+  /**
+   * Is the request valid
+   * 
+   * @return True if valid and false if not
+   */
+  	public boolean isValid(){
+  		//Check if request is not for a session in the past
+  		//Retrieve all session information and check if it overlaps with any session
+  		//return true if not overlapping with another session 
+  	}
   /**
    * @return the startTime
    */

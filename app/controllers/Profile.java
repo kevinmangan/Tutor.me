@@ -97,9 +97,12 @@ public class Profile extends Controller {
       long startMillis = st.getMillis();
       long endMillis = et.getMillis();
 
-      // Test student
+      // Test student that we are currently send the request to
       Student theStudent = Student.find.ref(1L);
+      //This create request needs to test wether this request is valid or not.
+      //Error would be handled accordingly
       theStudent.createRequest(tutor, startMillis, endMillis);
+      //Error would be rendered if an invalid request was submitted
     }
 
     return ok(profile.render(tutor, 1));
