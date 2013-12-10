@@ -45,7 +45,7 @@ public class Application extends Controller {
       String password = requestData.get("password");
       String fullName = requestData.get("fullName");
       String email = requestData.get("email");
-      if(containsIllegals(username)){
+      if(containsIllegals(username) || !validEmail(email)){
         return ok(index.render("Welcome"));
       }else{
         studentRegister(username, password, fullName, email);
@@ -271,6 +271,12 @@ public class Application extends Controller {
       Pattern pattern = Pattern.compile("@");
       Matcher matcher = pattern.matcher(toExamine);
       return matcher.find();
+  }
+
+  public static boolean validEmail(String toExamine) {
+      Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+      Matcher matcher = pattern.matcher(toExamine);
+      return matcher.matches();
   }
 
 }
