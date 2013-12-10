@@ -78,6 +78,9 @@ public class TMSession extends Model {
     find.ref(id).delete();
 
   }
+  public static List<TMSession> userSessions(Tutor t, Student s){
+  	return null;
+  }
 
   /**
    * @return the student

@@ -107,8 +107,16 @@ public class Request extends Model {
    */
   	public boolean isValid(){
   		//Check if request is not for a session in the past
+  		Date current = new Date();
+  		Date startTime = new Date(requestedStartTime);
+  		Date endTime = new Date(requestedEndTime);
+  		if(startTime.before(current)){
+  			return false;
+  		}
+ 
   		//Retrieve all session information and check if it overlaps with any session
   		//return true if not overlapping with another session 
+  		return true;
   	}
   /**
    * @return the startTime
