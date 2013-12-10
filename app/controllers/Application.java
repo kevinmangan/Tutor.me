@@ -5,6 +5,8 @@ import static play.data.Form.form;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 import models.Student;
 import models.Tutor;
@@ -43,9 +45,13 @@ public class Application extends Controller {
       String password = requestData.get("password");
       String fullName = requestData.get("fullName");
       String email = requestData.get("email");
-      studentRegister(username, password, fullName, email);
-      List<Tutor> emptyList = Collections.<Tutor>emptyList();
-      return ok(search.render(emptyList));
+      if(containsIllegals(username)){
+        return ok(index.render("Welcome"));
+      }else{
+        studentRegister(username, password, fullName, email);
+        List<Tutor> emptyList = Collections.<Tutor>emptyList();
+        return ok(search.render(emptyList));
+      }
 
       // Tutor sign in
     } else if (type == 3) {
@@ -260,4 +266,11 @@ public class Application extends Controller {
     }
     mail.sendHtml(emailHtml);
   }
+
+  public static boolean containsIllegals(String toExamine) {
+      Pattern pattern = Pattern.compile("@");
+      Matcher matcher = pattern.matcher(toExamine);
+      return matcher.find();
+  }
+
 }

@@ -251,7 +251,7 @@ public class StudentTest {
       }
     }
 
-   /* // Metamorphic property:
+   // Metamorphic property:
     // Searching for a subject twice should yield the same results
     for(double cost1 : costs) {
       for(double cost2 : costs) {
@@ -265,7 +265,7 @@ public class StudentTest {
           }
         }
       }
-    */
+    
 
     
   }

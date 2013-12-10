@@ -50,6 +50,12 @@
                  $('#edit').hide();
               }
 
+              if(@owner == 1){
+                $('#bookTutor').hide();
+              }else{
+                 $('#bookTutor').show();
+              }
+
               $('#edit').click(function(){
                   $("#editForm").show();
                   $('#edit').hide();

@@ -9,8 +9,8 @@ addSbtPlugin("play" % "sbt-plugin" % "2.1.3")
 
 
 // Added by Kevin for code coverage
-//libraryDependencies ++= Seq(
-//	"org.jacoco" % "org.jacoco.core" % "0.5.7.201204190339" artifacts(Artifact("org.jacoco.core", "jar", "jar")),
-// 	"org.jacoco" % "org.jacoco.report" % "0.5.7.201204190339" artifacts(Artifact("org.jacoco.report", "jar", "jar")))
+libraryDependencies ++= Seq(
+	"org.jacoco" % "org.jacoco.core" % "0.5.7.201204190339" artifacts(Artifact("org.jacoco.core", "jar", "jar")),
+ 	"org.jacoco" % "org.jacoco.report" % "0.5.7.201204190339" artifacts(Artifact("org.jacoco.report", "jar", "jar")))
  
- //addSbtPlugin("de.johoop" % "jacoco4sbt" % "1.2.4")
+ addSbtPlugin("de.johoop" % "jacoco4sbt" % "1.2.4")

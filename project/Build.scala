@@ -1,7 +1,7 @@
 import sbt._
 import Keys._
 import play.Project._
-//import de.johoop.jacoco4sbt.JacocoPlugin._
+import de.johoop.jacoco4sbt.JacocoPlugin._
  
 
 object ApplicationBuild extends Build {
@@ -9,7 +9,7 @@ object ApplicationBuild extends Build {
   val appName         = "TutorMe"
   val appVersion      = "1.0-SNAPSHOT"
 
-  //lazy val s = Defaults.defaultSettings ++ Seq(jacoco.settings:_*)
+  lazy val s = Defaults.defaultSettings ++ Seq(jacoco.settings:_*)
 
   val appDependencies = Seq(
     // Add your project dependencies here,
@@ -23,10 +23,9 @@ object ApplicationBuild extends Build {
     "com.novocode" % "junit-interface" % "0.9" % "test"
   )
 
-  //val main = play.Project(appName, appVersion, appDependencies, settings = s).settings(
-    val main = play.Project(appName, appVersion, appDependencies).settings(
+  val main = play.Project(appName, appVersion, appDependencies, settings = s).settings(
     // Add your own project settings here
-      //parallelExecution in jacoco.Config := false,
+      parallelExecution in jacoco.Config := false,
 	  
       resolvers += Resolver.url("play-easymail (release)", url("http://joscha.github.com/play-easymail/repo/releases/"))(Resolver.ivyStylePatterns),
       resolvers += Resolver.url("play-easymail (snapshot)", url("http://joscha.github.com/play-easymail/repo/snapshots/"))(Resolver.ivyStylePatterns),
