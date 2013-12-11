@@ -87,6 +87,7 @@
                   <h1>About:</h1>
                 </div>
                 <p>@tutor.getDescription()</p>
+                <p style="margin-top:20px"><strong>Tutors in:</strong> @tutor.subjectsCSV</p>
             </div>
           </div> <!-- well -->
 
@@ -109,6 +110,10 @@
               <div class="form-group">
                 <label for="editPrice">Price per hour (in USD)</label>
                 <input type="text" class="form-control" name="editPrice" id="editPrice" placeholder="10.0" value="@tutor.getCostUSD()">
+              </div>
+              <div class="form-group">
+                <label for="editPrice">Subjects you teach (comma separated)</label>
+                <input type="text" class="form-control" name="editSubjectsCSV" id="editSubjectsCSV" placeholder="underwater-basketball,Xtreme-Jenga,Power-GRE,Monte-Carlo-Methods" value="@tutor.subjectsCSV">
               </div>
               <div class="form-group">
                 <label for="picture">Upload Picture</label>

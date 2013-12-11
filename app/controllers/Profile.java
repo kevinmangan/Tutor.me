@@ -91,6 +91,8 @@ public class Profile extends Controller {
       tutor.setTagline(tagline);
       tutor.setDescription(description);
       tutor.setCostUSD(cost);
+      tutor.subjectsCSV = requestData.get("editSubjectsCSV");
+      tutor.save();
 
     } else {
       String startTime = requestData.get("startTime");
