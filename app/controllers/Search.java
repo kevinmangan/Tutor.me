@@ -42,9 +42,22 @@ public class Search extends Controller {
   public static Result submit() {
     DynamicForm requestData = form().bindFromRequest();
     String subject = requestData.get("subject");
-    double minCost = Double.parseDouble(requestData.get("minCost"));
-    double maxCost = Double.parseDouble(requestData.get("maxCost"));
-    double minRating = Double.parseDouble(requestData.get("minRating"));
+    double minCost, maxCost, minRating;
+    try {
+      minCost = Double.parseDouble(requestData.get("minCost"));
+    } catch(NumberFormatException e) {
+      minCost = 0;
+    }
+    try {
+      maxCost = Double.parseDouble(requestData.get("maxCost"));
+    } catch(NumberFormatException e) {
+      maxCost = 1000;
+    }
+    try {
+      minRating = Double.parseDouble(requestData.get("minRating"));
+    } catch(NumberFormatException e) {
+      minRating = 0;
+    }
     List<Tutor> tutors = Student.searchForTutors(subject, minCost, maxCost,
         minRating);
     return ok(search.render(tutors));
