@@ -35,9 +35,14 @@ public class Application extends Controller {
     if (type == 1) {
       String username = requestData.get("username");
       String password = requestData.get("password");
-      studentLogin(username, password);
-      List<Tutor> emptyList = Collections.<Tutor>emptyList();
-      return ok(search.render(emptyList));
+      if(studentLogin(username, password)) {
+        return redirect(routes.Search.search());
+      } else {
+        return index();
+      }
+      //List<Tutor> emptyList = Collections.<Tutor>emptyList();
+      
+      //return ok(search.render(emptyList));
 
       // Student register
     } else if (type == 2) {
@@ -49,8 +54,9 @@ public class Application extends Controller {
         return ok(index.render("Welcome"));
       }else{
         studentRegister(username, password, fullName, email);
-        List<Tutor> emptyList = Collections.<Tutor>emptyList();
-        return ok(search.render(emptyList));
+        //List<Tutor> emptyList = Collections.<Tutor>emptyList();
+        //return ok(search.render(emptyList));
+        return redirect(routes.Search.search());
       }
 
       // Tutor sign in
@@ -73,7 +79,8 @@ public class Application extends Controller {
       Query<Tutor> tutorResults  = Tutor.find.where().contains("username", username).orderBy("rating");
       List<Tutor> tutors = tutorResults.findList();
       Tutor tutor = tutors.get(0);
-      return ok(profile.render(tutor, 1));
+      //return ok(profile.render(tutor, 1));
+      return redirect(routes.Profile.viewProfile(tutor.getUsername()));
     } else {
       return unauthorized("Oops, you are not connected");
     }
@@ -150,10 +157,12 @@ public class Application extends Controller {
    * @param username: The username of the student
    * @param password: The password of the student
    */
-  public static void studentLogin(String username, String password){
+  public static boolean studentLogin(String username, String password){
     if(Student.authenticate(username, password)){
       session("connected",Student.findStudent(username).getUsername());
+      return true;
     }
+    return false;
   }
 
   /**
