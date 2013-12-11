@@ -39,7 +39,7 @@ public class Application extends Controller {
         List<Tutor> emptyList = Collections.<Tutor>emptyList();
         return ok(search.render(emptyList));
       }else{
-        return ok(index.render("Welcome"));
+        return ok(index.render("Student does not exist"));
       }
 
       // Student register
@@ -68,7 +68,7 @@ public class Application extends Controller {
         Tutor tutor = tutors.get(0);
         return ok(profile.render(tutor, 1));
       }else{
-        return ok(index.render("Welcome"));
+        return ok(index.render("Tutor does not exist"));
       }
 
       // Tutor register
