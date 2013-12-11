@@ -72,7 +72,7 @@ public class Application extends Controller {
         boolean registerResult = isStudent ? studentRegister(username,
             password, fullName, email) : tutorRegister(username, password,
                 fullName, email);
-        if (!registerResult) {
+        if (registerResult) {
           return getLoginRedirect(isStudent ? "" : username);
         } else {
           return ok(index.render((isStudent ? "Student" : "Tutor")
@@ -126,7 +126,7 @@ public class Application extends Controller {
       return redirect(routes.Search.search());
     } else {
       Query<Tutor> tutorResults = Tutor.find.where()
-          .contains("username", tutorUsername).orderBy("rating");
+      .contains("username", tutorUsername).orderBy("rating");
       List<Tutor> tutors = tutorResults.findList();
       Tutor tutor = tutors.get(0);
       return ok(profile.render(tutor, 1));
