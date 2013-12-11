@@ -12,8 +12,8 @@ import org.apache.commons.lang3.StringUtils;
 @Entity
 public class Tutor extends User {
 
-  protected static final String requestSelfFieldName = "requestedTutor";
-  protected static final String sessionSelfFieldName = "tutor";
+  private static final String requestSelfFieldName = "requestedTutor";
+  private static final String sessionSelfFieldName = "tutor";
 
   private static final long serialVersionUID = 7353992572780743627L;
 
@@ -219,12 +219,14 @@ public class Tutor extends User {
    * @param response: True if the tutor approves of the request, false otherwise
    */
   public void respondToRequest(Request request, boolean response) {
-    if (response) {
-      TMSession session = request.generateSession();
-      request.sendSessionNotifications(session);
-    } else {
-      request.sendCancellationNotification(true);
-    }
-    request.delete();
+  	if(request.isValid()){
+	    if (response) {
+	      TMSession session = request.generateSession();
+	      request.sendSessionNotifications(session);
+	    } else {
+	      request.sendCancellationNotification(true);
+	    }
+	    request.delete();
+  	}
   }
 }

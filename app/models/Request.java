@@ -67,7 +67,9 @@ public class Request extends Model {
   }
 
   public static void create(Request request) {
-    request.save();
+  	if(request.isValid()){
+  		request.save();
+  	}
   }
 
   public static void delete(Long id) {
@@ -111,12 +113,21 @@ public class Request extends Model {
   		Date current = new Date();
   		Date startTime = new Date(requestedStartTime);
   		Date endTime = new Date(requestedEndTime);
+  		if(endTime.before(startTime)){
+  			return false;
+  		}
   		if(startTime.before(current)){
   			return false;
   		}
- 
-  		//Retrieve all session information and check if it overlaps with any session
-  		//return true if not overlapping with another session 
+  		List<TMSession> matches = TMSession.userSessions(requestedTutor,requestingStudent);
+  		if(matches==null){
+  			return true;
+  		}
+  		for(TMSession sesh: matches){
+  			if(sesh.overlapsRequest(this)){
+  				return false;
+  			}
+  		}
   		return true;
   	}
   /**
@@ -286,9 +297,16 @@ public class Request extends Model {
   }
 
   public TMSession generateSession() {
-    TMSession session = new TMSession(requestingStudent, requestedTutor,
-        requestedStartTime, requestedEndTime);
-    return session;
+  	if(isValid()){
+  		TMSession session = new TMSession(requestingStudent, requestedTutor,
+          requestedStartTime, requestedEndTime);
+  		if(session.isValid()){
+  			return session;
+  		}else{
+  			return null;
+  		}
+  	}
+    return null;
   }
 
   @Override

@@ -7,6 +7,7 @@ import java.util.List;
 
 import models.Student;
 import models.Tutor;
+import models.Request;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -48,9 +49,9 @@ public class Profile extends Controller {
 
       // If the user viewing the profile is the tutor himself, pass in 1 so view knows to show the edit button
       if(localUser.equals(username)){
-        return ok(profile.render(tutor, 1));
+        return ok(profile.render(tutor, 1, 0));
       } else {
-        return ok(profile.render(tutor, 0));
+        return ok(profile.render(tutor, 0, 0));
       }
     } else {
       return unauthorized("Oops, you are not connected");
@@ -65,9 +66,11 @@ public class Profile extends Controller {
     Query<Tutor> tutorResults  = Tutor.find.where().contains("username", username).orderBy("rating");
     List<Tutor> tutors = tutorResults.findList();
     Tutor tutor = tutors.get(0);
+    int isTutor=0;
 
     // Edit Profile
     if(type == 2){
+    	isTutor = 1;
       String tagline = requestData.get("editTagline");
       String description = requestData.get("editAbout");
       String priceString = requestData.get("editPrice");
@@ -105,14 +108,16 @@ public class Profile extends Controller {
       long startMillis = st.getMillis();
       long endMillis = et.getMillis();
 
-      // Test student that we are currently send the request to
-      Student theStudent = Student.find.ref(1L);
+      Student theStudent = Student.findStudent(loggedUser());
       //This create request needs to test wether this request is valid or not.
       //Error would be handled accordingly
-      theStudent.createRequest(tutor, startMillis, endMillis);
+      Request request = theStudent.createRequest(tutor, startMillis, endMillis);
+      if(request==null){
+      	return ok(profile.render(tutor,isTutor,1));
+      }
       //Error would be rendered if an invalid request was submitted
     }
 
-    return ok(profile.render(tutor, 1));
+    return ok(profile.render(tutor, isTutor,0));
   }
 }

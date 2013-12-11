@@ -30,6 +30,24 @@ public class SessionTest {
   private static final String TEST_NAME = "Test Name";
   private static final String TEST_PASSWORD = "Test Password";
   private static final String TEST_SALT = "1";
+  
+  private static final String TEST_HISTORY_USERNAME = "Test History Username";
+  private static final String TEST_HISTORY_EMAIL = "testhistory@email.com";
+  private static final String TEST_HISTORY_NAME = "Test History Name";
+  private static final String TEST_HISTORY_PASSWORD = "Test History Password";
+  private static final String TEST_HISTORY_SALT = "1";
+  
+  private static final String TEST_MATH_USERNAME = "Test Math Username";
+  private static final String TEST_MATH_EMAIL = "testmath@email.com";
+  private static final String TEST_MATH_NAME = "Test Math Name";
+  private static final String TEST_MATH_PASSWORD = "Test Math Password";
+  private static final String TEST_MATH_SALT = "1";
+  
+  private static final String TEST_SCIENCE_USERNAME = "Test Science Username";
+  private static final String TEST_SCIENCE_EMAIL = "testscience@email.com";
+  private static final String TEST_SCIENCE_NAME = "Test Science Name";
+  private static final String TEST_SCIENCE_PASSWORD = "Test Science Password";
+  private static final String TEST_SCIENCE_SALT = "1";
 
   private static final String MATH_SUBJECT = "MATH";
   private static final String HISTORY_SUBJECT = "HISTORY";
@@ -68,12 +86,22 @@ public class SessionTest {
     testStudent.save();
 
     testMathTutor = new Tutor();
+    testMathTutor.setUsername(TEST_MATH_USERNAME);
+    testMathTutor.setEmail(TEST_MATH_EMAIL);
+    testMathTutor.setName(TEST_MATH_NAME);
+    testMathTutor.setSalt(TEST_MATH_SALT);
+    testMathTutor.setPwhash(Tutor.encrypt(TEST_MATH_PASSWORD, TEST_MATH_SALT));
     testMathTutor.setSubjects(Arrays.asList(MATH_SUBJECT));
     testMathTutor.setCostUSD(EXPENSIVE_COST);
     testMathTutor.setRating(LOW_RATING);
     testMathTutor.save();
 
     testHistoryTutorCheapHighRated = new Tutor();
+    testHistoryTutorCheapHighRated.setUsername(TEST_HISTORY_USERNAME);
+    testHistoryTutorCheapHighRated.setEmail(TEST_HISTORY_EMAIL);
+    testHistoryTutorCheapHighRated.setName(TEST_HISTORY_NAME);
+    testHistoryTutorCheapHighRated.setSalt(TEST_HISTORY_SALT);
+    testHistoryTutorCheapHighRated.setPwhash(Tutor.encrypt(TEST_HISTORY_PASSWORD, TEST_HISTORY_SALT));
     testHistoryTutorCheapHighRated.setSubjects(Arrays.asList(HISTORY_SUBJECT));
     testHistoryTutorCheapHighRated.setCostUSD(CHEAP_COST);
     testHistoryTutorCheapHighRated.setRating(HIGH_RATING);
@@ -126,9 +154,18 @@ public class SessionTest {
     long oneDay = oneHour*24;
     Date date = new Date();
     Request overlapping1 = new Request(testStudent, testMathTutor, date.getTime()+30*oneDay, date.getTime()+30*oneDay+oneHour);
-    Request overlapping2 = new Request(testStudent, testHistoryTutorExpensiveHighRated, date.getTime()+30*oneDay, date.getTime()+30*oneDay+oneHour);
+    Request overlapping2 = new Request(testStudent, testHistoryTutorCheapHighRated, date.getTime()+30*oneDay, date.getTime()+30*oneDay+oneHour);
     TMSession testOverlapping1 = overlapping1.generateSession();
+    List<TMSession> all = TMSession.all();
+    for(TMSession sesh: all){
+    	System.out.println(sesh.getTutor().getUsername()+":"+sesh.getStudent().getUsername()+":"+sesh.getStartTime()+":"+sesh.getEndTime());
+    }
     TMSession testOverlapping2 = overlapping2.generateSession();
+    System.out.println("After:");
+    all = TMSession.all();
+    for(TMSession sesh: all){
+    	System.out.println(sesh.getTutor().getUsername()+":"+sesh.getStudent().getUsername()+":"+sesh.getStartTime()+":"+sesh.getEndTime());
+    }
     assertTrue(testOverlapping2==null);
 	}
 	/**
@@ -138,7 +175,16 @@ public class SessionTest {
 	public void testSameSession(){
 		//Session should not be created if it already exist
   	TMSession testRepeatSession = testFarFutureRequest.generateSession();
+  	List<TMSession> all = TMSession.all();
+    for(TMSession sesh: all){
+    	System.out.println(sesh.getTutor().getUsername()+":"+sesh.getStudent().getUsername()+":"+sesh.getStartTime()+":"+sesh.getEndTime());
+    }
   	TMSession testRepeatSession1 = testFarFutureRequest.generateSession();
+  	System.out.println("After:");
+    all = TMSession.all();
+    for(TMSession sesh: all){
+    	System.out.println(sesh.getTutor().getUsername()+":"+sesh.getStudent().getUsername()+":"+sesh.getStartTime()+":"+sesh.getEndTime());
+    }
     assertTrue(testRepeatSession1==null);
 	}
   /**
@@ -166,6 +212,9 @@ public class SessionTest {
     List<TMSession> beforeUpcomingSessions = testMathTutor.getUpcomingSessions();
     List<TMSession> beforeCurrentSessions = testMathTutor.getCurrentSessions();
     List<TMSession> beforeCompletedSessions = testMathTutor.getCompletedSessions();
+    if(testFutureRequest!=null){
+    	System.out.println("Not null");
+    }
     testMathTutor.respondToRequest(testFutureRequest, true);
     List<Request> afterRequests = testMathTutor.getRequests();
     List<TMSession> afterUpcomingSessions = testMathTutor.getUpcomingSessions();

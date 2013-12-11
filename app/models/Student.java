@@ -13,8 +13,8 @@ import java.util.Date;
 @Entity
 public class Student extends User {
 
-  protected static final String requestSelfFieldName = "requestingStudent";
-  protected static final String sessionSelfFieldName = "student";
+  private static final String requestSelfFieldName = "requestingStudent";
+  private static final String sessionSelfFieldName = "student";
 
   private static final long serialVersionUID = -6347603101193360297L;
 
@@ -97,9 +97,9 @@ public class Student extends User {
   public Request createRequest(Tutor tutor, long startTime, long endTime) {
     Request request = new Request(this, tutor, startTime, endTime);
     //Request must be validated before saved
-    //if(!request.isValid()){
-    //  return null;
-    //}
+    if(!request.isValid()){
+      return null;
+    }
     request.save();
     request.sendRequestNotifications();
     return request;

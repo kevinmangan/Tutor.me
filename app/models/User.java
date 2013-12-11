@@ -6,6 +6,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Date;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -176,9 +178,14 @@ public abstract class User extends Model {
    * @return: The list of Requests associated with this user
    */
   public List<Request> getRequests() {
-    ExpressionList<Request> requestResults = Request.find.where().eq(
-        requestSelfFieldName, this);
-    return requestResults.findList();
+    List<Request> requestResults = Request.all();
+    ArrayList<Request> returning = new ArrayList<Request>();
+    for(Request r: requestResults){
+    	if(this.getUsername()==r.getRequestingStudent().getUsername()||this.getUsername()==r.getRequestedTutor().getUsername()){
+    		returning.add(r);
+    	}
+    }
+    return returning;
   }
 
   /**
@@ -187,21 +194,40 @@ public abstract class User extends Model {
    * @return: The list of upcoming Sessions associated with this user
    */
   public List<TMSession> getUpcomingSessions() {
-    ExpressionList<TMSession> upcomingSessionResults = TMSession.find.where()
-    .eq(sessionSelfFieldName, this).gt("startTime", DateTime.now());
-    return upcomingSessionResults.findList();
+  	Date date = new Date();
+    List<TMSession> upcomingSessionResults = TMSession.all();
+    ArrayList<TMSession> returning = new ArrayList<TMSession>();
+    if(sessionSelfFieldName=="tutor"){
+    	for(TMSession sesh: upcomingSessionResults){
+      	if(sesh.getTutor().getUsername()==this.getUsername()&&sesh.getStartTime()>date.getTime()){
+      		returning.add(sesh);
+      	}
+      }
+  	}else{
+  		for(TMSession sesh: upcomingSessionResults){
+  			if(sesh.getStudent().getUsername()==this.getUsername()&&sesh.getStartTime()>date.getTime()){
+      		returning.add(sesh);
+      	}
+      }
+  	}
+    return returning;
   }
 
   /**
-   * Gets the completed tutoring sessions for this user
+   * Gets the current tutoring sessions for this user
    * 
    * @return: The list of completed Sessions associated with this user
    */
   public List<TMSession> getCurrentSessions() {
-    ExpressionList<TMSession> completedSessionResults = TMSession.find.where()
-    .eq(sessionSelfFieldName, this).le("startTime", DateTime.now())
-    .ge("endTime", DateTime.now());
-    return completedSessionResults.findList();
+  	Date date = new Date();
+  	List<TMSession> currentSessionResults = TMSession.all();
+    ArrayList<TMSession> returning = new ArrayList<TMSession>();
+  	for(TMSession sesh: currentSessionResults){
+    	if((sesh.getTutor().getUsername()==this.getUsername()||sesh.getStudent().getUsername()==this.getUsername())&&sesh.getStartTime()<date.getTime()&&sesh.getEndTime()>date.getTime()){
+    		returning.add(sesh);
+    	}
+    }
+    return returning;
   }
 
   /**
@@ -210,9 +236,15 @@ public abstract class User extends Model {
    * @return: The list of completed Sessions associated with this user
    */
   public List<TMSession> getCompletedSessions() {
-    ExpressionList<TMSession> completedSessionResults = TMSession.find.where()
-    .eq(sessionSelfFieldName, this).lt("endTime", DateTime.now());
-    return completedSessionResults.findList();
+  	Date date = new Date();
+  	List<TMSession> completedSessionResults = TMSession.all();
+    ArrayList<TMSession> returning = new ArrayList<TMSession>();
+  	for(TMSession sesh: completedSessionResults){
+    	if((sesh.getTutor().getUsername()==this.getUsername()||sesh.getStudent().getUsername()==this.getUsername())&&sesh.getEndTime()<date.getTime()){
+    		returning.add(sesh);
+    	}
+    }
+    return returning;
   }
 
   /**

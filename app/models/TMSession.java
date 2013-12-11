@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.List;
+import java.util.Date;
+import java.util.ArrayList;
+import com.avaje.ebean.Query;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -55,12 +58,14 @@ public class TMSession extends Model {
     this.tutor = tutor;
     this.startTime = startTime;
     this.endTime = endTime;
-    this.scribblarId = null;
-    this.scribblarId= addScribblarRoom();
-    if(this.scribblarId==null) {
-      //throw new Exception();//Should be a SessionGenerationException
+    if(this.isValid()){
+    	this.scribblarId = null;
+      this.scribblarId= addScribblarRoom();
+      if(this.scribblarId==null) {
+        //throw new Exception();//Should be a SessionGenerationException
+      }
+      TMSession.create(this);
     }
-    TMSession.create(this);
   }
 
   public static Finder<Long, TMSession> find = new Finder<Long, TMSession>(
@@ -71,7 +76,9 @@ public class TMSession extends Model {
   }
 
   public static void create(TMSession session) {
-    session.save();
+  	if(session.isValid()){
+  		session.save();
+  	}
   }
 
   public static void delete(Long id) {
@@ -79,7 +86,17 @@ public class TMSession extends Model {
 
   }
   public static List<TMSession> userSessions(Tutor t, Student s){
-  	return null;
+  	List<TMSession> sessions = TMSession.all();
+  	List<TMSession> matchingSessions = new ArrayList<TMSession>();
+  	for(TMSession sesh: sessions){
+  		if(sesh.getTutor().getUsername() == t.getUsername() || sesh.getStudent().getUsername()==s.getUsername()){
+  			matchingSessions.add(sesh);
+  		}
+  	}
+  	if(matchingSessions.size()==0){
+  		return null;
+  	}
+  	return sessions;
   }
 
   /**
@@ -210,7 +227,9 @@ public class TMSession extends Model {
     "&autostartcam=1"+
     "&autostartaudio=1";
     Document doc = makeScribblarRequest(requestString);
-
+    if(doc==null){
+    	return null;
+    }
     NodeList list = doc.getElementsByTagName("response");
     if(list.item(0).getAttributes().getNamedItem("status").getNodeValue().equals("ok")) {
       // Success!
@@ -256,9 +275,33 @@ public class TMSession extends Model {
   }
   
   public boolean overlaps(TMSession session){
-  	if(this.getStartTime() < session.getEndTime()&&this.getEndTime()>session.getEndTime()){
+  	if(this.getStartTime() < session.getEndTime()&&this.getEndTime()>session.getStartTime()){
   		return true;
   	}
   	return false;
   }
+  public boolean overlapsRequest(Request session){
+  	if(this.getStartTime() < session.getEndTime()&&this.getEndTime()>session.getStartTime()){
+  		return true;
+  	}
+  	return false;
+  }
+  public boolean isValid(){
+		Date current = new Date();
+		Date startTime = new Date(this.startTime);
+		Date endTime = new Date(this.endTime);
+		if(startTime.before(current)){
+			return false;
+		}
+		List<TMSession> matches = TMSession.userSessions(tutor,student);
+		if(matches==null){
+			return true;
+		}
+		for(TMSession sesh: matches){
+			if(sesh.overlaps(this)){
+				return false;
+			}
+		}
+		return true;
+	}
 }

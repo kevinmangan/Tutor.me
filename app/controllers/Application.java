@@ -42,7 +42,6 @@ public class Application extends Controller {
       // Tutor sign in
     } else if (type == 3) {
       return loginResult(requestData, false);
-
       // Tutor register
     } else if (type == 4) {
       return signUpResult(requestData, false);
@@ -129,7 +128,7 @@ public class Application extends Controller {
       .contains("username", tutorUsername).orderBy("rating");
       List<Tutor> tutors = tutorResults.findList();
       Tutor tutor = tutors.get(0);
-      return ok(profile.render(tutor, 1));
+      return ok(profile.render(tutor, 1, 0));
     }
   }
 
@@ -164,7 +163,7 @@ public class Application extends Controller {
       if(Tutor.findTutor(user)!=null){
         //Return Tutor Homepage
         Tutor tutor = Tutor.findTutor(user);
-        return ok(profile.render(tutor, 1));
+        return ok(profile.render(tutor, 1, 0));
       } else{
         List<Tutor> emptyList = Collections.<Tutor>emptyList();
         return ok(search.render(emptyList));
