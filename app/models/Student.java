@@ -41,7 +41,7 @@ public class Student extends User {
    */
   public static boolean authenticate(String identifier, String password){
     Student student = findStudent(identifier);
-    if(encrypt(password,student.getSalt()).equals(student.getPwhash())){
+    if(student != null && encrypt(password,student.getSalt()).equals(student.getPwhash())){
       return true;
     }
     return false;

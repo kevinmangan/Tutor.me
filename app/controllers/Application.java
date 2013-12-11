@@ -35,9 +35,12 @@ public class Application extends Controller {
     if (type == 1) {
       String username = requestData.get("username");
       String password = requestData.get("password");
-      studentLogin(username, password);
-      List<Tutor> emptyList = Collections.<Tutor>emptyList();
-      return ok(search.render(emptyList));
+      if(studentLogin(username, password)){
+        List<Tutor> emptyList = Collections.<Tutor>emptyList();
+        return ok(search.render(emptyList));
+      }else{
+        return ok(index.render("Welcome"));
+      }
 
       // Student register
     } else if (type == 2) {
@@ -57,11 +60,14 @@ public class Application extends Controller {
     } else if (type == 3) {
       String username = requestData.get("username");
       String password = requestData.get("password");
-      tutorLogin(username, password);
-      Query<Tutor> tutorResults  = Tutor.find.where().contains("username", username).orderBy("rating");
-      List<Tutor> tutors = tutorResults.findList();
-      Tutor tutor = tutors.get(0);
-      return ok(profile.render(tutor, 1));
+      if(tutorLogin(username, password)){
+        Query<Tutor> tutorResults  = Tutor.find.where().contains("username", username).orderBy("rating");
+        List<Tutor> tutors = tutorResults.findList();
+        Tutor tutor = tutors.get(0);
+        return ok(profile.render(tutor, 1));
+      }else{
+        return ok(index.render("Welcome"));
+      }
 
       // Tutor register
     } else if (type == 4) {
@@ -150,9 +156,12 @@ public class Application extends Controller {
    * @param username: The username of the student
    * @param password: The password of the student
    */
-  public static void studentLogin(String username, String password){
+  public static boolean studentLogin(String username, String password){
     if(Student.authenticate(username, password)){
       session("connected",Student.findStudent(username).getUsername());
+      return true;
+    }else{
+      return false;
     }
   }
 
@@ -163,9 +172,12 @@ public class Application extends Controller {
    * @param password: The password of the tutor
    */
 
-  public static void tutorLogin(String username, String password){
+  public static boolean tutorLogin(String username, String password){
     if(Tutor.authenticate(username, password)){
       session("connected",Tutor.findTutor(username).getUsername());
+      return true;
+    }else{
+      return false;
     }
   }
 
@@ -180,7 +192,7 @@ public class Application extends Controller {
   public static void studentRegister(String username, String password, String fullName, String email) {
     form().bindFromRequest();
     if (Student.existsStudent(username, email)) {
-      index();
+      return ok(index.render("Student already exists"));
     } else {
       Student user = new Student();
       user.setUsername(username);
@@ -210,7 +222,7 @@ public class Application extends Controller {
       String fullName, String email) {
     // Validate Data
     if (Tutor.existsTutor(username, email)) {
-      index();
+      return ok(index.render("Tutor already exists"));
     } else {
       Tutor user = new Tutor();
       user.setUsername(username);
