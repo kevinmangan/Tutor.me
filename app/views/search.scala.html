@@ -1,5 +1,6 @@
 @(tutors: List[Tutor])
 @import helper._
+
 @signedInStudentMain() {
 
 
@@ -17,7 +18,7 @@
 
         <div class="navbar-collapse collapse">
         @helper.form(action = routes.Logout.logout){
-        <br><button  type="submit" class="btn btn-danger btn-sm navbar-right" action="@routes.Logout.logout" style="margin-top:-10px">Logout</button><span class="navbar-right" style="margin-right:20px; margin-top:-5px; color:#ccc">Welcome, Ipsum!</span>
+        <br><button  type="submit" class="btn btn-danger btn-sm navbar-right" action="@routes.Logout.logout" style="margin-top:-10px">Logout</button><span class="navbar-right" style="margin-right:20px; margin-top:-5px; color:#ccc">Welcome, @(session()("connected"))!</span>
         }
         </div>
         
@@ -42,7 +43,7 @@
                <form class="form-inline" role="form">  
                     <div class="col-lg-4"> 
                       <label for="subjectInput">Subject</label>  
-                          <input type="text" class="form-control" name="subject" placeholder=" Eg. GRE Math">  
+                          <input type="text" class="form-control" name="subject" placeholder=" Eg. underwater-basketball">  
                     </div>
                     <div class="col-lg-4">
                       <label for="minPrice">Price per hour</label>
