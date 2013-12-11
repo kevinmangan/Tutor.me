@@ -64,29 +64,25 @@ public class Application extends Controller {
     String password = requestData.get("password");
     String fullName = requestData.get("fullName");
     String email = requestData.get("email");
-    if (!alphaNumeric(username)) {
-      return ok(index.render("Username must be alpha numberic"));
-    } else if (!alphabetic(removeWhitespace(fullName))) {
-      return ok(index.render("Name must be alphabetic"));
-    } else if (!validEmail(email)) {
-      return ok(index.render("Please enter a valid email"));
-    } else {
-      boolean registerResult = isStudent ? studentRegister(username, password, fullName, email) : tutorRegister(username, password, fullName, email);
-      if (!registerResult) {
-        if (isStudent) {
-          return redirect(routes.Search.search());
+
+    String errorMessage = validateUsernameAndPassword(username, password);
+    if (errorMessage.isEmpty()) {
+      errorMessage = validateNameAndEmail(fullName, email);
+      if (errorMessage.isEmpty()) {
+        boolean registerResult = isStudent ? studentRegister(username,
+            password, fullName, email) : tutorRegister(username, password,
+                fullName, email);
+        if (!registerResult) {
+          return getLoginRedirect(isStudent ? "" : username);
         } else {
-          Query<Tutor> tutorResults = Tutor.find.where()
-          .contains("username", username).orderBy("rating");
-          List<Tutor> tutors = tutorResults.findList();
-          Tutor tutor = tutors.get(0);
-          return redirect(routes.Profile.viewProfile(tutor.getUsername()));
+          return ok(index.render((isStudent ? "Student" : "Tutor")
+              + " already exists"));
         }
       } else {
-        return ok(index
-            .render((isStudent ? "Student" : "Tutor")
-                + " already exists"));
+        return ok(index.render(errorMessage));
       }
+    } else {
+      return ok(index.render(errorMessage));
     }
   }
 
@@ -102,22 +98,38 @@ public class Application extends Controller {
 
     String username = requestData.get("username");
     String password = requestData.get("password");
-    boolean loginResult = isStudent ? studentLogin(username, password)
-        : tutorLogin(username, password);
-    if (loginResult) {
-      if (isStudent) {
-        return redirect(routes.Search.search());
+
+    String errorMessage = validateUsernameAndPassword(username, password);
+    if (errorMessage.isEmpty()) {
+      boolean loginResult = isStudent ? studentLogin(username, password)
+          : tutorLogin(username, password);
+      if (loginResult) {
+        return getLoginRedirect(isStudent ? "" : username);
       } else {
-        Query<Tutor> tutorResults = Tutor.find.where()
-        .contains("username", username).orderBy("rating");
-        List<Tutor> tutors = tutorResults.findList();
-        Tutor tutor = tutors.get(0);
-        return ok(profile.render(tutor, 1));
+        return ok(index.render((isStudent ? "Student" : "Tutor")
+            + " does not exist"));
       }
     } else {
-      return ok(index
-          .render((isStudent ? "Student" : "Tutor")
-              + " does not exist"));
+      return ok(index.render(errorMessage));
+    }
+  }
+
+  /**
+   * Gets the redirect page for a user login
+   * 
+   * @param tutorUsername: The username of for the tutor or the empty string if
+   * this is a student
+   * @return: The page to redirect to when this user logs in
+   */
+  public static Result getLoginRedirect(String tutorUsername) {
+    if (tutorUsername.isEmpty()) {
+      return redirect(routes.Search.search());
+    } else {
+      Query<Tutor> tutorResults = Tutor.find.where()
+          .contains("username", tutorUsername).orderBy("rating");
+      List<Tutor> tutors = tutorResults.findList();
+      Tutor tutor = tutors.get(0);
+      return ok(profile.render(tutor, 1));
     }
   }
 
@@ -315,6 +327,49 @@ public class Application extends Controller {
       mail.addRecipient(emailRecipient);
     }
     mail.sendHtml(emailHtml);
+  }
+
+  /**
+   * Validates a username and password
+   * 
+   * @param username: The username to check
+   * @param password: The password to check
+   * @return: The error message produces or the empty string if no error is
+   * caused
+   */
+  public static String validateUsernameAndPassword(String username,
+      String password) {
+    if (username.isEmpty()) {
+      return "Username cannot be empty";
+    } else if (!alphaNumeric(username)) {
+      return "Username must be alphanumberic";
+    } else if (password.isEmpty()) {
+      return "Password cannot be empty";
+    } else {
+      return "";
+    }
+  }
+
+  /**
+   * Validates a name and email
+   * 
+   * @param name: The name to check
+   * @param email: The password to check
+   * @return: The error message produces or the empty string if no error is
+   * caused
+   */
+  public static String validateNameAndEmail(String name, String email) {
+    if (name.isEmpty()) {
+      return "Name cannot be empty";
+    } else if (!alphabetic(removeWhitespace(name))) {
+      return "Name must be alphabetic";
+    } else if (email.isEmpty()) {
+      return "Email cannot be empty";
+    } else if (!validEmail(email)) {
+      return "Please enter a valid email";
+    } else {
+      return "";
+    }
   }
 
   /**
