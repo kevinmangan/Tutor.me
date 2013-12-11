@@ -51,7 +51,9 @@ public class Application extends Controller {
       if(containsIllegals(username) || !validEmail(email)){
         return ok(index.render("Welcome"));
       }else{
-        studentRegister(username, password, fullName, email);
+        if(!studentRegister(username, password, fullName, email)){
+          return ok(index.render("Student already exists"));
+        }
         List<Tutor> emptyList = Collections.<Tutor>emptyList();
         return ok(search.render(emptyList));
       }
@@ -75,11 +77,17 @@ public class Application extends Controller {
       String password = requestData.get("password");
       String fullName = requestData.get("fullName");
       String email = requestData.get("email");
-      tutorRegister(username, password, fullName, email);
-      Query<Tutor> tutorResults  = Tutor.find.where().contains("username", username).orderBy("rating");
-      List<Tutor> tutors = tutorResults.findList();
-      Tutor tutor = tutors.get(0);
-      return ok(profile.render(tutor, 1));
+      if(containsIllegals(username) || !validEmail(email)){
+        return ok(index.render("Welcome"));
+      }else{
+        if(!tutorRegister(username, password, fullName, email)){
+          return ok(index.render("Tutor already exists"));
+        }
+        Query<Tutor> tutorResults  = Tutor.find.where().contains("username", username).orderBy("rating");
+        List<Tutor> tutors = tutorResults.findList();
+        Tutor tutor = tutors.get(0);
+        return ok(profile.render(tutor, 1));
+      }
     } else {
       return unauthorized("Oops, you are not connected");
     }
@@ -189,10 +197,10 @@ public class Application extends Controller {
    * @param fullName: The student's full name
    * @param email: The student's email
    */
-  public static void studentRegister(String username, String password, String fullName, String email) {
+  public static boolean studentRegister(String username, String password, String fullName, String email) {
     form().bindFromRequest();
     if (Student.existsStudent(username, email)) {
-      return ok(index.render("Student already exists"));
+      return false;
     } else {
       Student user = new Student();
       user.setUsername(username);
@@ -207,6 +215,7 @@ public class Application extends Controller {
         session("connected", username);
         index();
       }
+      return true;
     }
   }
 
@@ -218,11 +227,11 @@ public class Application extends Controller {
    * @param fullName: The tutor's full name
    * @param email: The tutor's email
    */
-  public static void tutorRegister(String username, String password,
+  public static boolean tutorRegister(String username, String password,
       String fullName, String email) {
     // Validate Data
     if (Tutor.existsTutor(username, email)) {
-      return ok(index.render("Tutor already exists"));
+      return false;
     } else {
       Tutor user = new Tutor();
       user.setUsername(username);
@@ -236,6 +245,7 @@ public class Application extends Controller {
         session("connected", username);
         index();
       }
+      return true;
     }
   }
 
