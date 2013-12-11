@@ -53,7 +53,9 @@ public class Application extends Controller {
       if(containsIllegals(username) || !validEmail(email)){
         return ok(index.render("Welcome"));
       }else{
-        studentRegister(username, password, fullName, email);
+        if(!studentRegister(username, password, fullName, email)){
+          return ok(index.render("Student already exists"));
+        }
         //List<Tutor> emptyList = Collections.<Tutor>emptyList();
         //return ok(search.render(emptyList));
         return redirect(routes.Search.search());
@@ -63,11 +65,14 @@ public class Application extends Controller {
     } else if (type == 3) {
       String username = requestData.get("username");
       String password = requestData.get("password");
-      tutorLogin(username, password);
-      Query<Tutor> tutorResults  = Tutor.find.where().contains("username", username).orderBy("rating");
-      List<Tutor> tutors = tutorResults.findList();
-      Tutor tutor = tutors.get(0);
-      return ok(profile.render(tutor, 1));
+      if(tutorLogin(username, password)){
+        Query<Tutor> tutorResults  = Tutor.find.where().contains("username", username).orderBy("rating");
+        List<Tutor> tutors = tutorResults.findList();
+        Tutor tutor = tutors.get(0);
+        return ok(profile.render(tutor, 1));
+      }else{
+        return ok(index.render("Welcome"));
+      }
 
       // Tutor register
     } else if (type == 4) {
@@ -75,12 +80,17 @@ public class Application extends Controller {
       String password = requestData.get("password");
       String fullName = requestData.get("fullName");
       String email = requestData.get("email");
-      tutorRegister(username, password, fullName, email);
-      Query<Tutor> tutorResults  = Tutor.find.where().contains("username", username).orderBy("rating");
-      List<Tutor> tutors = tutorResults.findList();
-      Tutor tutor = tutors.get(0);
-      //return ok(profile.render(tutor, 1));
-      return redirect(routes.Profile.viewProfile(tutor.getUsername()));
+      if(containsIllegals(username) || !validEmail(email)){
+        return ok(index.render("Welcome"));
+      }else{
+        if(!tutorRegister(username, password, fullName, email)){
+          return ok(index.render("Tutor already exists"));
+        }
+        Query<Tutor> tutorResults  = Tutor.find.where().contains("username", username).orderBy("rating");
+        List<Tutor> tutors = tutorResults.findList();
+        Tutor tutor = tutors.get(0);
+        return redirect(routes.Profile.viewProfile(tutor.getUsername()));
+      }
     } else {
       return unauthorized("Oops, you are not connected");
     }
@@ -161,8 +171,9 @@ public class Application extends Controller {
     if(Student.authenticate(username, password)){
       session("connected",Student.findStudent(username).getUsername());
       return true;
+    } else{
+      return false;
     }
-    return false;
   }
 
   /**
@@ -172,9 +183,12 @@ public class Application extends Controller {
    * @param password: The password of the tutor
    */
 
-  public static void tutorLogin(String username, String password){
+  public static boolean tutorLogin(String username, String password){
     if(Tutor.authenticate(username, password)){
       session("connected",Tutor.findTutor(username).getUsername());
+      return true;
+    }else{
+      return false;
     }
   }
 
@@ -186,10 +200,10 @@ public class Application extends Controller {
    * @param fullName: The student's full name
    * @param email: The student's email
    */
-  public static void studentRegister(String username, String password, String fullName, String email) {
+  public static boolean studentRegister(String username, String password, String fullName, String email) {
     form().bindFromRequest();
     if (Student.existsStudent(username, email)) {
-      index();
+      return false;
     } else {
       Student user = new Student();
       user.setUsername(username);
@@ -204,6 +218,7 @@ public class Application extends Controller {
         session("connected", username);
         index();
       }
+      return true;
     }
   }
 
@@ -215,11 +230,11 @@ public class Application extends Controller {
    * @param fullName: The tutor's full name
    * @param email: The tutor's email
    */
-  public static void tutorRegister(String username, String password,
+  public static boolean tutorRegister(String username, String password,
       String fullName, String email) {
     // Validate Data
     if (Tutor.existsTutor(username, email)) {
-      index();
+      return false;
     } else {
       Tutor user = new Tutor();
       user.setUsername(username);
@@ -233,6 +248,7 @@ public class Application extends Controller {
         session("connected", username);
         index();
       }
+      return true;
     }
   }
 

@@ -167,7 +167,7 @@ public class Tutor extends User {
    */
   public static boolean authenticate(String identifier, String password){
     Tutor tutor = findTutor(identifier);
-    if(encrypt(password,tutor.getSalt()).equals(tutor.getPwhash())){
+    if(tutor != null && encrypt(password,tutor.getSalt()).equals(tutor.getPwhash())){
       return true;
     }
     return false;
