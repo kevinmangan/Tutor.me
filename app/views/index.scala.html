@@ -1,14 +1,19 @@
 @(message: String)
 @import helper._
 
-@signedOutMain("Welcome to Tutor.me") {
 
- if @message
-  <div class="alert alert-block">  
-  <a class="close" data-dismiss="alert">×</a>  
-  <h4 class="alert-heading">Warning!</h4>  
-      What are you doing?! this will delete all files!!  
-  </div>
+
+
+
+
+
+
+@signedOutMain("Welcome to Tutor.me", message) {
+
+ 
+  
+
+  
 
     <!-- Navbar -->
 	<div class="navbar navbar-fixed-top">
@@ -20,6 +25,7 @@
 	            <span class="icon-bar"></span>
           	</a>
           	<a class="brand scroller" data-section="html" href="index.html">Tutor.me</a>
+
 		  	<div class="nav-collapse collapse">
                 <ul class="nav pull-right">
                     <li><a href="#" class="scroller" data-section="#about">About</a></li>
@@ -34,9 +40,11 @@
                 </ul>
 	        </div>
         </div>
+
       </div>
     </div>
     <!-- end Navbar -->
+
 
 
     <!-- #intro -->
@@ -44,11 +52,17 @@
 		<div class="container-fluid" id="intro">
 		<div class="container">
 			<div class="row span6 offset3 center">
+        <div class="alert alert-block alert-error">  
+                <button type="button" class="close" data-dismiss="alert">&times;</button>   
+                @message  
+        </div>
 				<h1>A simple &amp; efficient way for students and tutors to connect</h1>
 				<p>Tutor.me offers <strong>students</strong> an opportunity to pick from a variety of tutors and receive course help from the comfort of their computer.
         <br/><br/>It allows <strong>tutors</strong> a chance to market and provide their tutoring services online remotely. Tutoring sessions occur online via videoconferencing, text chatting, and a real-time collaborative whiteboard.
 	</p>
 				<!--a href="#" class="btn btn-xlarge">Sign Up</a-->
+        
+
 			</div>
 		</div>
 	</div>

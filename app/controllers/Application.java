@@ -48,7 +48,7 @@ public class Application extends Controller {
       String password = requestData.get("password");
       String fullName = requestData.get("fullName");
       String email = requestData.get("email");
-      if(containsIllegals(username) || !validEmail(email)){
+      if(!alphaNumeric(username) || !validEmail(email)){
         return ok(index.render("Welcome"));
       }else{
         if(!studentRegister(username, password, fullName, email)){
@@ -77,7 +77,7 @@ public class Application extends Controller {
       String password = requestData.get("password");
       String fullName = requestData.get("fullName");
       String email = requestData.get("email");
-      if(containsIllegals(username) || !validEmail(email)){
+      if(!alphaNumeric(username) || !validEmail(email)){
         return ok(index.render("Welcome"));
       }else{
         if(!tutorRegister(username, password, fullName, email)){
@@ -289,10 +289,10 @@ public class Application extends Controller {
     mail.sendHtml(emailHtml);
   }
 
-  public static boolean containsIllegals(String toExamine) {
-      Pattern pattern = Pattern.compile("@");
+  public static boolean alphaNumeric(String toExamine) {
+      Pattern pattern = Pattern.compile("^[a-zA-Z0-9]*$");
       Matcher matcher = pattern.matcher(toExamine);
-      return matcher.find();
+      return matcher.matches();
   }
 
   public static boolean validEmail(String toExamine) {
