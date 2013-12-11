@@ -5,8 +5,8 @@ import static play.data.Form.form;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import models.Student;
 import models.Tutor;
@@ -33,66 +33,103 @@ public class Application extends Controller {
 
     // Student log in
     if (type == 1) {
-      String username = requestData.get("username");
-      String password = requestData.get("password");
-      if(studentLogin(username, password)) {
-        return redirect(routes.Search.search());
-      } else {
-        return index();
-      }
-      //List<Tutor> emptyList = Collections.<Tutor>emptyList();
-      
-      //return ok(search.render(emptyList));
+      return loginResult(requestData, true);
 
       // Student register
     } else if (type == 2) {
-      String username = requestData.get("username");
-      String password = requestData.get("password");
-      String fullName = requestData.get("fullName");
-      String email = requestData.get("email");
-      if(!alphaNumeric(username) || !validEmail(email)){
-        return ok(index.render("Welcome"));
-      }else{
-        if(!studentRegister(username, password, fullName, email)){
-          return ok(index.render("Student already exists"));
-        }
-        //List<Tutor> emptyList = Collections.<Tutor>emptyList();
-        //return ok(search.render(emptyList));
-        return redirect(routes.Search.search());
-      }
+      return signUpResult(requestData, true);
 
       // Tutor sign in
     } else if (type == 3) {
-      String username = requestData.get("username");
-      String password = requestData.get("password");
-      if(tutorLogin(username, password)){
-        Query<Tutor> tutorResults  = Tutor.find.where().contains("username", username).orderBy("rating");
-        List<Tutor> tutors = tutorResults.findList();
-        Tutor tutor = tutors.get(0);
-        return ok(profile.render(tutor, 1));
-      }else{
-        return ok(index.render("Welcome"));
-      }
+      return loginResult(requestData, false);
 
       // Tutor register
     } else if (type == 4) {
-      String username = requestData.get("username");
-      String password = requestData.get("password");
-      String fullName = requestData.get("fullName");
-      String email = requestData.get("email");
-      if(!alphaNumeric(username) || !validEmail(email)){
-        return ok(index.render("Welcome"));
-      }else{
-        if(!tutorRegister(username, password, fullName, email)){
-          return ok(index.render("Tutor already exists"));
-        }
-        Query<Tutor> tutorResults  = Tutor.find.where().contains("username", username).orderBy("rating");
-        List<Tutor> tutors = tutorResults.findList();
-        Tutor tutor = tutors.get(0);
-        return redirect(routes.Profile.viewProfile(tutor.getUsername()));
-      }
+      return signUpResult(requestData, false);
     } else {
       return unauthorized("Oops, you are not connected");
+    }
+  }
+
+  /**
+   * Decides what page to return when a sign up attempt is made
+   * 
+   * @param requestData: The form containing the sign up request data
+   * @param isStudent: True if attempting to sign up a student, false if trying
+   * to sign up as a tutor
+   * @return: The page to render for this sign up attempt
+   */
+  public static Result signUpResult(DynamicForm requestData, boolean isStudent) {
+    String username = requestData.get("username");
+    String password = requestData.get("password");
+    String fullName = requestData.get("fullName");
+    String email = requestData.get("email");
+
+    String errorMessage = validateUsernameAndPassword(username, password);
+    if (errorMessage.isEmpty()) {
+      errorMessage = validateNameAndEmail(fullName, email);
+      if (errorMessage.isEmpty()) {
+        boolean registerResult = isStudent ? studentRegister(username,
+            password, fullName, email) : tutorRegister(username, password,
+                fullName, email);
+        if (!registerResult) {
+          return getLoginRedirect(isStudent ? "" : username);
+        } else {
+          return ok(index.render((isStudent ? "Student" : "Tutor")
+              + " already exists"));
+        }
+      } else {
+        return ok(index.render(errorMessage));
+      }
+    } else {
+      return ok(index.render(errorMessage));
+    }
+  }
+
+  /**
+   * Decides what page to return when a login attempt is made
+   * 
+   * @param requestData: The form containing the login request data
+   * @param isStudent: True if attempting to sign up a student, false if trying
+   * to sign up as a tutor
+   * @return: The page to render for this login attempt
+   */
+  public static Result loginResult(DynamicForm requestData, boolean isStudent) {
+
+    String username = requestData.get("username");
+    String password = requestData.get("password");
+
+    String errorMessage = validateUsernameAndPassword(username, password);
+    if (errorMessage.isEmpty()) {
+      boolean loginResult = isStudent ? studentLogin(username, password)
+          : tutorLogin(username, password);
+      if (loginResult) {
+        return getLoginRedirect(isStudent ? "" : username);
+      } else {
+        return ok(index.render((isStudent ? "Student" : "Tutor")
+            + " does not exist"));
+      }
+    } else {
+      return ok(index.render(errorMessage));
+    }
+  }
+
+  /**
+   * Gets the redirect page for a user login
+   * 
+   * @param tutorUsername: The username of for the tutor or the empty string if
+   * this is a student
+   * @return: The page to redirect to when this user logs in
+   */
+  public static Result getLoginRedirect(String tutorUsername) {
+    if (tutorUsername.isEmpty()) {
+      return redirect(routes.Search.search());
+    } else {
+      Query<Tutor> tutorResults = Tutor.find.where()
+          .contains("username", tutorUsername).orderBy("rating");
+      List<Tutor> tutors = tutorResults.findList();
+      Tutor tutor = tutors.get(0);
+      return ok(profile.render(tutor, 1));
     }
   }
 
@@ -292,16 +329,90 @@ public class Application extends Controller {
     mail.sendHtml(emailHtml);
   }
 
+  /**
+   * Validates a username and password
+   * 
+   * @param username: The username to check
+   * @param password: The password to check
+   * @return: The error message produces or the empty string if no error is
+   * caused
+   */
+  public static String validateUsernameAndPassword(String username,
+      String password) {
+    if (username.isEmpty()) {
+      return "Username cannot be empty";
+    } else if (!alphaNumeric(username)) {
+      return "Username must be alphanumberic";
+    } else if (password.isEmpty()) {
+      return "Password cannot be empty";
+    } else {
+      return "";
+    }
+  }
+
+  /**
+   * Validates a name and email
+   * 
+   * @param name: The name to check
+   * @param email: The password to check
+   * @return: The error message produces or the empty string if no error is
+   * caused
+   */
+  public static String validateNameAndEmail(String name, String email) {
+    if (name.isEmpty()) {
+      return "Name cannot be empty";
+    } else if (!alphabetic(removeWhitespace(name))) {
+      return "Name must be alphabetic";
+    } else if (email.isEmpty()) {
+      return "Email cannot be empty";
+    } else if (!validEmail(email)) {
+      return "Please enter a valid email";
+    } else {
+      return "";
+    }
+  }
+
+  /**
+   * Makes sure a string is alphabetic
+   * 
+   * @param toExamine: The string to check
+   * @return: True for an alphabetic string, false otherwise
+   */
+  public static boolean alphabetic(String toExamine) {
+    Pattern pattern = Pattern.compile("^[a-zA-Z]*$");
+    Matcher matcher = pattern.matcher(toExamine);
+    return matcher.matches();
+  }
+
+  /**
+   * Makes sure a string is alphanumeric
+   * 
+   * @param toExamine: The string to check
+   * @return: True for an alphanumeric string, false otherwise
+   */
   public static boolean alphaNumeric(String toExamine) {
-      Pattern pattern = Pattern.compile("^[a-zA-Z0-9]*$");
-      Matcher matcher = pattern.matcher(toExamine);
-      return matcher.matches();
+    Pattern pattern = Pattern.compile("^[a-zA-Z0-9]*$");
+    Matcher matcher = pattern.matcher(toExamine);
+    return matcher.matches();
   }
 
+  /**
+   * Makes sure a string is a valid email
+   * @param toExamine: The string to check
+   * @return: True for a valid email, false otherwise
+   */
   public static boolean validEmail(String toExamine) {
-      Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
-      Matcher matcher = pattern.matcher(toExamine);
-      return matcher.matches();
+    Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+    Matcher matcher = pattern.matcher(toExamine);
+    return matcher.matches();
   }
 
+  /**
+   * Removes whitespace from a string
+   * @param s: The string to remove whitespace from
+   * @return The string without whitespace
+   */
+  public static String removeWhitespace(String s) {
+    return s.replaceAll("\\s+","");
+  }
 }
