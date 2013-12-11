@@ -98,16 +98,16 @@
             <form role="form">
               <input type="hidden" name="type" value="2">
               <div class="form-group">
-                <label for="editAbout">About</label>
-                <input type="textarea" class="form-control" name="editAbout" id="editAbout" placeholder="@tutor.getDescription()">
+                <label for="editTagline">Tagline</label>
+                <input type="text" class="form-control" name="editTagline" id="editTagline" placeholder="@tutor.getTagline() " value="@tutor.getTagline()">
               </div>
               <div class="form-group">
-                <label for="editTagline">Tagline</label>
-                <input type="text" class="form-control" name="editTagline" id="editTagline" placeholder="@tutor.getTagline() ">
+                <label for="editAbout">About</label>
+                <textarea class="form-control" name="editAbout" id="editAbout" placeholder="@tutor.getDescription()" rows="5">@tutor.getDescription()</textarea>
               </div>
               <div class="form-group">
                 <label for="editPrice">Price per hour</label>
-                <input type="text" class="form-control" name="editPrice" id="editPrice" placeholder="@tutor.getCostUSD()">
+                <input type="text" class="form-control" name="editPrice" id="editPrice" placeholder="@tutor.getCostUSD()" value="@tutor.getCostUSD()">
               </div>
               <div class="form-group">
                 <label for="picture">Upload Picture</label>

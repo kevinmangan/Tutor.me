@@ -70,7 +70,13 @@ public class Profile extends Controller {
     if(type == 2){
       String tagline = requestData.get("editTagline");
       String description = requestData.get("editAbout");
-      double cost = Double.parseDouble(requestData.get("editPrice"));
+      String priceString = requestData.get("editPrice");
+      double cost;
+      try {
+        cost = Double.parseDouble(priceString);
+      } catch (NumberFormatException e) {
+        cost = 0.0;
+      }
       MultipartFormData body = request().body().asMultipartFormData();
       FilePart picture = body.getFile("picture");
       if (picture != null) {

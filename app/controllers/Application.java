@@ -35,12 +35,22 @@ public class Application extends Controller {
     if (type == 1) {
       String username = requestData.get("username");
       String password = requestData.get("password");
+<<<<<<< HEAD
       if(studentLogin(username, password)){
         List<Tutor> emptyList = Collections.<Tutor>emptyList();
         return ok(search.render(emptyList));
       }else{
         return ok(index.render("Student does not exist"));
+=======
+      if(studentLogin(username, password)) {
+        return redirect(routes.Search.search());
+      } else {
+        return index();
+>>>>>>> b194eb7697b630d495f7891742d483beeb3e7966
       }
+      //List<Tutor> emptyList = Collections.<Tutor>emptyList();
+      
+      //return ok(search.render(emptyList));
 
       // Student register
     } else if (type == 2) {
@@ -54,8 +64,9 @@ public class Application extends Controller {
         if(!studentRegister(username, password, fullName, email)){
           return ok(index.render("Student already exists"));
         }
-        List<Tutor> emptyList = Collections.<Tutor>emptyList();
-        return ok(search.render(emptyList));
+        //List<Tutor> emptyList = Collections.<Tutor>emptyList();
+        //return ok(search.render(emptyList));
+        return redirect(routes.Search.search());
       }
 
       // Tutor sign in
@@ -86,7 +97,7 @@ public class Application extends Controller {
         Query<Tutor> tutorResults  = Tutor.find.where().contains("username", username).orderBy("rating");
         List<Tutor> tutors = tutorResults.findList();
         Tutor tutor = tutors.get(0);
-        return ok(profile.render(tutor, 1));
+        return redirect(routes.Profile.viewProfile(tutor.getUsername()));
       }
     } else {
       return unauthorized("Oops, you are not connected");
@@ -168,7 +179,7 @@ public class Application extends Controller {
     if(Student.authenticate(username, password)){
       session("connected",Student.findStudent(username).getUsername());
       return true;
-    }else{
+    } else{
       return false;
     }
   }

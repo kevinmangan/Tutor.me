@@ -34,6 +34,8 @@ public class Search extends Controller {
       return ok(search.render(emptyList));
     } else {
       return unauthorized("Oops, you are not connected");
+      //user is logged out
+      //return redirect()
     }
   }
 
