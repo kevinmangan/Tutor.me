@@ -113,6 +113,11 @@ public class Application extends Controller {
     }
   }
 
+
+  public static Result fourohfour(String path) {
+    return ok("404");
+  }
+
   /**
    * Gets the redirect page for a user login
    * 
