@@ -30,24 +30,18 @@ public class SessionTest {
   private static final String TEST_NAME = "Test Name";
   private static final String TEST_PASSWORD = "Test Password";
   private static final String TEST_SALT = "1";
-  
+
   private static final String TEST_HISTORY_USERNAME = "Test History Username";
   private static final String TEST_HISTORY_EMAIL = "testhistory@email.com";
   private static final String TEST_HISTORY_NAME = "Test History Name";
   private static final String TEST_HISTORY_PASSWORD = "Test History Password";
   private static final String TEST_HISTORY_SALT = "1";
-  
+
   private static final String TEST_MATH_USERNAME = "Test Math Username";
   private static final String TEST_MATH_EMAIL = "testmath@email.com";
   private static final String TEST_MATH_NAME = "Test Math Name";
   private static final String TEST_MATH_PASSWORD = "Test Math Password";
   private static final String TEST_MATH_SALT = "1";
-  
-  private static final String TEST_SCIENCE_USERNAME = "Test Science Username";
-  private static final String TEST_SCIENCE_EMAIL = "testscience@email.com";
-  private static final String TEST_SCIENCE_NAME = "Test Science Name";
-  private static final String TEST_SCIENCE_PASSWORD = "Test Science Password";
-  private static final String TEST_SCIENCE_SALT = "1";
 
   private static final String MATH_SUBJECT = "MATH";
   private static final String HISTORY_SUBJECT = "HISTORY";
@@ -67,10 +61,8 @@ public class SessionTest {
 
   private Request testFarFutureRequest;
   private Request testFutureRequest;
-  private Request testFarPastRequest;
   private Request testPastRequest;
-  private Request testPresentRequest;
- 
+
 
   @Before
   public void setUp() {
@@ -138,37 +130,34 @@ public class SessionTest {
     Date date = new Date();
     testFarFutureRequest = new Request(testStudent, testMathTutor, date.getTime()+30*oneDay, date.getTime()+30*oneDay+oneHour);
     testFutureRequest = new Request(testStudent, testMathTutor, date.getTime()+3*oneDay, date.getTime()+3*oneDay+oneHour);
-    testFarPastRequest = new Request(testStudent, testMathTutor, date.getTime()-30*oneDay, date.getTime()-30*oneDay+oneHour);
     testPastRequest = new Request(testStudent, testMathTutor, date.getTime()-3*oneDay, date.getTime()-3*oneDay+oneHour);
-    testPresentRequest = new Request(testStudent, testMathTutor, date.getTime()-oneHour, date.getTime()+oneHour);
   }
 
-	/**
-	 * Test overlapping sessions
-	 */
-	@Test
-	public void testOverlappingSession(){
-	//Should not be able to create session if overlapping session exists
-		long oneMinute = 1000*60;
+  /**
+   * Test overlapping sessions
+   */
+  @Test
+  public void testOverlappingSession(){
+    //Should not be able to create session if overlapping session exists
+    long oneMinute = 1000*60;
     long oneHour = oneMinute*60;
     long oneDay = oneHour*24;
     Date date = new Date();
     Request overlapping1 = new Request(testStudent, testMathTutor, date.getTime()+30*oneDay, date.getTime()+30*oneDay+oneHour);
     Request overlapping2 = new Request(testStudent, testHistoryTutorCheapHighRated, date.getTime()+30*oneDay, date.getTime()+30*oneDay+oneHour);
-    TMSession testOverlapping1 = overlapping1.generateSession();
+    overlapping1.generateSession();
     TMSession testOverlapping2 = overlapping2.generateSession();
     assertTrue(testOverlapping2==null);
-	}
-	/**
-	 * Test creating same session again
-	 */
-	@Test
-	public void testSameSession(){
-		//Session should not be created if it already exist
-  	TMSession testRepeatSession = testFarFutureRequest.generateSession();
-  	TMSession testRepeatSession1 = testFarFutureRequest.generateSession();
-	assertTrue(testRepeatSession1==null);
-	}
+  }
+  /**
+   * Test creating same session again
+   */
+  @Test
+  public void testSameSession(){
+    testFarFutureRequest.generateSession();
+    TMSession testRepeatSession1 = testFarFutureRequest.generateSession();
+    assertTrue(testRepeatSession1 == null);
+  }
   /**
    * Test past sessions
    */
@@ -178,7 +167,7 @@ public class SessionTest {
     TMSession testPastSession;
     testPastSession = testPastRequest.generateSession();
     assertTrue(testPastSession==null);
-    }    
+  }
 
 
   /**

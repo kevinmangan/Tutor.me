@@ -28,17 +28,7 @@ public class Global extends GlobalSettings {
 
         // Insert students
         Ebean.save(all.get("students"));
-        // for(Object project: all.get("students")) {
-        // Insert the student/tutor relation
-        //   Ebean.saveManyToManyAssociations(student, "members");
-        //}
-
-        // Insert tasks
-        // Ebean.save(all.get("tasks"));
-
       }
     }
-
   }
-
 }

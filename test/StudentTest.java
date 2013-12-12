@@ -1,12 +1,9 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static play.test.Helpers.fakeApplication;
 import static play.test.Helpers.inMemoryDatabase;
-
-import com.google.common.collect.Iterables;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,11 +18,9 @@ import org.junit.Test;
 import play.test.FakeApplication;
 import play.test.Helpers;
 
-//For session tests:
-import models.Session;
+import com.google.common.collect.Iterables;
 
-import java.util.Date;
-
+import controllers.Application;
 
 
 public class StudentTest {
@@ -38,7 +33,6 @@ public class StudentTest {
   private static final String HISTORY_TUTOR_CHEAP_HIGH_RATED_PREFIX = "History Cheap High Rated";
   private static final String HISTORY_TUTOR_EXPENSIVE_LOW_RATED_PREFIX = "History Expensive Low Rated";
   private static final String HISTORY_TUTOR_EXPENSIVE_HIGH_RATED_PREFIX = "History Expensive High Rated";
-  private static final String MULTI_SUBJECT_TUTOR_PREFIX = "Multi Subject";
   private static final String TEST_USERNAME = "Test Username";
   private static final String TEST_EMAIL = "test@email.com";
   private static final String TEST_NAME = "Test Name";
@@ -195,18 +189,22 @@ public class StudentTest {
   }
 
   /**
-   * Test session
+   * Tests log in
    */
-  /*
-  @Test
-  public void testSession() {
-    java.util.Date date = new java.util.Date();
-    testSimpleSession = new Session(testStudent, testMathTutor, date.getTime()+30000, date.getTime()+3030000);
-    assertEqual(testSimpleSession.getScribblarId(), );
-    testSimpleSession.activateRoom();
-    testSimpleSession.deactivateRoom();
+  public void testLogIn() {
+    boolean result = Application.studentLogin("invalid", TEST_PASSWORD);
+    assertFalse(result);
   }
-  */
+
+  /**
+   * Tests sign up
+   */
+  public void testSignUp() {
+    assertTrue(Application.studentRegister(TEST_USERNAME, TEST_PASSWORD,
+        TEST_NAME, TEST_EMAIL));
+    assertFalse(Application.studentRegister(TEST_USERNAME + "@", TEST_PASSWORD,
+        TEST_NAME, TEST_EMAIL));
+  }
 
   /**
    * Test Students.searchForTutors
@@ -277,23 +275,23 @@ public class StudentTest {
       }
     }
 
-   // Metamorphic property:
+    // Metamorphic property:
     // Searching for a subject twice should yield the same results
     for(double cost1 : costs) {
       for(double cost2 : costs) {
         for(double rating : ratings) {
-            List<Tutor> search1 = Student.searchForTutors(HISTORY_SUBJECT, cost1, cost2, rating);
-            List<Tutor> search2 = Student.searchForTutors(HISTORY_SUBJECT, cost1, cost2, rating);
-            assertEquals(search1.size(), search2.size());
-            for(Tutor tutor : search1){
-              assertTrue(search2.contains(tutor));
-            }
+          List<Tutor> search1 = Student.searchForTutors(HISTORY_SUBJECT, cost1, cost2, rating);
+          List<Tutor> search2 = Student.searchForTutors(HISTORY_SUBJECT, cost1, cost2, rating);
+          assertEquals(search1.size(), search2.size());
+          for(Tutor tutor : search1){
+            assertTrue(search2.contains(tutor));
           }
         }
       }
-    
+    }
 
-    
+
+
   }
 
   @After
