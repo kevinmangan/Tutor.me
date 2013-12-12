@@ -300,7 +300,7 @@ public class Request extends Model {
   	if(isValid()){
   		TMSession session = new TMSession(requestingStudent, requestedTutor,
           requestedStartTime, requestedEndTime);
-  		if(session.isValid()){
+  		if(TMSession.find.ref(session.id) != null){
   			return session;
   		}else{
   			return null;

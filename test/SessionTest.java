@@ -156,16 +156,7 @@ public class SessionTest {
     Request overlapping1 = new Request(testStudent, testMathTutor, date.getTime()+30*oneDay, date.getTime()+30*oneDay+oneHour);
     Request overlapping2 = new Request(testStudent, testHistoryTutorCheapHighRated, date.getTime()+30*oneDay, date.getTime()+30*oneDay+oneHour);
     TMSession testOverlapping1 = overlapping1.generateSession();
-    List<TMSession> all = TMSession.all();
-    for(TMSession sesh: all){
-    	System.out.println(sesh.getTutor().getUsername()+":"+sesh.getStudent().getUsername()+":"+sesh.getStartTime()+":"+sesh.getEndTime());
-    }
     TMSession testOverlapping2 = overlapping2.generateSession();
-    System.out.println("After:");
-    all = TMSession.all();
-    for(TMSession sesh: all){
-    	System.out.println(sesh.getTutor().getUsername()+":"+sesh.getStudent().getUsername()+":"+sesh.getStartTime()+":"+sesh.getEndTime());
-    }
     assertTrue(testOverlapping2==null);
 	}
 	/**
@@ -175,17 +166,8 @@ public class SessionTest {
 	public void testSameSession(){
 		//Session should not be created if it already exist
   	TMSession testRepeatSession = testFarFutureRequest.generateSession();
-  	List<TMSession> all = TMSession.all();
-    for(TMSession sesh: all){
-    	System.out.println(sesh.getTutor().getUsername()+":"+sesh.getStudent().getUsername()+":"+sesh.getStartTime()+":"+sesh.getEndTime());
-    }
   	TMSession testRepeatSession1 = testFarFutureRequest.generateSession();
-  	System.out.println("After:");
-    all = TMSession.all();
-    for(TMSession sesh: all){
-    	System.out.println(sesh.getTutor().getUsername()+":"+sesh.getStudent().getUsername()+":"+sesh.getStartTime()+":"+sesh.getEndTime());
-    }
-    assertTrue(testRepeatSession1==null);
+	assertTrue(testRepeatSession1==null);
 	}
   /**
    * Test past sessions
@@ -212,9 +194,6 @@ public class SessionTest {
     List<TMSession> beforeUpcomingSessions = testMathTutor.getUpcomingSessions();
     List<TMSession> beforeCurrentSessions = testMathTutor.getCurrentSessions();
     List<TMSession> beforeCompletedSessions = testMathTutor.getCompletedSessions();
-    if(testFutureRequest!=null){
-    	System.out.println("Not null");
-    }
     testMathTutor.respondToRequest(testFutureRequest, true);
     List<Request> afterRequests = testMathTutor.getRequests();
     List<TMSession> afterUpcomingSessions = testMathTutor.getUpcomingSessions();

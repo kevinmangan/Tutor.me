@@ -58,14 +58,12 @@ public class TMSession extends Model {
     this.tutor = tutor;
     this.startTime = startTime;
     this.endTime = endTime;
-    if(this.isValid()){
-    	this.scribblarId = null;
-      this.scribblarId= addScribblarRoom();
-      if(this.scribblarId==null) {
-        //throw new Exception();//Should be a SessionGenerationException
-      }
-      TMSession.create(this);
+    this.scribblarId = null;
+    this.scribblarId= addScribblarRoom();
+    if(this.scribblarId==null) {
+      //throw a SessionGenerationException
     }
+    TMSession.create(this);
   }
 
   public static Finder<Long, TMSession> find = new Finder<Long, TMSession>(

@@ -136,7 +136,7 @@ public class Student extends User {
    */
   public static List<Tutor> searchForTutors(String subject, double minCost,
       double maxCost) {
-    return searchForTutors(subject, minCost, maxCost, Double.MAX_VALUE);
+    return searchForTutors(subject, minCost, maxCost, 0);
   }
 
   /**

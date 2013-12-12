@@ -6,6 +6,8 @@ import static org.junit.Assert.assertTrue;
 import static play.test.Helpers.fakeApplication;
 import static play.test.Helpers.inMemoryDatabase;
 
+import com.google.common.collect.Iterables;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,6 +32,13 @@ public class StudentTest {
 
   private static FakeApplication app;
 
+  private static final String STUDENT_PREFIX = "Student";
+  private static final String MATH_TUTOR_PREFIX = "Math";
+  private static final String HISTORY_TUTOR_CHEAP_LOW_RATED_PREFIX = "History Cheap Low Rated";
+  private static final String HISTORY_TUTOR_CHEAP_HIGH_RATED_PREFIX = "History Cheap High Rated";
+  private static final String HISTORY_TUTOR_EXPENSIVE_LOW_RATED_PREFIX = "History Expensive Low Rated";
+  private static final String HISTORY_TUTOR_EXPENSIVE_HIGH_RATED_PREFIX = "History Expensive High Rated";
+  private static final String MULTI_SUBJECT_TUTOR_PREFIX = "Multi Subject";
   private static final String TEST_USERNAME = "Test Username";
   private static final String TEST_EMAIL = "test@email.com";
   private static final String TEST_NAME = "Test Name";
@@ -59,32 +68,44 @@ public class StudentTest {
     Helpers.start(app);
 
     testStudent = new Student();
-    testStudent.setUsername(TEST_USERNAME);
-    testStudent.setEmail(TEST_EMAIL);
-    testStudent.setName(TEST_NAME);
+    testStudent.setUsername(STUDENT_PREFIX + TEST_USERNAME);
+    testStudent.setEmail(STUDENT_PREFIX + TEST_EMAIL);
+    testStudent.setName(STUDENT_PREFIX + TEST_NAME);
     testStudent.setSalt(TEST_SALT);
     testStudent.setPwhash(Student.encrypt(TEST_PASSWORD, TEST_SALT));
     testStudent.save();
 
     testMathTutor = new Tutor();
+    testMathTutor.setUsername(MATH_TUTOR_PREFIX + TEST_USERNAME);
+    testMathTutor.setEmail(MATH_TUTOR_PREFIX + TEST_EMAIL);
+    testMathTutor.setName(MATH_TUTOR_PREFIX + TEST_NAME);
     testMathTutor.setSubjects(Arrays.asList(MATH_SUBJECT));
     testMathTutor.setCostUSD(EXPENSIVE_COST);
     testMathTutor.setRating(LOW_RATING);
     testMathTutor.save();
 
     testHistoryTutorCheapHighRated = new Tutor();
+    testHistoryTutorCheapHighRated.setUsername(HISTORY_TUTOR_CHEAP_HIGH_RATED_PREFIX + TEST_USERNAME);
+    testHistoryTutorCheapHighRated.setEmail(HISTORY_TUTOR_CHEAP_HIGH_RATED_PREFIX + TEST_EMAIL);
+    testHistoryTutorCheapHighRated.setName(HISTORY_TUTOR_CHEAP_HIGH_RATED_PREFIX + TEST_NAME);
     testHistoryTutorCheapHighRated.setSubjects(Arrays.asList(HISTORY_SUBJECT));
     testHistoryTutorCheapHighRated.setCostUSD(CHEAP_COST);
     testHistoryTutorCheapHighRated.setRating(HIGH_RATING);
     testHistoryTutorCheapHighRated.save();
 
     testHistoryTutorCheapLowRated = new Tutor();
+    testHistoryTutorCheapLowRated.setUsername(HISTORY_TUTOR_CHEAP_LOW_RATED_PREFIX + TEST_USERNAME);
+    testHistoryTutorCheapLowRated.setEmail(HISTORY_TUTOR_CHEAP_LOW_RATED_PREFIX + TEST_EMAIL);
+    testHistoryTutorCheapLowRated.setName(HISTORY_TUTOR_CHEAP_LOW_RATED_PREFIX + TEST_NAME);
     testHistoryTutorCheapLowRated.setSubjects(Arrays.asList(HISTORY_SUBJECT));
     testHistoryTutorCheapLowRated.setCostUSD(CHEAP_COST);
     testHistoryTutorCheapLowRated.setRating(LOW_RATING);
     testHistoryTutorCheapLowRated.save();
 
     testHistoryTutorExpensiveHighRated = new Tutor();
+    testHistoryTutorExpensiveHighRated.setUsername(HISTORY_TUTOR_EXPENSIVE_HIGH_RATED_PREFIX + TEST_USERNAME);
+    testHistoryTutorExpensiveHighRated.setEmail(HISTORY_TUTOR_EXPENSIVE_HIGH_RATED_PREFIX + TEST_EMAIL);
+    testHistoryTutorExpensiveHighRated.setName(HISTORY_TUTOR_EXPENSIVE_HIGH_RATED_PREFIX + TEST_NAME);
     testHistoryTutorExpensiveHighRated.setSubjects(Arrays
         .asList(HISTORY_SUBJECT));
     testHistoryTutorExpensiveHighRated.setCostUSD(EXPENSIVE_COST);
@@ -92,6 +113,9 @@ public class StudentTest {
     testHistoryTutorExpensiveHighRated.save();
 
     testHistoryTutorExpensiveLowRated = new Tutor();
+    testHistoryTutorExpensiveLowRated.setUsername(HISTORY_TUTOR_EXPENSIVE_LOW_RATED_PREFIX + TEST_USERNAME);
+    testHistoryTutorExpensiveLowRated.setEmail(HISTORY_TUTOR_EXPENSIVE_LOW_RATED_PREFIX + TEST_EMAIL);
+    testHistoryTutorExpensiveLowRated.setName(HISTORY_TUTOR_EXPENSIVE_LOW_RATED_PREFIX+ TEST_NAME);
     testHistoryTutorExpensiveLowRated.setSubjects(Arrays
         .asList(HISTORY_SUBJECT));
     testHistoryTutorExpensiveLowRated.setCostUSD(EXPENSIVE_COST);
@@ -99,6 +123,9 @@ public class StudentTest {
     testHistoryTutorExpensiveLowRated.save();
 
     testMultiSubjectTutor = new Tutor();
+    testMultiSubjectTutor.setUsername("multiSubject" + TEST_USERNAME);
+    testMultiSubjectTutor.setEmail("multiSubject" + TEST_EMAIL);
+    testMultiSubjectTutor.setName("multiSubject" + TEST_NAME);
     testMultiSubjectTutor.setSubjects(Arrays.asList(HISTORY_SUBJECT,
         SCIENCE_SUBJECT));
     testMultiSubjectTutor.save();
@@ -109,9 +136,9 @@ public class StudentTest {
    */
   @Test
   public void testFields() {
-    assertEquals(TEST_USERNAME, testStudent.getUsername());
-    assertEquals(TEST_EMAIL, testStudent.getEmail());
-    assertEquals(TEST_NAME, testStudent.getName());
+    assertEquals(STUDENT_PREFIX + TEST_USERNAME, testStudent.getUsername());
+    assertEquals(STUDENT_PREFIX + TEST_EMAIL, testStudent.getEmail());
+    assertEquals(STUDENT_PREFIX + TEST_NAME, testStudent.getName());
     assertEquals(TEST_SALT, testStudent.getSalt());
     assertEquals(Student.encrypt(TEST_PASSWORD, TEST_SALT),
         testStudent.getPwhash());
@@ -123,25 +150,25 @@ public class StudentTest {
   @Test
   public void testAuthentication() {
     // Valid email
-    assertEquals(testStudent, Student.findStudent(TEST_EMAIL));
+    assertEquals(testStudent, Student.findStudent(STUDENT_PREFIX + TEST_EMAIL));
 
     // Valid username
-    assertEquals(testStudent, Student.findStudent(TEST_USERNAME));
+    assertEquals(testStudent, Student.findStudent(STUDENT_PREFIX + TEST_USERNAME));
 
     // Invalid identifier
-    assertNull(Student.findStudent(TEST_NAME));
+    assertNull(Student.findStudent(STUDENT_PREFIX + TEST_NAME));
 
     // Valid identifier and password
-    assertTrue(Student.authenticate(TEST_EMAIL, TEST_PASSWORD));
+    assertTrue(Student.authenticate(STUDENT_PREFIX + TEST_EMAIL, TEST_PASSWORD));
 
     // Valid identifier but invalid password
-    assertFalse(Student.authenticate(TEST_EMAIL, "NOT " + TEST_PASSWORD));
+    assertFalse(Student.authenticate(STUDENT_PREFIX + TEST_EMAIL, "NOT " + TEST_PASSWORD));
 
     // Invalid identifier but valid password
-    assertFalse(Student.authenticate(TEST_NAME, TEST_PASSWORD));
+    assertFalse(Student.authenticate(STUDENT_PREFIX + TEST_NAME, TEST_PASSWORD));
 
     // Invalid identifier and password
-    assertFalse(Student.authenticate(TEST_NAME, "NOT " + TEST_PASSWORD));
+    assertFalse(Student.authenticate(STUDENT_PREFIX + TEST_NAME, "NOT " + TEST_PASSWORD));
   }
 
   /**
@@ -153,18 +180,18 @@ public class StudentTest {
     assertEquals(testStudent, Student.find.byId(testStudent.getID()));
 
     // Correct email and username
-    assertTrue(Student.existsStudent(TEST_USERNAME, TEST_EMAIL));
+    assertTrue(Student.existsStudent(STUDENT_PREFIX + TEST_USERNAME, STUDENT_PREFIX + TEST_EMAIL));
 
     // Correct email but incorrect username
-    assertTrue(Student.existsStudent("NOT " + TEST_USERNAME, TEST_EMAIL));
+    assertTrue(Student.existsStudent("NOT " + STUDENT_PREFIX + TEST_USERNAME, STUDENT_PREFIX + TEST_EMAIL));
 
     // Incorrect email but correct username
-    assertTrue(Student.existsStudent(TEST_USERNAME, "NOT " + TEST_EMAIL));
+    assertTrue(Student.existsStudent(STUDENT_PREFIX + TEST_USERNAME, "NOT " + STUDENT_PREFIX + TEST_EMAIL));
 
     // Incorrect email and username
     assertFalse(Student
-        .existsStudent("NOT " + TEST_USERNAME, "NOT "
-            + TEST_EMAIL));
+        .existsStudent("NOT " + STUDENT_PREFIX + TEST_USERNAME, "NOT "
+            + STUDENT_PREFIX + TEST_EMAIL));
   }
 
   /**
@@ -180,7 +207,6 @@ public class StudentTest {
     testSimpleSession.deactivateRoom();
   }
   */
-  // TODO test the emails for creating and canceling requests
 
   /**
    * Test Students.searchForTutors
@@ -191,7 +217,7 @@ public class StudentTest {
     assertTrue(Student.searchForTutors(INVALID_SUBJECT).isEmpty());
 
     // Subject with 1 tutor
-    assertEquals(testMathTutor, Student.searchForTutors(MATH_SUBJECT));
+    assertEquals(testMathTutor, Iterables.getOnlyElement(Student.searchForTutors(MATH_SUBJECT)));
 
     // Subject with many tutors
     List<Tutor> historyResults = Student.searchForTutors(HISTORY_SUBJECT);
@@ -224,7 +250,7 @@ public class StudentTest {
 
     // Rating range containing 1 tutor
     assertEquals(Arrays.asList(testHistoryTutorExpensiveHighRated),
-        Student.searchForTutors(MATH_SUBJECT, EXPENSIVE_COST, EXPENSIVE_COST,
+        Student.searchForTutors(HISTORY_SUBJECT, EXPENSIVE_COST, EXPENSIVE_COST,
             HIGH_RATING));
 
     // Rating range containing multiple tutors
