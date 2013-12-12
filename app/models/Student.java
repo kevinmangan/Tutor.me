@@ -53,6 +53,10 @@ public class Student extends User {
    * @return: The student corresponding to the given identifier
    */
   public static Student findStudent(String identifier) {
+    for(Student blah:find.all()) {
+      System.out.println(blah.getUsername());
+    }
+    System.out.println("Searching for student with identifier:"+identifier);
     Student matchingUser = find.where().eq("email",identifier).findUnique();
     if(matchingUser==null){
       matchingUser = find.where().eq("username",identifier).findUnique();
