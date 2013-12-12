@@ -133,7 +133,7 @@ public class Application extends Controller {
       .contains("username", tutorUsername).orderBy("rating");
       List<Tutor> tutors = tutorResults.findList();
       Tutor tutor = tutors.get(0);
-      return ok(profile.render(tutor, 1, 0));
+      return ok(profile.render(tutor, 1, 0, ""));
     }
   }
 
@@ -168,7 +168,7 @@ public class Application extends Controller {
       if(Tutor.findTutor(user)!=null){
         //Return Tutor Homepage
         Tutor tutor = Tutor.findTutor(user);
-        return ok(profile.render(tutor, 1, 0));
+        return ok(profile.render(tutor, 1, 0, ""));
       } else{
         List<Tutor> emptyList = Collections.<Tutor>emptyList();
         return ok(search.render(emptyList));

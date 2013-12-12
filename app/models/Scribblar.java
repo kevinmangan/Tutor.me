@@ -3,6 +3,7 @@ package models;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.Exception;
 import java.net.URL;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -101,7 +102,7 @@ public class Scribblar {
    *
    * returns userId if successful, null if not
    */
-  public static String addScribblarUser(User user) {
+  public static String addScribblarUser(User user) throws Exception {
     String requestString = "function=users.add" +
     "&username=" + user.getUsername() +
     /*"&firstname=" + user.getName() +*/
@@ -115,7 +116,9 @@ public class Scribblar {
       return userIdNode.getTextContent();
     } else {
       // An error occured!
-      return null;
+      String errCode = doc.getElementsByTagName("error").item(0).getAttributes().getNamedItem("code").getNodeValue();
+      System.err.println("Scribblar Error: "+errCode);
+      throw new Exception(errCode);
     }
   }
 }

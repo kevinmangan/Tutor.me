@@ -144,7 +144,11 @@ public abstract class User extends Model {
   }
   public boolean setScribblarId() {
     if(scribblarId == null) {
-      scribblarId = Scribblar.addScribblarUser(this);
+      try {
+        scribblarId = Scribblar.addScribblarUser(this);
+      } catch(Exception e) {
+        scribblarId = "invalid";
+      }
       this.save();
     }
     return scribblarId != null;

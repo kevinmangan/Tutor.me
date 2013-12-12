@@ -51,9 +51,9 @@ public class Profile extends Controller {
 
       // If the user viewing the profile is the tutor himself, pass in 1 so view knows to show the edit button
       if(localUser.equals(username)){
-        return ok(profile.render(tutor, 1, 0));
+        return ok(profile.render(tutor, 1, 0, ""));
       } else {
-        return ok(profile.render(tutor, 0, 0));
+        return ok(profile.render(tutor, 0, 0, ""));
       }
     } else {
       return unauthorized("Oops, you are not connected");
@@ -116,10 +116,10 @@ public class Profile extends Controller {
       theStudent.createRequest(tutor, startMillis, endMillis);
       Request request = theStudent.createRequest(tutor, startMillis, endMillis);
       if(request==null){
-        return ok(profile.render(tutor,isTutor,1));
+        return ok(profile.render(tutor,isTutor,1, "Your request has been sent"));
       }
     }
 
-    return ok(profile.render(tutor, isTutor,0));
+    return ok(profile.render(tutor, isTutor,0, ""));
   }
 }
