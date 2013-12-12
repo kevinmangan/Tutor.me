@@ -5,7 +5,6 @@ import java.util.List;
 import javax.persistence.Entity;
 
 import com.avaje.ebean.Query;
-import java.util.Date;
 
 /**
  * Represents a Tutor.me student

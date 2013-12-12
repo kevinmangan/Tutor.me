@@ -187,12 +187,12 @@ public class Request extends Model {
       + startTimeString
       + " to "
       + endTimeString
-      + ".  To cancel it click the at <a href=\""
+      + ".  To cancel it click the link at <a href=\""
       + ROOT_URL
       + controllers.routes.Students.cancelRequest(id)
       + "\">"
       + controllers.routes.Students.cancelRequest(id)
-      + "<br /><br />Cheers,<br />The Tutor.me team";
+      + "</a><br /><br />Cheers,<br />The Tutor.me team";
     Application.sendEmail(emailSubject, studentRecipient, studentHtml);
 
     // Send tutor email
@@ -218,7 +218,7 @@ public class Request extends Model {
       + controllers.routes.Tutors.respondToRequest(id, false)
       + "\">."
       + controllers.routes.Tutors.respondToRequest(id, false)
-      + "<br /><br />Cheers,<br />The Tutor.me team";
+      + "</a><br /><br />Cheers,<br />The Tutor.me team";
     Application.sendEmail(emailSubject, tutorRecipient, tutorHtml);
   }
 

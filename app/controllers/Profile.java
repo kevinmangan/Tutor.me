@@ -5,9 +5,9 @@ import static play.data.Form.form;
 import java.io.File;
 import java.util.List;
 
+import models.Request;
 import models.Student;
 import models.Tutor;
-import models.Request;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -20,7 +20,9 @@ import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
 import views.html.profile;
 
+import com.avaje.ebean.ExpressionList;
 import com.avaje.ebean.Query;
+import com.google.common.collect.Iterables;
 
 public class Profile extends Controller {
 
@@ -108,14 +110,14 @@ public class Profile extends Controller {
       long startMillis = st.getMillis();
       long endMillis = et.getMillis();
 
-      Student theStudent = Student.findStudent(loggedUser());
-      //This create request needs to test wether this request is valid or not.
-      //Error would be handled accordingly
+      ExpressionList<Student> studentResults = Student.find.where().eq(
+          "username", loggedUser());
+      Student theStudent = Iterables.getOnlyElement(studentResults.findList());
+      theStudent.createRequest(tutor, startMillis, endMillis);
       Request request = theStudent.createRequest(tutor, startMillis, endMillis);
       if(request==null){
-      	return ok(profile.render(tutor,isTutor,1));
+        return ok(profile.render(tutor,isTutor,1));
       }
-      //Error would be rendered if an invalid request was submitted
     }
 
     return ok(profile.render(tutor, isTutor,0));
